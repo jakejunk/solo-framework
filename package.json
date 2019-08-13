@@ -1,0 +1,37 @@
+{
+  "name": "solo-framework",
+  "version": "0.0.0",
+  "description": "A simple framework for developing WebGL games",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/chai": "^4.2.0",
+    "@types/mocha": "^5.2.7",
+    "chai": "^4.2.0",
+    "cross-env": "^5.2.0",
+    "mocha": "^6.2.0",
+    "ts-node": "^8.3.0",
+    "typescript": "^3.5.3"
+  },
+  "scripts": {
+    "test": "cross-env TS_NODE_COMPILER_OPTIONS='{\\\"module\\\":\\\"commonjs\\\"}' mocha -r ts-node/register tests/**/*.spec.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jakejunk/solo-framework.git"
+  },
+  "keywords": [
+    "engine",
+    "framework",
+    "games"
+  ],
+  "author": "jakejunk",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jakejunk/solo-framework/issues"
+  },
+  "homepage": "https://github.com/jakejunk/solo-framework#readme"
+}
