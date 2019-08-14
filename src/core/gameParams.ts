@@ -1,7 +1,7 @@
 import { Color } from "../graphics/color";
 import { CanvasScalingFunction } from "./canvasScalingFunction";
 
-interface GameParams
+export interface GameParams
 {
     /**
      * The width of the game buffer in pixels.

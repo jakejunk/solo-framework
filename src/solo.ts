@@ -1,6 +1,6 @@
 // Core
 export * from "./core/canvasScalingFunction";
-export * from "./core/gameSettings";
+export * from "./core/gameParams";
 
 // Graphics
 export * from "./graphics/color";
