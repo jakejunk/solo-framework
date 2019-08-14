@@ -9,30 +9,30 @@ export class Vector2
         this.y = y;
     }
 
-    static Clone(other: Vector2): Vector2
+    static Clone(other: Readonly<Vector2>): Vector2
     {
         return new Vector2(other.x, other.y);
     }
 
-    add(other: Vector2) 
+    add(other: Readonly<Vector2>) 
     {
         this.x += other.x;
         this.y += other.y;
     }
 
-    sub(other: Vector2)
+    sub(other: Readonly<Vector2>)
     {
         this.x -= other.x;
         this.y -= other.y;
     }
 
-    mul(other: Vector2)
+    mul(other: Readonly<Vector2>)
     {
         this.x *= other.x;
         this.y *= other.y;
     }
 
-    div(other: Vector2)
+    div(other: Readonly<Vector2>)
     {
         this.x /= other.x;
         this.y /= other.y;
@@ -44,7 +44,7 @@ export class Vector2
         this.y *= factor;
     }
 
-    set(other: Vector2)
+    set(other: Readonly<Vector2>)
     {
         this.x = other.x;
         this.y = other.y;
@@ -69,7 +69,7 @@ export class Vector2
         }
     }
 
-    dot(other: Vector2): number
+    dot(other: Readonly<Vector2>): number
     {
         return this.x * other.x + this.y * other.y
     }

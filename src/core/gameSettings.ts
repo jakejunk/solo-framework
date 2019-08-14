@@ -58,7 +58,7 @@ export type GameParamsCompleted = Required<Readonly<GameParams>>;
 
 export namespace GameParams
 {
-    export function Complete(params: GameParams): GameParamsCompleted
+    export function Complete(params: Readonly<GameParams>): GameParamsCompleted
     {
         return {
             bufferWidth: params.bufferHeight,

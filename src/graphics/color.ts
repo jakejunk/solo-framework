@@ -34,7 +34,7 @@ export class Color
      * Returns either `Color.Black` or `Color.White`, depending on the primary color's intensity.
      * Use `CreateContrastingColorW3C()` for a W3C-compliant version.
      */
-    static CreateContrastingColor(primary: Color): Color
+    static CreateContrastingColor(primary: Readonly<Color>): Color
     {
         // https://stackoverflow.com/q/3942878
 
@@ -50,7 +50,7 @@ export class Color
     /**
      * Returns either `Color.Black` or `Color.White`, depending on the primary color's intensity.
      */
-    static CreateContrastingColorW3C(primary: Color): Color
+    static CreateContrastingColorW3C(primary: Readonly<Color>): Color
     {
         // https://stackoverflow.com/q/3942878
 
@@ -108,7 +108,7 @@ export class Color
         return new Color(r, g, b, a);
     }
 
-    set(other: Color)
+    set(other: Readonly<Color>)
     {
         this.r = other.r;
         this.g = other.g;
@@ -132,7 +132,7 @@ export class Color
         return "#" + unsignedIntValue.toString(16);
     }
 
-    equals(other: Color): boolean
+    equals(other: Readonly<Color>): boolean
     {
         return this.a === other.a
             && this.r === other.r
