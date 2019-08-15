@@ -1,6 +1,6 @@
 /**
  * Defines how the browser should render the game canvas
- * when it be scaled up or down from its original size.
+ * when scaled up or down from its original size.
  */
 export const enum ScalingAlgorithm
 {
