@@ -109,7 +109,7 @@ describe("Vector2", () =>
             expect(v.getLength()).equals(v.getLengthSquared());
         });
 
-        it("equals getLengthSquared() if getLength() == 1", () =>
+        it("equals getLengthSquared() if getLength() equals 1", () =>
         {
             const v = Vector2.UNIT_X;
 

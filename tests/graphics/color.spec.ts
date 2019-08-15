@@ -61,11 +61,29 @@ describe("Color", () =>
             expect(hexString).equals("#ff007ffe");
         });
 
-        it("clamps components outside of the range [0, 1]", () =>
+        it("clamps when components are outside the range of [0, 1]", () =>
         {
             const hexString = new Color(2, 2, -1, 1.01).toHexString();
 
             expect(hexString).equals("#ffff00ff");
+        });
+    });
+
+    describe("equals()", () =>
+    {
+        it("always returns true when tested against the exact same color", () =>
+        {
+            const color = new Color(1, 0, 0.5, 0.99999);
+
+            expect(color.equals(color)).to.be.true;
+        });
+
+        it("accounts for differences in alpha", () =>
+        {
+            const color1 = new Color(1, 0, 0.5, 0.51);
+            const color2 = new Color(1, 0, 0.5, 0.5);
+
+            expect(color1.equals(color2)).to.be.false;
         });
     });
 });
