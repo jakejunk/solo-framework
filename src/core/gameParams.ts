@@ -1,5 +1,5 @@
 import { Color } from "../graphics/color";
-import { CanvasScalingFunction } from "./canvasScalingFunction";
+import { ScalingAlgorithm } from "./scalingAlgorithm";
 
 export interface GameParams
 {
@@ -45,12 +45,12 @@ export interface GameParams
     backBufferAlpha?: boolean;
 
     /**
-     * Tells the canvas how to handle upscaling. Default value is `CanvasScalingFunction.BILINEAR`.
+     * Tells the canvas how to handle upscaling. Default value is `scalingAlgorithm.SMOOTH`.
      * 
-     * Note that this does not work for MS Edge for `CanvasScalingFunction.PIXELATED`,
+     * Note that `scalingAlgorithm.PIXELATED` does not work in MS Edge,
      * so a `RenderTarget`-inspired workaround would be necessary.
      */
-    canvasScalingFunction?: CanvasScalingFunction;
+    scalingAlgorithm?: ScalingAlgorithm;
 }
 
 /** @internal */
@@ -68,7 +68,7 @@ export namespace GameParams
             fixedUpdateRate: _CompleteProperty(params.fixedUpdateRate, 60),
             defaultCanvasColor: _CompleteProperty(params.defaultCanvasColor, Color.BLACK),
             backBufferAlpha: _CompleteProperty(params.backBufferAlpha, false),
-            canvasScalingFunction: _CompleteProperty(params.canvasScalingFunction, CanvasScalingFunction.BILINEAR)
+            scalingAlgorithm: _CompleteProperty(params.scalingAlgorithm, ScalingAlgorithm.SMOOTH)
         };
     }
 
