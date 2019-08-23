@@ -5,7 +5,7 @@ export class Logger
     readonly name: string;
     private _style: string;
     
-    constructor(name: string, color?: Color)
+    constructor(name: string, color?: Readonly<Color>)
     {
         this.name = name;
 

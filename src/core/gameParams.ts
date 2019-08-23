@@ -14,7 +14,7 @@ export interface GameParams
     readonly bufferHeight: number;
 
     /**
-     * The element that will contain the canvas. Default value is the `<body>` element.
+     * The parent element of the canvas. Default value is the `<body>` element.
      * 
      * If a canvas element is already present in the HTML document, and its ID is provided
      * in the `GameParams.canvasId` property, this value will be ignored.
@@ -30,14 +30,19 @@ export interface GameParams
     canvasId?: string;
 
     /**
-     * The rate per second that `fixedUpdate()` will be called. Default value is 60.
+     * The rate per second that `fixedUpdate()` will be called. Default value is `60`.
      */
     fixedUpdateRate?: number;
 
     /**
-     * The color of the canvas before rendering. Default color is `Color.BLACK`.
+     * Whether the timestep used for the main game loop is fixed. Default value is `false`.
      */
-    defaultCanvasColor?: Color;
+    isFixedTimestep?: boolean;
+
+    /**
+     * The color of the canvas before rendering. Default value is `#000000`.
+     */
+    defaultCanvasColor?: Color | string;
 
     /**
      * Whether the WebGL backbuffer should contain the alpha component. Default value is `false`.
@@ -45,10 +50,7 @@ export interface GameParams
     backBufferAlpha?: boolean;
 
     /**
-     * Tells the canvas how to handle upscaling. Default value is `scalingAlgorithm.SMOOTH`.
-     * 
-     * Note that `scalingAlgorithm.PIXELATED` does not work in MS Edge,
-     * so a `RenderTarget`-inspired workaround would be necessary.
+     * Tells the canvas how to handle upscaling. Default value is `ScalingAlgorithm.SMOOTH`.
      */
     scalingAlgorithm?: ScalingAlgorithm;
 }
@@ -66,7 +68,8 @@ export namespace GameParams
             parentElement: _CompleteProperty(params.parentElement, document.body),
             canvasId: _CompleteProperty(params.canvasId, "solo-game-canvas"),
             fixedUpdateRate: _CompleteProperty(params.fixedUpdateRate, 60),
-            defaultCanvasColor: _CompleteProperty(params.defaultCanvasColor, Color.BLACK),
+            isFixedTimestep: _CompleteProperty(params.isFixedTimestep, false),
+            defaultCanvasColor: _CompleteProperty(params.defaultCanvasColor, "#000000"),
             backBufferAlpha: _CompleteProperty(params.backBufferAlpha, false),
             scalingAlgorithm: _CompleteProperty(params.scalingAlgorithm, ScalingAlgorithm.SMOOTH)
         };

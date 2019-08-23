@@ -6,12 +6,12 @@ export const enum ScalingAlgorithm
 {
     /**
      * A browser-dependent "smooth" scaling algorithm, e.g. bilinear interpolation.
-     * Useful for scaling photos.
+     * Useful when scaling photos.
      */
     SMOOTH,
 
     /**
-     * The nearest-neighbor algorithm. Useful for upscaling pixel art.
+     * The nearest-neighbor algorithm. Useful when upscaling pixel art.
      */
     PIXELATED,
 }
