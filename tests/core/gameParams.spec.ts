@@ -31,9 +31,10 @@ describe("GameParams", () =>
             expect(completedParams.backBufferAlpha).equals(initialParams.backBufferAlpha);
             expect(completedParams.scalingAlgorithm).equals(initialParams.scalingAlgorithm);
 
-            const colorsAreEqual =
-                initialParams.defaultCanvasColor != undefined &&
-                completedParams.defaultCanvasColor.equals(initialParams.defaultCanvasColor);
+            const colorsAreEqual = initialParams.defaultCanvasColor != undefined
+                && typeof initialParams.defaultCanvasColor !== "string"
+                && typeof completedParams.defaultCanvasColor !== "string"
+                && completedParams.defaultCanvasColor.equals(initialParams.defaultCanvasColor);
 
             expect(colorsAreEqual).to.be.true;
         });
