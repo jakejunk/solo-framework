@@ -70,7 +70,10 @@ export class Color
         return Color.Clone(Color.WHITE);
     }
 
-    static FromRGBA8888(rgba8888: number): Color
+    /**
+     * Creates a new `Color` from an RGBA-formatted 32-bit integer.
+     */
+    static FromRgba8888(rgba8888: number): Color
     {
         const r = ((rgba8888 & 0xff000000) >>> 24) / 255;
         const g = ((rgba8888 & 0x00ff0000) >>> 16) / 255;
@@ -149,68 +152,68 @@ export namespace Color
     export const BLACK: Readonly<Color> = new Color();
 
     /** #ffffff */
-    export const WHITE: Readonly<Color> = Color.FromRGBA8888(0xffffffff);
+    export const WHITE: Readonly<Color> = Color.FromRgba8888(0xffffffff);
 
     /** #1abc9c */
-    export const TURQUOISE: Readonly<Color> = Color.FromRGBA8888(0x1abc9cff);
+    export const TURQUOISE: Readonly<Color> = Color.FromRgba8888(0x1abc9cff);
 
     /** #16a085 */
-    export const GREEN_SEA: Readonly<Color> = Color.FromRGBA8888(0x16a085ff);
+    export const GREEN_SEA: Readonly<Color> = Color.FromRgba8888(0x16a085ff);
 
     /** #2ecc71 */
-    export const EMERALD: Readonly<Color> = Color.FromRGBA8888(0x2ecc71ff);
+    export const EMERALD: Readonly<Color> = Color.FromRgba8888(0x2ecc71ff);
 
     /** #27ae60 */
-    export const NEPHRITIS: Readonly<Color> = Color.FromRGBA8888(0x27ae60ff);
+    export const NEPHRITIS: Readonly<Color> = Color.FromRgba8888(0x27ae60ff);
 
     /** #3498db */
-    export const PETER_RIVER: Readonly<Color> = Color.FromRGBA8888(0x3498dbff);
+    export const PETER_RIVER: Readonly<Color> = Color.FromRgba8888(0x3498dbff);
 
     /** #2980b9 */
-    export const BELIZE_HOLE: Readonly<Color> = Color.FromRGBA8888(0x2980b9ff);
+    export const BELIZE_HOLE: Readonly<Color> = Color.FromRgba8888(0x2980b9ff);
 
     /** #6495ed (XNA!) */
-    export const CORNFLOWER_BLUE: Readonly<Color> = Color.FromRGBA8888(0x6495edff);
+    export const CORNFLOWER_BLUE: Readonly<Color> = Color.FromRgba8888(0x6495edff);
 
     /** #9b59b6 */
-    export const AMETHYST: Readonly<Color> = Color.FromRGBA8888(0x9b59b6ff);
+    export const AMETHYST: Readonly<Color> = Color.FromRgba8888(0x9b59b6ff);
     
     /** #8e44ad */
-    export const WISTERIA: Readonly<Color> = Color.FromRGBA8888(0x8e44adff);
+    export const WISTERIA: Readonly<Color> = Color.FromRgba8888(0x8e44adff);
 
     /** #34495e */
-    export const WET_ASPHALT: Readonly<Color> = Color.FromRGBA8888(0x34495eff);
+    export const WET_ASPHALT: Readonly<Color> = Color.FromRgba8888(0x34495eff);
 
     /** #2c3e50 */
-    export const MIDNIGHT_BLUE: Readonly<Color> = Color.FromRGBA8888(0x2c3e50ff);
+    export const MIDNIGHT_BLUE: Readonly<Color> = Color.FromRgba8888(0x2c3e50ff);
 
     /** #f1c40f */
-    export const SUNFLOWER: Readonly<Color> = Color.FromRGBA8888(0xf1c40fff);
+    export const SUNFLOWER: Readonly<Color> = Color.FromRgba8888(0xf1c40fff);
 
     /** #f39c12 */
-    export const ORANGE: Readonly<Color> = Color.FromRGBA8888(0xf39c12ff);
+    export const ORANGE: Readonly<Color> = Color.FromRgba8888(0xf39c12ff);
 
     /** #e67e22 */
-    export const CARROT: Readonly<Color> = Color.FromRGBA8888(0xe67e22ff);
+    export const CARROT: Readonly<Color> = Color.FromRgba8888(0xe67e22ff);
 
     /** #d35400 */
-    export const PUMPKIN: Readonly<Color> = Color.FromRGBA8888(0xd35400ff);
+    export const PUMPKIN: Readonly<Color> = Color.FromRgba8888(0xd35400ff);
 
     /** #e74c3c */
-    export const ALIZARIN: Readonly<Color> = Color.FromRGBA8888(0xe74c3cff);
+    export const ALIZARIN: Readonly<Color> = Color.FromRgba8888(0xe74c3cff);
 
     /** #c0392b */
-    export const POMEGRANATE: Readonly<Color> = Color.FromRGBA8888(0xc0392bff);
+    export const POMEGRANATE: Readonly<Color> = Color.FromRgba8888(0xc0392bff);
 
     /** #ecf0f1 */
-    export const CLOUDS: Readonly<Color> = Color.FromRGBA8888(0xecf0f1ff);
+    export const CLOUDS: Readonly<Color> = Color.FromRgba8888(0xecf0f1ff);
 
     /** #bdc3c7 */
-    export const SILVER: Readonly<Color> = Color.FromRGBA8888(0xbdc3c7ff);
+    export const SILVER: Readonly<Color> = Color.FromRgba8888(0xbdc3c7ff);
 
     /** #95a5a6 */
-    export const CONCRETE: Readonly<Color> = Color.FromRGBA8888(0x95a5a6ff);
+    export const CONCRETE: Readonly<Color> = Color.FromRgba8888(0x95a5a6ff);
 
     /** #7f8c8d */
-    export const ASBESTOS: Readonly<Color> = Color.FromRGBA8888(0x7f8c8dff);
+    export const ASBESTOS: Readonly<Color> = Color.FromRgba8888(0x7f8c8dff);
 }

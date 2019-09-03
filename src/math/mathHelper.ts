@@ -1,5 +1,5 @@
 /**
- * Clamps a number value between a provided minimum and maximum.
+ * Clamps a number between a provided minimum and maximum.
  */
 export function Clamp(value: number, min: number, max: number): number
 {

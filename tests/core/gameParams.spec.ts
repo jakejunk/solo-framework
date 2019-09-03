@@ -1,4 +1,4 @@
-import { GameParams } from "../../src/core/gameParams";
+import { GameParams, GameParamsCompleted } from "../../src/core/gameParams";
 import { Color } from "../../src/graphics/color";
 import { ScalingAlgorithm } from "../../src/core/scalingAlgorithm";
 import { expect } from "chai";
@@ -10,26 +10,28 @@ describe("GameParams", () =>
     {
         it("all user-controlled values are preserved", () =>
         {
-            const initialParams: GameParams = {
+            const initialParams: GameParamsCompleted = {
                 bufferWidth: 300,
                 bufferHeight: 300,
                 parentElement: document.body,
                 canvasId: "some-special-name",
-                fixedUpdateRate: 72,
+                isFixedTimestep: true,
+                updateRate: 72,
                 defaultCanvasColor: Color.WHITE,
                 backBufferAlpha: false,
                 scalingAlgorithm: ScalingAlgorithm.PIXELATED
             };
 
-            const completedParams = GameParams.Complete(initialParams);
+            const completedParams = GameParams.Complete(initialParams as GameParams);
 
-            expect(completedParams.bufferWidth).equals(initialParams.bufferWidth);
-            expect(completedParams.bufferHeight).equals(initialParams.bufferHeight);
-            expect(completedParams.parentElement).equals(initialParams.parentElement);
-            expect(completedParams.canvasId).equals(initialParams.canvasId);
-            expect(completedParams.fixedUpdateRate).equals(initialParams.fixedUpdateRate);
-            expect(completedParams.backBufferAlpha).equals(initialParams.backBufferAlpha);
-            expect(completedParams.scalingAlgorithm).equals(initialParams.scalingAlgorithm);
+            expect(completedParams.bufferWidth).to.equal(initialParams.bufferWidth);
+            expect(completedParams.bufferHeight).to.equal(initialParams.bufferHeight);
+            expect(completedParams.parentElement).to.equal(initialParams.parentElement);
+            expect(completedParams.canvasId).to.equal(initialParams.canvasId);
+            expect(completedParams.isFixedTimestep).to.equal(initialParams.isFixedTimestep);
+            expect(completedParams.updateRate).to.equal(initialParams.updateRate);
+            expect(completedParams.backBufferAlpha).to.equal(initialParams.backBufferAlpha);
+            expect(completedParams.scalingAlgorithm).to.equal(initialParams.scalingAlgorithm);
 
             const colorsAreEqual = initialParams.defaultCanvasColor != undefined
                 && typeof initialParams.defaultCanvasColor !== "string"

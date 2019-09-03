@@ -4,12 +4,12 @@
 export class GameTime
 {
     /**
-     * The elapsed game time since the last update call.
+     * The elapsed time since the last update call.
      */
     elapsedGameTime: number = 0;
 
     /**
-     * The total elapsed game time since the game started.
+     * The total elapsed time since the game started.
      */
     totalElapsedGameTime: number = 0;
 

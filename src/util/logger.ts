@@ -13,7 +13,7 @@ export class Logger
         {
             const hash = Logger._GenHashFromName(name);
 
-            color = Color.FromRGBA8888(hash);
+            color = Color.FromRgba8888(hash);
         }
 
         this._style = "background:" + color.toHexString() + ";";

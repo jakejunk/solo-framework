@@ -30,14 +30,15 @@ export interface GameParams
     canvasId?: string;
 
     /**
-     * The rate per second that `fixedUpdate()` will be called. Default value is `60`.
-     */
-    fixedUpdateRate?: number;
-
-    /**
      * Whether the timestep used for the main game loop is fixed. Default value is `false`.
      */
     isFixedTimestep?: boolean;
+
+    /**
+     * The rate per second that `update()` will be called when running on a fixed timestep.
+     * Default value is `60`.
+     */
+    updateRate?: number;
 
     /**
      * The color of the canvas before rendering. Default value is `#000000`.
@@ -67,7 +68,7 @@ export namespace GameParams
             bufferHeight: params.bufferHeight,
             parentElement: _CompleteProperty(params.parentElement, document.body),
             canvasId: _CompleteProperty(params.canvasId, "solo-game-canvas"),
-            fixedUpdateRate: _CompleteProperty(params.fixedUpdateRate, 60),
+            updateRate: _CompleteProperty(params.updateRate, 60),
             isFixedTimestep: _CompleteProperty(params.isFixedTimestep, false),
             defaultCanvasColor: _CompleteProperty(params.defaultCanvasColor, "#000000"),
             backBufferAlpha: _CompleteProperty(params.backBufferAlpha, false),

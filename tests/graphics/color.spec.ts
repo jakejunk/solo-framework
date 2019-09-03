@@ -10,10 +10,10 @@ describe("Color", () =>
         {
             const color = Color.FromHexString("#000000ff");
 
-            expect(color.r).within(0, 1);
-            expect(color.g).within(0, 1);
-            expect(color.b).within(0, 1);
-            expect(color.a).within(0, 1);
+            expect(color.r).to.be.within(0, 1);
+            expect(color.g).to.be.within(0, 1);
+            expect(color.b).to.be.within(0, 1);
+            expect(color.a).to.be.within(0, 1);
         });
 
         it("returns Color.BLACK for all invalid hex strings", () =>
@@ -58,14 +58,14 @@ describe("Color", () =>
         {
             const hexString = new Color(1, 0, 0.5, 0.99999).toHexString();
 
-            expect(hexString).equals("#ff007ffe");
+            expect(hexString).to.equal("#ff007ffe");
         });
 
         it("clamps when components are outside the range of [0, 1]", () =>
         {
             const hexString = new Color(2, 2, -1, 1.01).toHexString();
 
-            expect(hexString).equals("#ffff00ff");
+            expect(hexString).to.equal("#ffff00ff");
         });
     });
 

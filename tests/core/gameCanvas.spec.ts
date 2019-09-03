@@ -24,8 +24,8 @@ describe("GameCanvas", () =>
             
             const canvas = GameCanvas.Create(params);
 
-            expect(existingCanvas).equals(null);
-            expect(canvas).not.equals(null);
+            expect(existingCanvas).to.equal(null);
+            expect(canvas).to.not.equal(null);
         });
 
         it("uses existing canvas element if one exists", () =>
@@ -39,7 +39,7 @@ describe("GameCanvas", () =>
             const params = GameParamsGenerator.CreateWithId(id);
             const canvas = GameCanvas.Create(params);
 
-            expect(existingCanvas.id).equals(canvas.id);
+            expect(existingCanvas.id).to.equal(canvas.id);
         });
     });
 });

@@ -36,7 +36,7 @@ export class GameManager
         this._initEvents(components);
     }
 
-    static Create<T extends Game>(game: T, params: GameParams): GameManager
+    static Create(game: Game, params: GameParams): GameManager
     {
         const gameParams = GameParams.Complete(params);
         const gameCanvas = GameCanvas.Create(gameParams);
@@ -52,7 +52,7 @@ export class GameManager
             throw new Error(graphicsContext);
         }
 
-        const gameTimer = new GameTimer(gameParams.isFixedTimestep, gameParams.fixedUpdateRate);
+        const gameTimer = new GameTimer(gameParams.isFixedTimestep, gameParams.updateRate);
 
         return new GameManager(game, {
             canvas: gameCanvas,
@@ -129,10 +129,8 @@ export class GameManager
     private _tick(timestamp: number)
     {
         this._timer._tickGame(this._game, timestamp);
-        
-        
 
-        // TODO draw
+        // Handle input managers
 
         this._nextFrameHandle = requestAnimationFrame(this._tickFunc);
     }

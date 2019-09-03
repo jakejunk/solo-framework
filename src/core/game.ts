@@ -13,8 +13,14 @@ export interface Game
      */
     onLoad(components: GameComponents): Promise<{}>;
 
+    /**
+     * Called when the game is ready to update its logic.
+     */
     onUpdate(gameTime: Readonly<GameTime>): void;
 
+    /**
+     * Called when the game is ready to draw.
+     */
     onDraw(gameTime: Readonly<GameTime>): void;
 
     onResize?: () => void;
