@@ -39,7 +39,7 @@ export class GameManager
     static Create(game: Game, params: GameParams): GameManager
     {
         const gameParams = GameParams.Complete(params);
-        const gameCanvas = GameCanvas.Create(gameParams);
+        const gameCanvas = GameCanvas.Create(gameParams.canvasId, gameParams.defaultCanvasColor);
 
         if (gameCanvas.parentElement == undefined)
         {
@@ -52,7 +52,8 @@ export class GameManager
             throw new Error(graphicsContext);
         }
 
-        const gameTimer = new GameTimer(gameParams.isFixedTimestep, gameParams.updateRate);
+        const desiredFrameTimeMillis = 1000 / gameParams.updateRate;
+        const gameTimer = new GameTimer(gameParams.timestep, desiredFrameTimeMillis, window.performance.now());
 
         return new GameManager(game, {
             canvas: gameCanvas,

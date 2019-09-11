@@ -1,4 +1,3 @@
-import { GameTime } from "./gameTime";
 import { GameComponents } from "./gameComponents";
 
 export interface Game
@@ -16,12 +15,12 @@ export interface Game
     /**
      * Called when the game is ready to update its logic.
      */
-    onUpdate(gameTime: Readonly<GameTime>): void;
+    onUpdate(delta: number): void;
 
     /**
      * Called when the game is ready to draw.
      */
-    onDraw(gameTime: Readonly<GameTime>): void;
+    onDraw(delta: number): void;
 
     onResize?: () => void;
 

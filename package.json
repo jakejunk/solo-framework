@@ -21,7 +21,7 @@
     "typescript": "^3.5.3"
   },
   "scripts": {
-    "test": "cross-env TS_NODE_COMPILER_OPTIONS='{\\\"module\\\":\\\"commonjs\\\"}' mocha -r ts-node/register -r jsdom-global/register tests/**/*.spec.ts"
+    "test": "cross-env TS_NODE_COMPILER_OPTIONS='{\\\"module\\\":\\\"commonjs\\\"}' mocha -r ts-node/register -r jsdom-global/register tests/unit/**/*.spec.ts"
   },
   "repository": {
     "type": "git",

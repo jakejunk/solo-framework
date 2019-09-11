@@ -1,5 +1,6 @@
 import { Color } from "../graphics/color";
 import { ScalingAlgorithm } from "./scalingAlgorithm";
+import { Timestep } from "./timestep";
 
 export interface GameParams
 {
@@ -30,9 +31,9 @@ export interface GameParams
     canvasId?: string;
 
     /**
-     * Whether the timestep used for the main game loop is fixed. Default value is `false`.
+     * The timestep to use for the main game loop. Default value is `Timestep.VARIABLE`.
      */
-    isFixedTimestep?: boolean;
+    timestep?: Timestep;
 
     /**
      * The rate per second that `update()` will be called when running on a fixed timestep.
@@ -69,7 +70,7 @@ export namespace GameParams
             parentElement: _CompleteProperty(params.parentElement, document.body),
             canvasId: _CompleteProperty(params.canvasId, "solo-game-canvas"),
             updateRate: _CompleteProperty(params.updateRate, 60),
-            isFixedTimestep: _CompleteProperty(params.isFixedTimestep, false),
+            timestep: _CompleteProperty(params.timestep, Timestep.VARIABLE),
             defaultCanvasColor: _CompleteProperty(params.defaultCanvasColor, "#000000"),
             backBufferAlpha: _CompleteProperty(params.backBufferAlpha, false),
             scalingAlgorithm: _CompleteProperty(params.scalingAlgorithm, ScalingAlgorithm.SMOOTH)

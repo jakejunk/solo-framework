@@ -1,6 +1,6 @@
-import { GameParamsCompleted } from "./gameParams";
 import { QuerySelector } from "../util/querySelector";
 import { Logger } from "../util/logger";
+import { Color } from "../graphics/color";
 
 export interface GameCanvas extends HTMLCanvasElement
 {
@@ -11,9 +11,9 @@ export namespace GameCanvas
 {
     const _Logger = new Logger("GameCanvas");
 
-    export function Create(gameParams: GameParamsCompleted): GameCanvas
+    export function Create(id: string, defaultCanvasColor: Color | string): GameCanvas
     {
-        const canvas = _GetCanvas(gameParams);
+        const canvas = _GetCanvas(id);
         canvas.tabIndex = 0;
 
         const style = canvas.style;
@@ -22,28 +22,28 @@ export namespace GameCanvas
         style.outline = "none";
         style.userSelect = "none";
         style.minWidth = "100%";
-        style.backgroundColor = typeof gameParams.defaultCanvasColor !== "string"
-            ? gameParams.defaultCanvasColor.toHexString()
-            : gameParams.defaultCanvasColor;
+        style.backgroundColor = typeof defaultCanvasColor !== "string"
+            ? defaultCanvasColor.toHexString()
+            : defaultCanvasColor;
 
         return canvas;
     }
 
-    function _GetCanvas(gameParams: GameParamsCompleted): GameCanvas
+    function _GetCanvas(id: string): GameCanvas
     {
-        const existingCanvas = QuerySelector("canvas", `#${gameParams.canvasId}`);
+        const existingCanvas = QuerySelector("canvas", `#${id}`);
 
         if (existingCanvas != undefined)
         {
-            _Logger.debug(`Found existing canvas element: "canvas#${gameParams.canvasId}"`);
+            _Logger.debug(`Found existing canvas element: "canvas#${id}"`);
 
             return existingCanvas as GameCanvas;
         }
 
-        _Logger.debug(`Creating canvas element: "canvas#${gameParams.canvasId}"`);
+        _Logger.debug(`Creating canvas element: "canvas#${id}"`);
 
         const canvas = document.createElement("canvas") as GameCanvas;
-        canvas.id = gameParams.canvasId;
+        canvas.id = id;
 
         return canvas;
     }

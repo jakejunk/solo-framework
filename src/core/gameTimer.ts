@@ -1,144 +1,163 @@
 import { Clamp } from "../math/mathHelper";
 import { Game } from "./game";
-import { GameTime } from "./gameTime";
 import { Logger } from "../util/logger";
+import { Timestep } from "./timestep";
 
 export class GameTimer
 {
     private static readonly _Logger = new Logger("GameTimer");
 
-    isFixedTimestep: boolean;
-    private readonly _gameTime: GameTime;
+    private _isFixedTimestep!: boolean;
+    private _isRunningSlow!: boolean;
+    private _totalGameTime: number;
     private _targetFrameTime!: number;
-    private _maxFrameTime!: number;
     private _lastTimestamp!: number;
     private _frameTimeAccumulator!: number;
     private _frameLag!: number;
 
     /** @internal */
-    constructor(isFixed = false, fps = 60, minFps = 15)
+    constructor(timestep = Timestep.VARIABLE, frameTime = 1000 / 60, initialTimestamp = 0)
     {
-        this._gameTime = new GameTime();
-        this.isFixedTimestep = isFixed;
+        this._totalGameTime = 0;
 
-        this.setFps(fps);
-        this.setMinFps(minFps);
-        this.reset();
+        this.setTimestep(timestep);
+        this.setTargetFrameTime(frameTime);
+        this.reset(initialTimestamp);
     }
 
     /**
-     * Sets the FPS of this timer.
-     * Values are interpreted as integers, and cannot be less than `1`.
+     * Sets whether this timer uses a fixed or variable timestep.
      */
-    setFps(fps: number)
+    setTimestep(timestep: Timestep)
     {
-        if (fps < 1)
-        {
-            fps = 1;
-        }
+        const isFixed = (timestep === Timestep.FIXED);
 
-        GameTimer._Logger.debug(`Setting FPS to ${fps}`);
+        GameTimer._Logger.debug(`Setting timestep to Timestep.${isFixed ? "FIXED" : "VARIABLE"}`);
 
-        this._targetFrameTime = 1000 / (fps | 0);
-    }
-
-    getFps(): number
-    {
-        return Math.round(1000 / this._targetFrameTime);
+        this._isFixedTimestep = isFixed;
+        this._isRunningSlow = isFixed && this._isRunningSlow;
     }
 
     /**
-     * Sets the minimum FPS of this timer.
-     * Values are interpreted as integers, and cannot be less than `1`.
+     * Sets how often `Game.onUpdate()` should fire in fixed timestep mode, in milliseconds.
+     * Value must be `>= 0`.
      */
-    setMinFps(minFps: number)
+    setTargetFrameTime(frameTime: number)
     {
-        if (minFps < 1)
-        {
-            minFps = 1;
-        }
+        const targetFrameTime = Math.max(frameTime, 0);
 
-        GameTimer._Logger.debug(`Setting minimum FPS to ${minFps}`);
+        GameTimer._Logger.debug(`Setting target frame time to ${targetFrameTime}`);
 
-        this._maxFrameTime = 1000 / (minFps | 0);
+        this._targetFrameTime = targetFrameTime;
     }
 
-    getMinFps(): number
+    /**
+     * Gets how often `Game.onUpdate()` will fire in fixed timestep mode, in milliseconds.
+     */
+    getTargetFrameTime()
     {
-        return Math.round(1000 / this._maxFrameTime);
+        return this._targetFrameTime;
     }
 
-    reset()
+    /**
+     * Gets the total time since the game was started, in milliseconds.
+     */
+    getTotalGameTime()
+    {
+        return this._totalGameTime;
+    }
+
+    /**
+     * Gets whether the game is taking too long to update or render.
+     * This will always return `false` when running on a variable timestep.
+     */
+    isRunningSlow(): boolean
+    {
+        return this._isRunningSlow;
+    }
+
+    /**
+     * Sets this timer to a specified timestamp, and resets elapsed time.
+     * Useful for preventing large amounts of "catch-up" when running on
+     * a fixed timestep after long timing delays.
+     */
+    reset(timestamp: number)
     {
         GameTimer._Logger.debug("Resetting timer");
 
-        this._lastTimestamp = window.performance.now();
+        this._lastTimestamp = timestamp;
         this._frameTimeAccumulator = 0;
         this._frameLag = 0;
+        this._isRunningSlow = false;
     }
 
     /**
      * @internal
-     * TODO
      */
     _tickGame(game: Game, timestamp: number)
     {
-        const gameTime = this._gameTime;
         const targetFrameTime = this._targetFrameTime;
-
-        const accumulatedElapsed = this._frameTimeAccumulator + (this._lastTimestamp - timestamp);
+        const accumulatedElapsed = this._frameTimeAccumulator + (timestamp - this._lastTimestamp);
         this._lastTimestamp = timestamp;
 
-        const clampedElapsed = Clamp(accumulatedElapsed, 0, this._maxFrameTime);
-        let elapsed = Math.abs(clampedElapsed - targetFrameTime) >= 5 // Magic number
+        // 100 milliseconds is the longest frame time allowed
+        // Frame times within 1/4 of a millisecond of the target are clamped to the target
+        const clampedElapsed = Clamp(accumulatedElapsed, 0, 100);
+        const elapsed = Math.abs(clampedElapsed - targetFrameTime) >= 0.25
             ? clampedElapsed
             : targetFrameTime;
         
-        if (this.isFixedTimestep)
+        if (this._isFixedTimestep)
         {
-            let numSteps = 0;
-            gameTime.elapsedGameTime = targetFrameTime;
+            let numUpdates = 0;
+            let frameTimeBank = elapsed;
+            const fixedDelta = targetFrameTime / 1000;
 
-            while (elapsed >= targetFrameTime)
+            while (frameTimeBank >= targetFrameTime)
             {
-                numSteps += 1;
-                elapsed -= targetFrameTime;
+                numUpdates += 1;
+                frameTimeBank -= targetFrameTime;
+                this._totalGameTime += targetFrameTime;
 
-                gameTime.totalElapsedGameTime += targetFrameTime;
-                game.onUpdate(gameTime);
+                game.onUpdate(fixedDelta);
             }
 
-            this._frameTimeAccumulator = elapsed;
+            this._frameTimeAccumulator = frameTimeBank;
 
-            // Adapted from FNA:
-            // https://github.com/FNA-XNA/FNA/blob/master/src/Game.cs#L458
-            this._frameLag += Math.max(0, numSteps - 1);
-            if (gameTime.isRunningSlow && this._frameLag === 0)
-            {
-                gameTime.isRunningSlow = false;
-            }
-            else if (this._frameLag > 5)
-            {
-                gameTime.isRunningSlow = true;
-            }
-
-            if (numSteps == 1 && this._frameLag > 0)
-            {
-                this._frameLag -= 1;
-            }
-
-            // TODO: In cases where no updates are performed, maybe elapsed would work better here?
-            gameTime.elapsedGameTime = targetFrameTime * numSteps;
+            this._calculateFrameLag(numUpdates);
         }
         else
         {
             this._frameTimeAccumulator = 0;
-
-            gameTime.elapsedGameTime = elapsed;
-            gameTime.totalElapsedGameTime += elapsed;
-            game.onUpdate(gameTime);
+            this._totalGameTime += elapsed;
+            
+            game.onUpdate(elapsed / 1000);
         }
 
-        game.onDraw(gameTime);
+        game.onDraw(elapsed);
+    }
+
+    private _calculateFrameLag(numUpdates: number)
+    {
+        // https://github.com/FNA-XNA/FNA/blob/master/src/Game.cs#L458
+
+        // TODO: Consider a "maxFrameLag". If a game lags for a long time
+        // but then starts behaving, it could take awhile to not be "running slow"
+
+        this._frameLag += Math.max(0, numUpdates - 1);
+
+        if (numUpdates == 1 && this._frameLag > 0)
+        {
+            this._frameLag -= 1;
+        }
+
+        if (this._isRunningSlow && this._frameLag === 0)
+        {
+            this._isRunningSlow = false;
+        }
+        else if (this._frameLag > 5)
+        {
+            this._isRunningSlow = true;
+        }
     }
 }
