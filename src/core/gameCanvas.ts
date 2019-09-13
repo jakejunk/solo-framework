@@ -6,7 +6,7 @@ import { ScalingAlgorithm } from "./scalingAlgorithm";
 export interface GameCanvas extends HTMLCanvasElement
 {
     dataset: DOMStringMap & {
-        soloIsConfigured: boolean
+        soloIsConfigured: string
     };
 }
 
@@ -40,7 +40,7 @@ export namespace GameCanvas
             : "pixelated";
         
         canvas.tabIndex = 0;
-        canvas.dataset.soloIsConfigured = true;
+        canvas.dataset.soloIsConfigured = "true";
 
         return canvas;
     }
