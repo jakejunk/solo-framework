@@ -1,8 +1,8 @@
-import * as GameParamsGenerator from "../../generators/gameParams.gen";
 import { GameCanvas } from "../../../src/core/gameCanvas";
 import { expect } from "chai";
 import "mocha";
 import "../../helpers/loggingHelper";
+import { ScalingAlgorithm } from "../../../src/solo";
 
 describe("GameCanvas", () =>
 {
@@ -10,10 +10,9 @@ describe("GameCanvas", () =>
     {
         it("creates new canvas element if one doesn't exist", () =>
         {
-            const params = GameParamsGenerator.CreatedWithDefaults;
-            const existingCanvas = document.getElementById(params.canvasId);
-            
-            const canvas = GameCanvas.Create(params.canvasId, params.defaultCanvasColor);
+            const id = "test";
+            const existingCanvas = document.getElementById(id);
+            const canvas = GameCanvas.Create("test");
 
             expect(existingCanvas).to.equal(null);
             expect(canvas).to.not.equal(null);
@@ -27,10 +26,23 @@ describe("GameCanvas", () =>
 
             document.body.appendChild(existingCanvas);
 
-            const params = GameParamsGenerator.CreateWithId(id);
-            const canvas = GameCanvas.Create(params.canvasId, params.defaultCanvasColor);
+            const canvas = GameCanvas.Create(id);
 
             expect(existingCanvas.id).to.equal(canvas.id);
+        });
+
+        it("sets style.imageRendering='auto' for ScalingAlgorithm.SMOOTH", () =>
+        {
+            const canvas = GameCanvas.Create("test", undefined, ScalingAlgorithm.SMOOTH);
+
+            expect(canvas.style.imageRendering).to.equal("auto");
+        });
+
+        it("sets style.imageRendering='pixelated' for ScalingAlgorithm.PIXELATED", () =>
+        {
+            const canvas = GameCanvas.Create("test", undefined, ScalingAlgorithm.PIXELATED);
+
+            expect(canvas.style.imageRendering).to.equal("pixelated");
         });
     });
 });
