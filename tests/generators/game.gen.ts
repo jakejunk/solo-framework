@@ -24,7 +24,7 @@ export class FunctionCounterGame implements Game
         this.exitCalls = 0;
     }
     
-    onLoad(components: GameComponents): Promise<{}>
+    onLoad(): Promise<{}>
     {
         this.loadCalls += 1;
 

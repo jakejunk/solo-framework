@@ -1,5 +1,3 @@
-import { GameComponents } from "./gameComponents";
-
 export interface Game
 {
     /**
@@ -10,7 +8,7 @@ export interface Game
     /**
      * Called when the game first starts.
      */
-    onLoad(components: GameComponents): Promise<{}>;
+    onLoad(): Promise<{}>;
 
     /**
      * Called when the game is ready to update its logic.

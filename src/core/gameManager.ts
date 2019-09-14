@@ -7,6 +7,7 @@ import { GameComponents } from "./gameComponents";
 import { GameTimer } from "./gameTimer";
 import { GraphicsContext } from "../graphics/graphicsContext";
 
+type GameType = { new(components: GameComponents): Game };
 type TickFunc = (timestap: number) => void;
 
 /**
@@ -23,20 +24,20 @@ export class GameManager
     private _isRunning: boolean;
     private _nextFrameHandle: number;
 
-    private constructor(game: Game, components: GameComponents)
+    private constructor(gameType: GameType, components: GameComponents)
     {
         this._tickFunc = this._tick.bind(this);
-
-        this._game = game;
         this._timer = components.timer;
         this._gameComponents = components;
         this._isRunning = false;
         this._nextFrameHandle = -1;
 
         this._initEvents(components);
+
+        this._game = new gameType(components);
     }
 
-    static Create(game: Game, params: GameParams): GameManager
+    static Create(gameType: GameType, params: GameParams): GameManager
     {
         const gameParams = GameParams.Complete(params);
         const gameCanvas = GameCanvas.Create(gameParams.canvasId, gameParams.defaultCanvasColor);
@@ -55,7 +56,7 @@ export class GameManager
         const desiredFrameTimeMillis = 1000 / gameParams.updateRate;
         const gameTimer = new GameTimer(gameParams.timestep, desiredFrameTimeMillis, window.performance.now());
 
-        return new GameManager(game, {
+        return new GameManager(gameType, {
             canvas: gameCanvas,
             timer: gameTimer,
             graphicsContext: graphicsContext
@@ -83,7 +84,7 @@ export class GameManager
 
         this._isRunning = true;
 
-        this._game.onLoad(this._gameComponents)
+        this._game.onLoad()
             .then(() => this._tick(performance.now()));
     }
 
