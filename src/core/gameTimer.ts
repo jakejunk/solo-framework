@@ -146,7 +146,7 @@ export class GameTimer
 
         this._frameLag += Math.max(0, numUpdates - 1);
 
-        if (numUpdates == 1 && this._frameLag > 0)
+        if (numUpdates === 1 && this._frameLag > 0)
         {
             this._frameLag -= 1;
         }
