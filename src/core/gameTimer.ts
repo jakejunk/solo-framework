@@ -91,9 +91,7 @@ export class GameTimer
         this._isRunningSlow = false;
     }
 
-    /**
-     * @internal
-     */
+    /** @internal */
     _tickGame(game: Game, timestamp: number)
     {
         const targetFrameTime = this._targetFrameTime;
@@ -106,7 +104,7 @@ export class GameTimer
         const elapsed = Math.abs(clampedElapsed - targetFrameTime) >= 0.25
             ? clampedElapsed
             : targetFrameTime;
-        
+
         if (this._isFixedTimestep)
         {
             let numUpdates = 0;

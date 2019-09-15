@@ -38,7 +38,7 @@ export namespace GameCanvas
         style.imageRendering = (scalingAlgorithm === ScalingAlgorithm.SMOOTH)
             ? "auto"
             : "pixelated";
-        
+
         canvas.tabIndex = 0;
         canvas.dataset.soloIsConfigured = "true";
 
