@@ -45,7 +45,7 @@ describe("GameTimer", () =>
 
                 const startTime = timer.getTotalGameTime();
 
-                timer._tickGame(game, targetFrameTime - 1);
+                timer.tickGame(game, targetFrameTime - 1);
 
                 const nextTime = timer.getTotalGameTime();
 
@@ -60,7 +60,7 @@ describe("GameTimer", () =>
 
                 const startTime = timer.getTotalGameTime();
 
-                timer._tickGame(game, targetFrameTime + 1);
+                timer.tickGame(game, targetFrameTime + 1);
 
                 const nextTime = timer.getTotalGameTime();
                 const totalElapsed = nextTime - startTime;
@@ -85,7 +85,7 @@ describe("GameTimer", () =>
                 {
                     timestamp += (targetFrameTime * 2) + 1;
 
-                    timer._tickGame(game, timestamp);
+                    timer.tickGame(game, timestamp);
                 }
 
                 expect(timer.isRunningSlow()).to.be.true;
@@ -104,7 +104,7 @@ describe("GameTimer", () =>
                 {
                     timestamp += (targetFrameTime * 2) + 1;
 
-                    timer._tickGame(game, timestamp);
+                    timer.tickGame(game, timestamp);
                 }
 
                 // 6 normal updates
@@ -112,7 +112,7 @@ describe("GameTimer", () =>
                 {
                     timestamp += targetFrameTime;
 
-                    timer._tickGame(game, timestamp);
+                    timer.tickGame(game, timestamp);
                 }
 
                 expect(timer.isRunningSlow()).to.be.false;
@@ -132,7 +132,7 @@ describe("GameTimer", () =>
                 {
                     timestamp += (targetFrameTime * 2) + 1;
 
-                    timer._tickGame(game, timestamp);
+                    timer.tickGame(game, timestamp);
                 }
 
                 expect(timer.isRunningSlow()).to.be.false;

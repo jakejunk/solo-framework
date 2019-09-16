@@ -130,7 +130,7 @@ export class GameManager
 
     private _tick(timestamp: number)
     {
-        this._timer._tickGame(this._game, timestamp);
+        this._timer.tickGame(this._game, timestamp);
 
         // Handle input managers
 

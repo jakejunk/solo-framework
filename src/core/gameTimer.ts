@@ -15,7 +15,6 @@ export class GameTimer
     private _frameTimeAccumulator!: number;
     private _frameLag!: number;
 
-    /** @internal */
     constructor(timestep = Timestep.VARIABLE, frameTime = 1000 / 60, initialTimestamp = 0)
     {
         this._totalGameTime = 0;
@@ -91,8 +90,7 @@ export class GameTimer
         this._isRunningSlow = false;
     }
 
-    /** @internal */
-    _tickGame(game: Game, timestamp: number)
+    tickGame(game: Game, timestamp: number)
     {
         const targetFrameTime = this._targetFrameTime;
         const accumulatedElapsed = this._frameTimeAccumulator + (timestamp - this._lastTimestamp);
