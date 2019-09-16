@@ -2,6 +2,8 @@ import { Color } from "../graphics/color";
 import { ScalingAlgorithm } from "./scalingAlgorithm";
 import { Timestep } from "./timestep";
 
+export type GameParamsCompleted = Required<Readonly<GameParams>>;
+
 export interface GameParams
 {
     /**
@@ -56,9 +58,6 @@ export interface GameParams
      */
     scalingAlgorithm?: ScalingAlgorithm;
 }
-
-/** @internal */
-export type GameParamsCompleted = Required<Readonly<GameParams>>;
 
 export namespace GameParams
 {
