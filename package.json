@@ -2,7 +2,11 @@
   "name": "solo-framework",
   "version": "0.0.0",
   "description": "A simple framework for developing WebGL games",
-  "main": "index.js",
+  "module": "dist/solo-framework.js",
+  "files": [
+    "dist"
+  ],
+  "types": "dist/solo-framework.d.ts",
   "directories": {
     "test": "tests"
   },
@@ -13,15 +17,26 @@
     "@types/sinon": "^7.0.13",
     "chai": "^4.2.0",
     "cross-env": "^5.2.0",
+    "gulp": "^4.0.2",
+    "gulp-connect": "^5.7.0",
+    "gulp-mustache": "^4.1.2",
+    "gulp-rename": "^2.0.0",
+    "gulp-sourcemaps": "^2.6.5",
+    "gulp-tap": "^2.0.0",
+    "gulp-typescript": "^5.0.1",
     "jsdom": "^15.1.1",
     "jsdom-global": "^3.0.2",
+    "merge-stream": "^2.0.0",
     "mocha": "^6.2.0",
     "sinon": "^7.4.1",
     "ts-node": "^8.3.0",
     "typescript": "^3.5.3"
   },
   "scripts": {
-    "test": "cross-env TS_NODE_COMPILER_OPTIONS='{\\\"module\\\":\\\"commonjs\\\"}' mocha -r ts-node/register -r jsdom-global/register tests/unit/**/*.spec.ts"
+    "build-framework": "npx gulp build-framework",
+    "build-integration-tests": "npx gulp build-integration-tests",
+    "serve-integration-tests": "npx gulp serve-integration-tests",
+    "unit-test": "cross-env TS_NODE_COMPILER_OPTIONS='{\\\"module\\\":\\\"commonjs\\\"}' mocha -r ts-node/register -r jsdom-global/register tests/unit/**/*.spec.ts"
   },
   "repository": {
     "type": "git",

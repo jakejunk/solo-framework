@@ -1,13 +1,14 @@
-import { Game } from "./game";
-import { GameParams } from "./gameParams";
-import { GameCanvas } from "./gameCanvas";
-import { Logger } from "../util/logger";
-import { Color } from "../graphics/color";
-import { GameComponents } from "./gameComponents";
-import { GameTimer } from "./gameTimer";
-import { GraphicsContext } from "../graphics/graphicsContext";
+import { Game } from "./game.js";
+import { GameCanvas } from "./gameCanvas.js";
+import { GameComponents } from "./gameComponents.js";
+import { GameParams } from "./gameParams.js";
+import { Timestep } from "./timestep.js";
+import { GameTimer } from "./gameTimer.js";
+import { Logger } from "../util/logger.js";
+import { Color } from "../graphics/color.js";
+import { GraphicsContext } from "../graphics/graphicsContext.js";
 
-type GameType = { new(components: GameComponents): Game };
+type GameConstructor = { new(components: GameComponents): Game };
 type TickFunc = (timestap: number) => void;
 
 /**
@@ -20,47 +21,59 @@ export class GameManager
     private readonly _tickFunc: TickFunc;
     private readonly _game: Game;
     private readonly _timer: GameTimer;
-    private readonly _gameComponents: GameComponents;
+    private readonly _components: GameComponents;
     private _isRunning: boolean;
     private _nextFrameHandle: number;
 
-    private constructor(gameType: GameType, components: GameComponents)
+    private constructor(gameConstructor: GameConstructor, components: GameComponents)
     {
         this._tickFunc = this._tick.bind(this);
         this._timer = components.timer;
-        this._gameComponents = components;
+        this._components = components;
         this._isRunning = false;
         this._nextFrameHandle = -1;
 
         this._initEvents(components);
 
-        this._game = new gameType(components);
+        this._game = new gameConstructor(components);
     }
 
-    static Create(gameType: GameType, params: GameParams): GameManager
+    public static Create(gameConstructor: GameConstructor, params: GameParams): GameManager
     {
         const gameParams = GameParams.Complete(params);
-        const gameCanvas = GameCanvas.Create(gameParams.canvasId, gameParams.defaultCanvasColor);
+        const gameCanvas = GameCanvas.Create(
+            gameParams.canvasId, gameParams.defaultCanvasColor, gameParams.scalingAlgorithm);
 
         if (gameCanvas.parentElement == undefined)
         {
             gameParams.parentElement.appendChild(gameCanvas);
         }
 
-        const graphicsContext = GraphicsContext.Create(gameCanvas, gameParams.backBufferAlpha);
+        return new GameManager(gameConstructor, {
+            canvas: gameCanvas,
+            timer: this._CreateTimer(gameParams.updateRate, gameParams.timestep),
+            graphicsContext: this._CreateGraphicsContext(
+                gameCanvas, gameParams.bufferWidth, gameParams.bufferHeight, gameParams.backBufferAlpha)
+        });
+    }
+
+    private static _CreateTimer(updateRate: number, timestep: Timestep): GameTimer
+    {
+        const desiredFrameTimeMillis = 1000 / updateRate;
+
+        return new GameTimer(timestep, desiredFrameTimeMillis);
+    }
+
+    private static _CreateGraphicsContext(
+        canvas: GameCanvas, bufferWidth: number, bufferHeight: number, backBufferAlpha: boolean)
+    {
+        const graphicsContext = GraphicsContext.Create(canvas, bufferWidth, bufferHeight, backBufferAlpha);
         if (typeof graphicsContext === "string")
         {
             throw new Error(graphicsContext);
         }
 
-        const desiredFrameTimeMillis = 1000 / gameParams.updateRate;
-        const gameTimer = new GameTimer(gameParams.timestep, desiredFrameTimeMillis, window.performance.now());
-
-        return new GameManager(gameType, {
-            canvas: gameCanvas,
-            timer: gameTimer,
-            graphicsContext: graphicsContext
-        });
+        return graphicsContext;
     }
 
     private _initEvents(components: GameComponents)
@@ -72,7 +85,7 @@ export class GameManager
         canvas.addEventListener("blur", this.pause.bind(this));
     }
 
-    start()
+    public start()
     {
         if (this._isRunning)
         {
@@ -88,7 +101,7 @@ export class GameManager
             .then(() => this._tick(performance.now()));
     }
 
-    stop()
+    public stop()
     {
         cancelAnimationFrame(this._nextFrameHandle);
 
@@ -102,7 +115,7 @@ export class GameManager
         this._isRunning = false;
     }
 
-    resume()
+    public resume()
     {
         GameManager._Logger.debug("Game.onResume()");
 
@@ -116,7 +129,7 @@ export class GameManager
         this._tick(performance.now());
     }
 
-    pause()
+    public pause()
     {
         GameManager._Logger.debug("Game.onPause()");
 
@@ -130,10 +143,10 @@ export class GameManager
 
     private _tick(timestamp: number)
     {
-        this._timer.tickGame(this._game, timestamp);
+        this._nextFrameHandle = requestAnimationFrame(this._tickFunc);
+
+        this._timer.tickGame(this._game, timestamp, false);
 
         // Handle input managers
-
-        this._nextFrameHandle = requestAnimationFrame(this._tickFunc);
     }
 }

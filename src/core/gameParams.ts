@@ -1,6 +1,6 @@
-import { Color } from "../graphics/color";
-import { ScalingAlgorithm } from "./scalingAlgorithm";
-import { Timestep } from "./timestep";
+import { ScalingAlgorithm } from "./scalingAlgorithm.js";
+import { Timestep } from "./timestep.js";
+import { Color } from "../graphics/color.js";
 
 export type GameParamsCompleted = Required<Readonly<GameParams>>;
 

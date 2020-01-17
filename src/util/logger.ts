@@ -1,4 +1,4 @@
-import { Color } from "../graphics/color";
+import { Color } from "../graphics/color.js";
 
 export class Logger
 {

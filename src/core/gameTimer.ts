@@ -1,67 +1,87 @@
-import { Clamp } from "../math/mathHelper";
-import { Game } from "./game";
-import { Logger } from "../util/logger";
-import { Timestep } from "./timestep";
+import { Game } from "./game.js";
+import { Timestep } from "./timestep.js";
+import { Clamp } from "../math/mathHelper.js";
+import { Logger } from "../util/logger.js";
 
 export class GameTimer
 {
     private static readonly _Logger = new Logger("GameTimer");
 
-    private _isFixedTimestep!: boolean;
+    private _timestep!: Timestep;
     private _isRunningSlow!: boolean;
     private _totalGameTime: number;
     private _targetFrameTime!: number;
+    private _targetDelta!: number;
     private _lastTimestamp!: number;
     private _frameTimeAccumulator!: number;
     private _frameLag!: number;
 
-    constructor(timestep = Timestep.VARIABLE, frameTime = 1000 / 60, initialTimestamp = 0)
+    public constructor(timestep = Timestep.VARIABLE, frameTime = 1000 / 60)
     {
         this._totalGameTime = 0;
 
         this.setTimestep(timestep);
         this.setTargetFrameTime(frameTime);
-        this.reset(initialTimestamp);
+        this.reset(0);
     }
 
     /**
      * Sets whether this timer uses a fixed or variable timestep.
      */
-    setTimestep(timestep: Timestep)
+    public setTimestep(timestep: Timestep)
     {
         const isFixed = (timestep === Timestep.FIXED);
 
         GameTimer._Logger.debug(`Setting timestep to Timestep.${isFixed ? "FIXED" : "VARIABLE"}`);
 
-        this._isFixedTimestep = isFixed;
+        this._timestep = timestep;
         this._isRunningSlow = isFixed && this._isRunningSlow;
+    }
+
+    /**
+     * Gets the timestep used by this timer.
+     */
+    public getTimestep(): Timestep
+    {
+        return this._timestep;
     }
 
     /**
      * Sets how often `Game.onUpdate()` should fire in fixed timestep mode, in milliseconds.
      * Value must be `>= 0`.
      */
-    setTargetFrameTime(frameTime: number)
+    public setTargetFrameTime(frameTime: number)
     {
         const targetFrameTime = Math.max(frameTime, 0);
 
         GameTimer._Logger.debug(`Setting target frame time to ${targetFrameTime}`);
 
         this._targetFrameTime = targetFrameTime;
+        this._targetDelta = targetFrameTime / 1000;
     }
 
     /**
      * Gets how often `Game.onUpdate()` will fire in fixed timestep mode, in milliseconds.
      */
-    getTargetFrameTime()
+    public getTargetFrameTime(): number
     {
         return this._targetFrameTime;
     }
 
     /**
+     * Gets the value passed to `Game.onUpdate()` in fixed timestep mode, represented in seconds.
+     * For variable timestep mode, `Game.onUpdate()` will instead receive the time between the
+     * previous and the current update call.
+     */
+    public getTargetDelta(): number
+    {
+        return this._targetDelta;
+    }
+
+    /**
      * Gets the total time since the game was started, in milliseconds.
      */
-    getTotalGameTime()
+    public getTotalGameTime(): number
     {
         return this._totalGameTime;
     }
@@ -70,17 +90,17 @@ export class GameTimer
      * Gets whether the game is taking too long to update or render.
      * This will always return `false` when running on a variable timestep.
      */
-    isRunningSlow(): boolean
+    public isRunningSlow(): boolean
     {
         return this._isRunningSlow;
     }
 
     /**
-     * Sets this timer to a specified timestamp, and resets elapsed time.
+     * Resets the elapsed time of this timer.
      * Useful for preventing large amounts of "catch-up" when running on
      * a fixed timestep after long timing delays.
      */
-    reset(timestamp: number)
+    public reset(timestamp = window.performance.now())
     {
         GameTimer._Logger.debug("Resetting timer");
 
@@ -90,7 +110,10 @@ export class GameTimer
         this._isRunningSlow = false;
     }
 
-    tickGame(game: Game, timestamp: number)
+    /**
+     * Ticks the provided game forward to a specified timestamp.
+     */
+    public tickGame(game: Game, timestamp: number, suppressRender: false)
     {
         const targetFrameTime = this._targetFrameTime;
         const accumulatedElapsed = this._frameTimeAccumulator + (timestamp - this._lastTimestamp);
@@ -103,11 +126,10 @@ export class GameTimer
             ? clampedElapsed
             : targetFrameTime;
 
-        if (this._isFixedTimestep)
+        if (this._timestep === Timestep.FIXED)
         {
             let numUpdates = 0;
             let frameTimeBank = elapsed;
-            const fixedDelta = targetFrameTime / 1000;
 
             while (frameTimeBank >= targetFrameTime)
             {
@@ -115,12 +137,12 @@ export class GameTimer
                 frameTimeBank -= targetFrameTime;
                 this._totalGameTime += targetFrameTime;
 
-                game.onUpdate(fixedDelta);
+                game.onUpdate(this._targetDelta);
             }
 
             this._frameTimeAccumulator = frameTimeBank;
 
-            this._calculateFrameLag(numUpdates);
+            this._updateFrameLag(numUpdates);
         }
         else
         {
@@ -130,10 +152,15 @@ export class GameTimer
             game.onUpdate(elapsed / 1000);
         }
 
-        game.onDraw(elapsed);
+        // TODO: Check if it's even possible to skip frames in WebGL.
+        // The buffer swap behavior will basically decide that... 
+        if (!suppressRender)
+        {
+            game.onDraw(elapsed / 1000);
+        }
     }
 
-    private _calculateFrameLag(numUpdates: number)
+    private _updateFrameLag(numUpdates: number)
     {
         // https://github.com/FNA-XNA/FNA/blob/master/src/Game.cs#L458
 

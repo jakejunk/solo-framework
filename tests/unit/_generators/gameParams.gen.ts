@@ -1,4 +1,4 @@
-import { GameParams, GameParamsCompleted } from "../../src/solo";
+import { GameParams, GameParamsCompleted } from "../../../src/solo";
 
 export const CreatedWithDefaults: GameParamsCompleted = GameParams.Complete({
     bufferWidth: 300,

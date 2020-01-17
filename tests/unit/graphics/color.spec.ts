@@ -1,4 +1,4 @@
-import { Color } from "../../../src/graphics/color";
+import { Color } from "../../../src/solo";
 import { expect } from "chai";
 import "mocha";
 

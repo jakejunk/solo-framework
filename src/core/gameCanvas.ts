@@ -1,7 +1,7 @@
-import { QuerySelector } from "../util/querySelector";
-import { Logger } from "../util/logger";
-import { Color } from "../graphics/color";
-import { ScalingAlgorithm } from "./scalingAlgorithm";
+import { ScalingAlgorithm } from "./scalingAlgorithm.js";
+import { Color } from "../graphics/color.js";
+import { QuerySelector } from "../util/querySelector.js";
+import { Logger } from "../util/logger.js";
 
 export interface GameCanvas extends HTMLCanvasElement
 {
@@ -20,27 +20,15 @@ export namespace GameCanvas
      * otherwise, a new one will be created.
      */
     export function Create(
-        id: string, defaultCanvasColor: Color | string = "#000", scalingAlgorithm = ScalingAlgorithm.SMOOTH): GameCanvas
+        id: string,
+        defaultCanvasColor: Color | string = "#000",
+        scalingAlgorithm = ScalingAlgorithm.SMOOTH): GameCanvas
     {
         const canvas = _GetCanvas(id);
-
-        const style = canvas.style;
-        style.border = "none";
-        style.display = "block";
-        style.outline = "none";
-        style.userSelect = "none";
-        style.minWidth = "100%";
-
-        style.backgroundColor = (typeof defaultCanvasColor !== "string")
-            ? defaultCanvasColor.toHexString()
-            : defaultCanvasColor;
-
-        style.imageRendering = (scalingAlgorithm === ScalingAlgorithm.SMOOTH)
-            ? "auto"
-            : "pixelated";
-
         canvas.tabIndex = 0;
         canvas.dataset.soloIsConfigured = "true";
+
+        _ConfigureCanvasStyles(canvas, defaultCanvasColor, scalingAlgorithm);
 
         return canvas;
     }
@@ -69,5 +57,24 @@ export namespace GameCanvas
         canvas.id = id;
 
         return canvas;
+    }
+
+    function _ConfigureCanvasStyles(
+        canvas: GameCanvas, backgroundColor: Color | string, scalingAlgorithm: ScalingAlgorithm)
+    {
+        const style = canvas.style;
+        style.border = "none";
+        style.display = "block";
+        style.outline = "none";
+        style.userSelect = "none";
+        style.minWidth = "100%";
+
+        style.backgroundColor = (typeof backgroundColor !== "string")
+            ? backgroundColor.toHexString()
+            : backgroundColor;
+
+        style.imageRendering = (scalingAlgorithm === ScalingAlgorithm.SMOOTH)
+            ? "auto"
+            : "pixelated";
     }
 }

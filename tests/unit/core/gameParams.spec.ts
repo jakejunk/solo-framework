@@ -1,9 +1,6 @@
-import { GameParams, GameParamsCompleted } from "../../../src/core/gameParams";
-import { Color } from "../../../src/graphics/color";
-import { ScalingAlgorithm } from "../../../src/core/scalingAlgorithm";
+import { Color, GameParams, GameParamsCompleted, ScalingAlgorithm, Timestep } from "../../../src/solo";
 import { expect } from "chai";
 import "mocha";
-import { Timestep } from "../../../src/core/timestep";
 
 describe("GameParams", () =>
 {

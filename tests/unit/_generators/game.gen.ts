@@ -1,5 +1,4 @@
-import { Game } from "../../src/core/game";
-import { GameComponents } from "../../src/core/gameComponents";
+import { Game } from "../../../src/solo";
 
 export class FunctionCounterGame implements Game
 {

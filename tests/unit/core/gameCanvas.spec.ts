@@ -1,8 +1,7 @@
-import { GameCanvas } from "../../../src/core/gameCanvas";
-import { ScalingAlgorithm } from "../../../src/solo";
+import { GameCanvas, ScalingAlgorithm } from "../../../src/solo";
 import { expect } from "chai";
 import "mocha";
-import "../../helpers/loggingHelper";
+import "../_helpers/loggingHelper";
 
 describe("GameCanvas", () =>
 {

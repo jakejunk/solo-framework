@@ -1,6 +1,6 @@
-import { GameCanvas } from "./gameCanvas";
-import { GameTimer } from "./gameTimer";
-import { GraphicsContext } from "../graphics/graphicsContext";
+import { GameCanvas } from "./gameCanvas.js";
+import { GameTimer } from "./gameTimer.js";
+import { GraphicsContext } from "../graphics/graphicsContext.js";
 
 export interface GameComponents
 {

@@ -1,4 +1,4 @@
-import { Clamp } from "../math/mathHelper";
+import { Clamp } from "../math/mathHelper.js";
 
 /**
  * Represents an RGBA color defined by four floating-point components,

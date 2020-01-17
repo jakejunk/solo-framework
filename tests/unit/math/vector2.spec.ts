@@ -1,4 +1,4 @@
-import { Vector2 } from "../../../src/math/vector2";
+import { Vector2 } from "../../../src/solo";
 import { expect } from "chai";
 import "mocha";
 
@@ -121,6 +121,13 @@ describe("Vector2", () =>
             const v = new Vector2(1, 1);
 
             expect(v.getLength()).to.be.lessThan(v.getLengthSquared());
+        });
+
+        it("equals getLengthSquared() if getLength() is 1", () =>
+        {
+            const v = new Vector2(1, 0);
+
+            expect(v.getLength()).to.equal(v.getLengthSquared());
         });
 
         it("is > getLengthSquared() if getLength() < 1", () =>

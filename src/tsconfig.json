@@ -1,6 +1,6 @@
 {
-    "compilerOptions":
-    {
+    "compilerOptions": {
+        "declaration": true,
         "module": "es6",
         "noImplicitReturns": true,
         "noEmitOnError": true,
@@ -11,13 +11,10 @@
         "stripInternal": true,
         "target": "es2017"
     },
-    "include":
-    [
-        "./**/*"
+    "include": [
+        "./**/*.ts"
     ],
-    "exclude":
-    [
-        "node_modules",
-        "**/*.spec.ts"
+    "exclude": [
+        "node_modules"
     ]
 }
