@@ -6,14 +6,14 @@ describe("Color", () =>
 {
     describe("FromHexString()", () =>
     {
-        it("all components are within the range [0, 1] for all hex strings", () =>
+        it("all components are within the range [0, 255] for all hex strings", () =>
         {
             const color = Color.FromHexString("#000000ff");
 
-            expect(color.r).to.be.within(0, 1);
-            expect(color.g).to.be.within(0, 1);
-            expect(color.b).to.be.within(0, 1);
-            expect(color.a).to.be.within(0, 1);
+            expect(color.getR()).to.be.within(0, 255);
+            expect(color.getG()).to.be.within(0, 255);
+            expect(color.getB()).to.be.within(0, 255);
+            expect(color.getA()).to.be.within(0, 255);
         });
 
         it("returns Color.BLACK for all invalid hex strings", () =>
@@ -52,36 +52,19 @@ describe("Color", () =>
         });
     });
 
-    describe("toHexString()", () =>
-    {
-        it("works when all components are within the range [0, 1]", () =>
-        {
-            const hexString = new Color(1, 0, 0.5, 0.99999).toHexString();
-
-            expect(hexString).to.equal("#ff007ffe");
-        });
-
-        it("clamps when components are outside the range of [0, 1]", () =>
-        {
-            const hexString = new Color(2, 2, -1, 1.01).toHexString();
-
-            expect(hexString).to.equal("#ffff00ff");
-        });
-    });
-
     describe("equals()", () =>
     {
         it("always returns true when tested against the exact same color", () =>
         {
-            const color = new Color(1, 0, 0.5, 0.99999);
+            const color = new Color(0xabcdef00);
 
             expect(color.equals(color)).to.be.true;
         });
 
         it("accounts for differences in alpha", () =>
         {
-            const color1 = new Color(1, 0, 0.5, 0.51);
-            const color2 = new Color(1, 0, 0.5, 0.5);
+            const color1 = new Color(0xabcdef00);
+            const color2 = new Color(0xabcdef01);
 
             expect(color1.equals(color2)).to.be.false;
         });

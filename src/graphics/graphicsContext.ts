@@ -69,6 +69,11 @@ export class GraphicsContext
      */
     setClearColor(color: Color)
     {
-        this.gl.clearColor(color.r, color.g, color.b, color.a);
+        const r = color.getR() / 255;
+        const g = color.getG() / 255;
+        const b = color.getB() / 255;
+        const a = color.getA() / 255;
+
+        this.gl.clearColor(r, g, b, a);
     }
 }
