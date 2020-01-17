@@ -1,4 +1,7 @@
-import { Color, GameParams, GameParamsCompleted, ScalingAlgorithm, Timestep } from "../../../src/solo";
+import { Color } from "../../../src/graphics/color";
+import { GameParams, GameParamsCompleted } from "../../../src/core/gameParams";
+import { ScalingAlgorithm } from "../../../src/core/scalingAlgorithm";
+import { Timestep } from "../../../src/core/timestep";
 import { expect } from "chai";
 import "mocha";
 

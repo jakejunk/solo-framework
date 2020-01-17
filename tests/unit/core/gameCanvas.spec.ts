@@ -1,4 +1,5 @@
-import { GameCanvas, ScalingAlgorithm } from "../../../src/solo";
+import { GameCanvas } from "../../../src/core/gameCanvas";
+import { ScalingAlgorithm } from "../../../src/core/scalingAlgorithm";
 import { expect } from "chai";
 import "mocha";
 import "../_helpers/loggingHelper";

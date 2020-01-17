@@ -1,5 +1,6 @@
 import { FunctionCounterGame } from "../_generators/game.gen";
-import { GameTimer, Timestep } from "../../../src/solo";
+import { GameTimer } from "../../../src/core/gameTimer";
+import { Timestep } from "../../../src/core/timestep";
 import { expect } from "chai";
 import "mocha";
 
