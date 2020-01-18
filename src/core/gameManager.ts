@@ -1,12 +1,12 @@
-import { Game } from "./game.js";
-import { GameCanvas } from "./gameCanvas.js";
-import { GameComponents } from "./gameComponents.js";
-import { GameParams } from "./gameParams.js";
-import { Timestep } from "./timestep.js";
-import { GameTimer } from "./gameTimer.js";
-import { Logger } from "../util/logger.js";
-import { Color } from "../graphics/color.js";
-import { GraphicsContext } from "../graphics/graphicsContext.js";
+import { Game } from "./game";
+import { GameCanvas } from "./gameCanvas";
+import { GameComponents } from "./gameComponents";
+import { GameParams } from "./gameParams";
+import { Timestep } from "./timestep";
+import { GameTimer } from "./gameTimer";
+import { Logger } from "../util/logger";
+import { Color } from "../graphics/color";
+import { GraphicsContext } from "../graphics/graphicsContext";
 
 type GameConstructor = { new(components: GameComponents): Game };
 type TickFunc = (timestap: number) => void;

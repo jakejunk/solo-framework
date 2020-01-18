@@ -1,7 +1,7 @@
-import { Game } from "./game.js";
-import { Timestep } from "./timestep.js";
-import { Clamp } from "../math/mathHelper.js";
-import { Logger } from "../util/logger.js";
+import { Game } from "./game";
+import { Timestep } from "./timestep";
+import { Clamp } from "../math/mathHelper";
+import { Logger } from "../util/logger";
 
 export class GameTimer
 {

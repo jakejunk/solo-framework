@@ -1,4 +1,4 @@
-import { Color } from "../graphics/color.js";
+import { Color } from "../graphics/color";
 
 export class Logger
 {
@@ -13,7 +13,7 @@ export class Logger
         {
             const hash = Logger._GenHashFromName(name);
 
-            color = Color.FromPackedColor(hash);
+            color = Color.FromInt(hash);
         }
 
         this._style = "background:" + color.toHexString() + ";";

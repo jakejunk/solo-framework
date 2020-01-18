@@ -18,35 +18,40 @@ describe("Color", () =>
 
         it("returns Color.BLACK for all invalid hex strings", () =>
         {
-            const result = Color.FromHexString("Invalid").equals(Color.BLACK);
+            const color = Color.FromHexString("Invalid");
+            const result = color.equals(Color.BLACK);
 
             expect(result).to.be.true;
         });
 
         it("works for valid short-form hex strings", () =>
         {
-            const result = Color.FromHexString("#000").equals(Color.BLACK);
+            const color = Color.FromHexString("#000");
+            const result = color.equals(Color.BLACK);
 
             expect(result).to.be.true;
         });
 
         it("works for valid long-form hex strings", () =>
         {
-            const result = Color.FromHexString("#000000").equals(Color.BLACK);
+            const color = Color.FromHexString("#000000");
+            const result = color.equals(Color.BLACK);
 
             expect(result).to.be.true;
         });
 
         it("works for valid short-form hex strings with alpha", () =>
         {
-            const result = Color.FromHexString("#000f").equals(Color.BLACK);
+            const color = Color.FromHexString("#000f");
+            const result = color.equals(Color.BLACK);
 
             expect(result).to.be.true;
         });
 
         it("works for valid long-form hex strings with alpha", () =>
         {
-            const result = Color.FromHexString("#000000ff").equals(Color.BLACK);
+            const color = Color.FromHexString("#000000ff")
+            const result = color.equals(Color.BLACK);
 
             expect(result).to.be.true;
         });
@@ -56,15 +61,15 @@ describe("Color", () =>
     {
         it("always returns true when tested against the exact same color", () =>
         {
-            const color = new Color(0xabcdef00);
+            const color = Color.FromInt(0xabcdef00);
 
             expect(color.equals(color)).to.be.true;
         });
 
         it("accounts for differences in alpha", () =>
         {
-            const color1 = new Color(0xabcdef00);
-            const color2 = new Color(0xabcdef01);
+            const color1 = Color.FromInt(0xabcdef00);
+            const color2 = Color.FromInt(0xabcdef01);
 
             expect(color1.equals(color2)).to.be.false;
         });

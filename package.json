@@ -16,11 +16,11 @@
     "@types/mocha": "^5.2.7",
     "@types/sinon": "^7.0.13",
     "chai": "^4.2.0",
-    "cross-env": "^5.2.0",
     "gulp": "^4.0.2",
     "gulp-connect": "^5.7.0",
     "gulp-mustache": "^4.1.2",
     "gulp-rename": "^2.0.0",
+    "gulp-replace": "^1.0.0",
     "gulp-sourcemaps": "^2.6.5",
     "gulp-tap": "^2.0.0",
     "gulp-typescript": "^5.0.1",
@@ -36,7 +36,7 @@
     "build-framework": "npx gulp build-framework",
     "build-integration-tests": "npx gulp build-integration-tests",
     "serve-integration-tests": "npx gulp serve-integration-tests",
-    "unit-test": "cross-env TS_NODE_COMPILER_OPTIONS='{\\\"module\\\":\\\"commonjs\\\"}' mocha -r ts-node/register -r jsdom-global/register tests/unit/**/*.spec.ts"
+    "run-unit-tests": "mocha --require tests/unit/_helpers/tsNodeHook.js -r jsdom-global/register tests/unit/**/*.spec.ts"
   },
   "repository": {
     "type": "git",

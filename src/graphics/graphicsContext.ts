@@ -1,8 +1,8 @@
-import { Color } from "./color.js";
-import { ClearOptions } from "./clearOptions.js";
-import { GameCanvas } from "../core/gameCanvas.js";
-import { Logger } from "../util/logger.js";
-import { Result } from "../util/result.js";
+import { Color } from "./color";
+import { ClearOptions } from "./clearOptions";
+import { GameCanvas } from "../core/gameCanvas";
+import { Logger } from "../util/logger";
+import { Result } from "../util/result";
 
 export class GraphicsContext
 {

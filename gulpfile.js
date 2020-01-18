@@ -6,21 +6,23 @@ const tap = require("gulp-tap");
 const rename = require("gulp-rename");
 const mustache = require("gulp-mustache");
 const connect = require("gulp-connect");
+const replace = require("gulp-replace");
 
 const frameworkProj = ts.createProject("src/tsconfig.json");
 const integrationProj = ts.createProject("tests/integration/tsconfig.json");
 
-gulp.task("build-framework", Build);
+gulp.task("build-framework", BuildFramework);
 gulp.task("build-integration-tests", gulp.series(BuildTests, BuildTestHtmlFiles));
 gulp.task("serve-integration-tests", ServeTests);
 
-function Build()
+function BuildFramework()
 {
     const compiled = frameworkProj.src()
         .pipe(sourcemaps.init())
         .pipe(frameworkProj());
 
     const jsFiles = compiled.js
+        .pipe(replace(/(import .* from\s+['"])(.*)(?=['"])/g, "$1$2.js"))
         .pipe(sourcemaps.write())
         .pipe(gulp.dest("build/solo"));
 

@@ -1,3 +1,5 @@
+import { SwapBytes } from "../util/bits";
+
 /**
  * Represents an RGBA color packed into a 32-bit value.
  */
@@ -8,7 +10,11 @@ export class Color
 
     private _packedColor: number;
 
-    constructor(packedColor = 0x000000ff)
+    /**
+     * This constructor expects values in `0xaabbggrr` format,
+     * due to memory layout requirements.
+     */
+    private constructor(packedColor = 0xff000000)
     {
         this._packedColor = packedColor;
     }
@@ -29,10 +35,10 @@ export class Color
         const luminance = primary.getR() * 0.299 + primary.getG() * 0.587 + primary.getB() * 0.114;
         if (luminance > 186)
         {
-            return Color.Clone(Color.BLACK as Color);
+            return Color.Clone(Color.BLACK);
         }
         
-        return Color.Clone(Color.WHITE as Color);
+        return Color.Clone(Color.WHITE);
     }
 
     /**
@@ -52,18 +58,20 @@ export class Color
         const luminance = 0.2126 * rc + 0.7152 * gc + 0.0722 * bc;
         if (luminance > 0.179)
         {
-            return Color.Clone(Color.BLACK as Color);
+            return Color.Clone(Color.BLACK);
         }
         
-        return Color.Clone(Color.WHITE as Color);
+        return Color.Clone(Color.WHITE);
     }
 
     /**
      * Creates a new `Color` from a packed 32-bit integer.
      */
-    static FromPackedColor(packedColor: number): Color
+    static FromInt(packedColor: number): Color
     {
-        return new Color(packedColor);
+        const flipped = SwapBytes(packedColor);
+
+        return new Color(flipped);
     }
 
     /**
@@ -90,16 +98,16 @@ export class Color
         const captureArray = Color._longFormRegex.exec(hexString);
         if (captureArray == undefined)
         {
-            return new Color();
+            return Color.Clone(Color.BLACK);
         }
         
         const radix = 16;
-        const r = parseInt(captureArray[1], radix) / 255;
-        const g = parseInt(captureArray[2], radix) / 255;
-        const b = parseInt(captureArray[3], radix) / 255;
+        const r = parseInt(captureArray[1], radix);
+        const g = parseInt(captureArray[2], radix);
+        const b = parseInt(captureArray[3], radix);
         const a = (captureArray[4] != undefined)
-            ? parseInt(captureArray[4], radix) / 255
-            : 1;
+            ? parseInt(captureArray[4], radix)
+            : 255;
 
         return Color.FromComponents(r, g, b, a);
     }
@@ -109,7 +117,7 @@ export class Color
      */
     getR()
     {
-        return 0xff & (this._packedColor >>> 24);
+        return 0xff & this._packedColor;
     }
 
     /**
@@ -117,7 +125,7 @@ export class Color
      */
     getG()
     {
-        return 0xff & (this._packedColor >>> 16);
+        return 0xff & (this._packedColor >>> 8);
     }
 
     /**
@@ -125,7 +133,7 @@ export class Color
      */
     getB()
     {
-        return 0xff & (this._packedColor >>> 8);
+        return 0xff & (this._packedColor >>> 16);
     }
 
     /**
@@ -133,7 +141,7 @@ export class Color
      */
     getA()
     {
-        return 0xff & this._packedColor;
+        return 0xff & (this._packedColor >>> 24);
     }
 
     set(other: Color)
@@ -147,9 +155,9 @@ export class Color
     toHexString(): string
     {
         // The zero-fill right shift operation results in an unsigned 32-bit integer.
-        const unsignedPackedValue = this._packedColor >>> 0;
+        const unsignedPackedValue = SwapBytes(this._packedColor) >>> 0;
 
-        return "#" + unsignedPackedValue.toString(16);
+        return "#" + unsignedPackedValue.toString(16).padStart(8, "0");
     }
 
     equals(other: Color): boolean
@@ -163,71 +171,71 @@ export namespace Color
     // https://flatuicolors.com/palette/defo
 
     /** #000000 */
-    export const BLACK = new Color();
+    export const BLACK = Color.FromInt(0x000000ff);
 
     /** #ffffff */
-    export const WHITE = Color.FromPackedColor(0xffffffff);
+    export const WHITE = Color.FromInt(0xffffffff);
 
     /** #1abc9c */
-    export const TURQUOISE = Color.FromPackedColor(0x1abc9cff);
+    export const TURQUOISE = Color.FromInt(0x1abc9cff);
 
     /** #16a085 */
-    export const GREEN_SEA = Color.FromPackedColor(0x16a085ff);
+    export const GREEN_SEA = Color.FromInt(0x16a085ff);
 
     /** #2ecc71 */
-    export const EMERALD = Color.FromPackedColor(0x2ecc71ff);
+    export const EMERALD = Color.FromInt(0x2ecc71ff);
 
     /** #27ae60 */
-    export const NEPHRITIS = Color.FromPackedColor(0x27ae60ff);
+    export const NEPHRITIS = Color.FromInt(0x27ae60ff);
 
     /** #3498db */
-    export const PETER_RIVER = Color.FromPackedColor(0x3498dbff);
+    export const PETER_RIVER = Color.FromInt(0x3498dbff);
 
     /** #2980b9 */
-    export const BELIZE_HOLE = Color.FromPackedColor(0x2980b9ff);
+    export const BELIZE_HOLE = Color.FromInt(0x2980b9ff);
 
     /** #6495ed (XNA!) */
-    export const CORNFLOWER_BLUE = Color.FromPackedColor(0x6495edff);
+    export const CORNFLOWER_BLUE = Color.FromInt(0x6495edff);
 
     /** #9b59b6 */
-    export const AMETHYST = Color.FromPackedColor(0x9b59b6ff);
+    export const AMETHYST = Color.FromInt(0x9b59b6ff);
     
     /** #8e44ad */
-    export const WISTERIA = Color.FromPackedColor(0x8e44adff);
+    export const WISTERIA = Color.FromInt(0x8e44adff);
 
     /** #34495e */
-    export const WET_ASPHALT = Color.FromPackedColor(0x34495eff);
+    export const WET_ASPHALT = Color.FromInt(0x34495eff);
 
     /** #2c3e50 */
-    export const MIDNIGHT_BLUE = Color.FromPackedColor(0x2c3e50ff);
+    export const MIDNIGHT_BLUE = Color.FromInt(0x2c3e50ff);
 
     /** #f1c40f */
-    export const SUNFLOWER = Color.FromPackedColor(0xf1c40fff);
+    export const SUNFLOWER = Color.FromInt(0xf1c40fff);
 
     /** #f39c12 */
-    export const ORANGE = Color.FromPackedColor(0xf39c12ff);
+    export const ORANGE = Color.FromInt(0xf39c12ff);
 
     /** #e67e22 */
-    export const CARROT = Color.FromPackedColor(0xe67e22ff);
+    export const CARROT = Color.FromInt(0xe67e22ff);
 
     /** #d35400 */
-    export const PUMPKIN = Color.FromPackedColor(0xd35400ff);
+    export const PUMPKIN = Color.FromInt(0xd35400ff);
 
     /** #e74c3c */
-    export const ALIZARIN = Color.FromPackedColor(0xe74c3cff);
+    export const ALIZARIN = Color.FromInt(0xe74c3cff);
 
     /** #c0392b */
-    export const POMEGRANATE = Color.FromPackedColor(0xc0392bff);
+    export const POMEGRANATE = Color.FromInt(0xc0392bff);
 
     /** #ecf0f1 */
-    export const CLOUDS = Color.FromPackedColor(0xecf0f1ff);
+    export const CLOUDS = Color.FromInt(0xecf0f1ff);
 
     /** #bdc3c7 */
-    export const SILVER = Color.FromPackedColor(0xbdc3c7ff);
+    export const SILVER = Color.FromInt(0xbdc3c7ff);
 
     /** #95a5a6 */
-    export const CONCRETE = Color.FromPackedColor(0x95a5a6ff);
+    export const CONCRETE = Color.FromInt(0x95a5a6ff);
 
     /** #7f8c8d */
-    export const ASBESTOS = Color.FromPackedColor(0x7f8c8dff);
+    export const ASBESTOS = Color.FromInt(0x7f8c8dff);
 }
