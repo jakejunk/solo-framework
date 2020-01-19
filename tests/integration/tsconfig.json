@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "/solo/*": ["../../src/*"]
+    },
+    "module": "ES6",
+    "noEmitOnError": true,
+    "noImplicitReturns": true,
+    "preserveConstEnums": false,
+    "removeComments": false,
+    "sourceMap": true,
+    "strict": true,
+    "target": "es2017"
+  },
+  "include": [
+    "./**/*.ts"
+  ],
+  "exclude": [
+    "../../node_modules",
+    "../**/*.spec.ts"
+  ]
+}

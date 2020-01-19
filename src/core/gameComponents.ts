@@ -1,4 +1,12 @@
-export class GameComponents
+import { GameCanvas } from "./gameCanvas";
+import { GameTimer } from "./gameTimer";
+import { GraphicsContext } from "../graphics/graphicsContext";
+
+export interface GameComponents
 {
-    // TODO
+    readonly canvas: GameCanvas;
+
+    readonly timer: GameTimer;
+
+    readonly graphicsContext: GraphicsContext;
 }
