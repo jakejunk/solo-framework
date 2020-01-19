@@ -19,7 +19,7 @@ export class Color
         this._packedColor = packedColor;
     }
 
-    static Clone(other: Color): Color
+    public static Clone(other: Color): Color
     {
         return new Color(other._packedColor);
     }
@@ -28,7 +28,7 @@ export class Color
      * Returns either `Color.Black` or `Color.White`, depending on the primary color's intensity.
      * Use `CreateContrastingColorW3C()` for a W3C-compliant version.
      */
-    static CreateContrastingColor(primary: Color): Color
+    public static CreateContrastingColor(primary: Color): Color
     {
         // https://stackoverflow.com/q/3942878
 
@@ -44,7 +44,7 @@ export class Color
     /**
      * Returns either `Color.Black` or `Color.White`, depending on the primary color's intensity.
      */
-    static CreateContrastingColorW3C(primary: Color): Color
+    public static CreateContrastingColorW3C(primary: Color): Color
     {
         // https://stackoverflow.com/q/3942878
 
@@ -67,7 +67,7 @@ export class Color
     /**
      * Creates a new `Color` from a packed 32-bit integer.
      */
-    static FromInt(packedColor: number): Color
+    public static FromInt(packedColor: number): Color
     {
         const flipped = SwapBytes(packedColor);
 
@@ -77,7 +77,7 @@ export class Color
     /**
      * Creates a new `Color` from its components, each within the range [0, 255].
      */
-    static FromComponents(r: number, g: number, b: number, a: number): Color
+    public static FromComponents(r: number, g: number, b: number, a: number): Color
     {
         let packedColor = (a << 24) | (b << 16) | (g << 8) | r;
 
@@ -88,7 +88,7 @@ export class Color
      * Creates a new `Color` from a hexadecimal string.
      * `Color.BLACK` will be returned for any unrecognized hex string.
      */
-    static FromHexString(hexString: string): Color
+    public static FromHexString(hexString: string): Color
     {
         hexString = hexString.replace(Color._shortFormRegex, (_, r: string, g: string, b: string, a?: string) => {
             const alpha = (a != undefined) ? a + a : "";
@@ -115,7 +115,7 @@ export class Color
     /**
      * Gets the red component as a value in the range [0, 255].
      */
-    getR()
+    public getR()
     {
         return 0xff & this._packedColor;
     }
@@ -123,7 +123,7 @@ export class Color
     /**
      * Gets the green component as a value in the range [0, 255].
      */
-    getG()
+    public getG()
     {
         return 0xff & (this._packedColor >>> 8);
     }
@@ -131,7 +131,7 @@ export class Color
     /**
      * Gets the blue component as a value in the range [0, 255].
      */
-    getB()
+    public getB()
     {
         return 0xff & (this._packedColor >>> 16);
     }
@@ -139,12 +139,12 @@ export class Color
     /**
      * Gets the alpha component as a value in the range [0, 255].
      */
-    getA()
+    public getA()
     {
         return 0xff & (this._packedColor >>> 24);
     }
 
-    set(other: Color)
+    public set(other: Color)
     {
         this._packedColor = other._packedColor;
     }
@@ -152,7 +152,7 @@ export class Color
     /**
      * Returns a string representing this color in `#rrggbbaa` format.
      */
-    toHexString(): string
+    public toHexString(): string
     {
         // The zero-fill right shift operation results in an unsigned 32-bit integer.
         const unsignedPackedValue = SwapBytes(this._packedColor) >>> 0;
@@ -160,7 +160,7 @@ export class Color
         return "#" + unsignedPackedValue.toString(16).padStart(8, "0");
     }
 
-    equals(other: Color): boolean
+    public equals(other: Color): boolean
     {
         return this._packedColor === other._packedColor;
     }

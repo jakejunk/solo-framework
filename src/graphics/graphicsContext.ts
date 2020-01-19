@@ -19,7 +19,7 @@ export class GraphicsContext
         this._initViewport(bufferWidth, bufferHeight);
     }
 
-    static Create(canvas: GameCanvas, bufferWidth: number, bufferHeight: number, bufferAlpha = false): Result<GraphicsContext, string>
+    public static Create(canvas: GameCanvas, bufferWidth: number, bufferHeight: number, bufferAlpha = false): Result<GraphicsContext, string>
     {
         const contextAttributes: WebGLContextAttributes = {
             alpha: bufferAlpha,
@@ -59,7 +59,7 @@ export class GraphicsContext
     /**
      * Clears the specified buffers to preset values.
      */
-    clear(clearMask: ClearOptions | number)
+    public clear(clearMask: ClearOptions | number)
     {
         this.gl.clear(clearMask);
     }
@@ -67,7 +67,7 @@ export class GraphicsContext
     /**
      * Specifies the color used when clearing color buffers.
      */
-    setClearColor(color: Color)
+    public setClearColor(color: Color)
     {
         const r = color.getR() / 255;
         const g = color.getG() / 255;

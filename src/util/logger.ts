@@ -35,22 +35,22 @@ export class Logger
         return hash;
     }
 
-    debug(message: string | object)
+    public debug(message: string | object)
     {
         console.debug("%c ", this._style, `${this.name}: ${message}`);
     }
 
-    log(message: string | object)
+    public log(message: string | object)
     {
         console.log("%c ", this._style, `${this.name}: ${message}`);
     }
 
-    warn(message: string | object)
+    public warn(message: string | object)
     {
         console.warn("%c ", this._style, `${this.name}: ${message}`);
     }
 
-    error(message: string | object)
+    public error(message: string | object)
     {
         console.error("%c ", this._style, `${this.name}: ${message}`);
     }

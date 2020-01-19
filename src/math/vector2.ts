@@ -1,56 +1,56 @@
 export class Vector2
 {
-    x: number;
-    y: number;
+    public x: number;
+    public y: number;
 
-    constructor(x = 0, y = 0)
+    public constructor(x = 0, y = 0)
     {
         this.x = x;
         this.y = y;
     }
 
-    static Clone(other: Readonly<Vector2>): Vector2
+    public static Clone(other: Readonly<Vector2>): Vector2
     {
         return new Vector2(other.x, other.y);
     }
 
-    add(other: Readonly<Vector2>) 
+    public add(other: Readonly<Vector2>) 
     {
         this.x += other.x;
         this.y += other.y;
     }
 
-    sub(other: Readonly<Vector2>)
+    public sub(other: Readonly<Vector2>)
     {
         this.x -= other.x;
         this.y -= other.y;
     }
 
-    mul(other: Readonly<Vector2>)
+    public mul(other: Readonly<Vector2>)
     {
         this.x *= other.x;
         this.y *= other.y;
     }
 
-    div(other: Readonly<Vector2>)
+    public div(other: Readonly<Vector2>)
     {
         this.x /= other.x;
         this.y /= other.y;
     }
 
-    scale(factor: number)
+    public scale(factor: number)
     {
         this.x *= factor;
         this.y *= factor;
     }
 
-    set(other: Readonly<Vector2>)
+    public set(other: Readonly<Vector2>)
     {
         this.x = other.x;
         this.y = other.y;
     }
 
-    negate()
+    public negate()
     {
         this.x = -this.x;
         this.y = -this.y;
@@ -59,7 +59,7 @@ export class Vector2
     /**
      * Converts this vector to a unit vector pointing in the same direction.
      */
-    normalize()
+    public normalize()
     {
         const factor = 1 / this.getLength();
         if (isFinite(factor))
@@ -69,27 +69,27 @@ export class Vector2
         }
     }
 
-    dot(other: Readonly<Vector2>): number
+    public dot(other: Readonly<Vector2>): number
     {
         return this.x * other.x + this.y * other.y
     }
 
-    getAngle(): number
+    public getAngle(): number
     {
         return Math.atan2(this.y, this.x);
     }
 
-    getLength(): number
+    public getLength(): number
     {
         return Math.sqrt(this.getLengthSquared());
     }
 
-    getLengthSquared(): number
+    public getLengthSquared(): number
     {
         return this.x * this.x + this.y * this.y;
     }
 
-    equals(other: Vector2): boolean
+    public equals(other: Vector2): boolean
     {
         return this.x === other.x
             && this.y === other.y;
