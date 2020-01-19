@@ -16,6 +16,16 @@ describe("Color", () =>
             expect(color.getA()).to.be.within(0, 255);
         });
 
+        it("all components are correctly ordered", () =>
+        {
+            const color = Color.FromHexString("#12345678");
+
+            expect(color.getR()).to.equal(0x12);
+            expect(color.getG()).to.equal(0x34);
+            expect(color.getB()).to.equal(0x56);
+            expect(color.getA()).to.equal(0x78);
+        });
+
         it("returns Color.BLACK for all invalid hex strings", () =>
         {
             const color = Color.FromHexString("Invalid");
@@ -54,6 +64,32 @@ describe("Color", () =>
             const result = color.equals(Color.BLACK);
 
             expect(result).to.be.true;
+        });
+    });
+
+    describe("FromInt()", () =>
+    {
+        it("all components are correctly ordered", () =>
+        {
+            const color = Color.FromInt(0x12345678);
+
+            expect(color.getR()).to.equal(0x12);
+            expect(color.getG()).to.equal(0x34);
+            expect(color.getB()).to.equal(0x56);
+            expect(color.getA()).to.equal(0x78);
+        });
+    });
+
+    describe("FromComponents()", () =>
+    {
+        it("all components are correctly assigned", () =>
+        {
+            const color = Color.FromComponents(0x12, 0x34, 0x56, 0x78);
+
+            expect(color.getR()).to.equal(0x12);
+            expect(color.getG()).to.equal(0x34);
+            expect(color.getB()).to.equal(0x56);
+            expect(color.getA()).to.equal(0x78);
         });
     });
 
