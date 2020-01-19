@@ -19,7 +19,7 @@ export class GraphicsContext
         this._initViewport(bufferWidth, bufferHeight);
     }
 
-    public static Create(canvas: GameCanvas, bufferWidth: number, bufferHeight: number, bufferAlpha = false): Result<GraphicsContext, string>
+    public static Create(canvas: GameCanvas, bufferWidth: number, bufferHeight: number, bufferAlpha = false): Result<GraphicsContext, Error>
     {
         const contextAttributes: WebGLContextAttributes = {
             alpha: bufferAlpha,
@@ -41,10 +41,12 @@ export class GraphicsContext
         {
             this._Logger.debug("Found a WebGL rendering context");
 
-            return new GraphicsContext(webglContext, bufferWidth, bufferHeight);
+            return Result.OfOk(new GraphicsContext(webglContext, bufferWidth, bufferHeight));
         }
 
-        return "Could not find a WebGL rendering context";
+        const error = new Error("Could not find a WebGL rendering context");
+
+        return Result.OfError(error);
     }
 
     private _initViewport(bufferWidth: number, bufferHeight: number)

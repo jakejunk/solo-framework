@@ -65,15 +65,15 @@ export class GameManager
     }
 
     private static _CreateGraphicsContext(
-        canvas: GameCanvas, bufferWidth: number, bufferHeight: number, backBufferAlpha: boolean)
+        canvas: GameCanvas, bufferWidth: number, bufferHeight: number, backBufferAlpha: boolean): GraphicsContext
     {
-        const graphicsContext = GraphicsContext.Create(canvas, bufferWidth, bufferHeight, backBufferAlpha);
-        if (typeof graphicsContext === "string")
+        const graphicsContextResult = GraphicsContext.Create(canvas, bufferWidth, bufferHeight, backBufferAlpha);
+        if (graphicsContextResult.isError())
         {
-            throw new Error(graphicsContext);
+            throw graphicsContextResult.errorValue;
         }
 
-        return graphicsContext;
+        return graphicsContextResult.okValue;
     }
 
     private _initEvents(components: GameComponents)
