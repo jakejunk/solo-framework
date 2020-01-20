@@ -20,7 +20,8 @@ describe("GameParams", () =>
                 updateRate: 72,
                 defaultCanvasColor: Color.WHITE,
                 backBufferAlpha: false,
-                scalingAlgorithm: ScalingAlgorithm.PIXELATED
+                scalingAlgorithm: ScalingAlgorithm.PIXELATED,
+                rootDirectory: "some/place"
             };
 
             const completedParams = GameParams.Complete(initialParams as GameParams);
@@ -33,6 +34,7 @@ describe("GameParams", () =>
             expect(completedParams.updateRate).to.equal(initialParams.updateRate);
             expect(completedParams.backBufferAlpha).to.equal(initialParams.backBufferAlpha);
             expect(completedParams.scalingAlgorithm).to.equal(initialParams.scalingAlgorithm);
+            expect(completedParams.rootDirectory).to.equal(initialParams.rootDirectory);
 
             const colorsAreEqual = initialParams.defaultCanvasColor != undefined
                 && typeof initialParams.defaultCanvasColor !== "string"

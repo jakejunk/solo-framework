@@ -1,12 +1,9 @@
 import { Game } from "./game";
-import { GameCanvas } from "./gameCanvas";
 import { GameComponents } from "./gameComponents";
-import { GameParams } from "./gameParams";
-import { Timestep } from "./timestep";
+import { GameParams, GameParamsCompleted } from "./gameParams";
 import { GameTimer } from "./gameTimer";
 import { Logger } from "../util/logger";
 import { Color } from "../graphics/color";
-import { GraphicsContext } from "../graphics/graphicsContext";
 
 type GameConstructor = { new(components: GameComponents): Game };
 type TickFunc = (timestap: number) => void;
@@ -41,39 +38,9 @@ export class GameManager
     public static Create(gameConstructor: GameConstructor, params: GameParams): GameManager
     {
         const gameParams = GameParams.Complete(params);
-        const gameCanvas = GameCanvas.Create(
-            gameParams.canvasId, gameParams.defaultCanvasColor, gameParams.scalingAlgorithm);
+        const components = GameComponents.Create(gameParams);
 
-        if (gameCanvas.parentElement == undefined)
-        {
-            gameParams.parentElement.appendChild(gameCanvas);
-        }
-
-        return new GameManager(gameConstructor, {
-            canvas: gameCanvas,
-            timer: this._CreateTimer(gameParams.updateRate, gameParams.timestep),
-            graphicsContext: this._CreateGraphicsContext(
-                gameCanvas, gameParams.bufferWidth, gameParams.bufferHeight, gameParams.backBufferAlpha)
-        });
-    }
-
-    private static _CreateTimer(updateRate: number, timestep: Timestep): GameTimer
-    {
-        const desiredFrameTimeMillis = 1000 / updateRate;
-
-        return new GameTimer(timestep, desiredFrameTimeMillis);
-    }
-
-    private static _CreateGraphicsContext(
-        canvas: GameCanvas, bufferWidth: number, bufferHeight: number, backBufferAlpha: boolean): GraphicsContext
-    {
-        const graphicsContextResult = GraphicsContext.Create(canvas, bufferWidth, bufferHeight, backBufferAlpha);
-        if (graphicsContextResult.isError())
-        {
-            throw graphicsContextResult.errorValue;
-        }
-
-        return graphicsContextResult.okValue;
+        return new GameManager(gameConstructor, components);
     }
 
     private _initEvents(components: GameComponents)
