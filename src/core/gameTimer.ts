@@ -38,9 +38,6 @@ export class GameTimer
         this._isRunningSlow = isFixed && this._isRunningSlow;
     }
 
-    /**
-     * Gets the timestep used by this timer.
-     */
     public getTimestep(): Timestep
     {
         return this._timestep;

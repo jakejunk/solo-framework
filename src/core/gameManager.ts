@@ -85,6 +85,11 @@ export class GameManager
         canvas.addEventListener("blur", this.pause.bind(this));
     }
 
+    /**
+     * Starts the game!
+     * 
+     * Calling this multiple times without calling `GameManager.stop()` is a no-op.
+     */
     public start()
     {
         if (this._isRunning)
@@ -101,6 +106,9 @@ export class GameManager
             .then(() => this._tick(performance.now()));
     }
 
+    /**
+     * Stops this game's execution and cancels any pending frames.
+     */
     public stop()
     {
         cancelAnimationFrame(this._nextFrameHandle);
