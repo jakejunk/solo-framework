@@ -45,12 +45,25 @@ describe("Vector2", () =>
 
     describe("normalize()", () =>
     {
-        it("does not change the length of Vector2.ZERO", () =>
+        it("does not change a vector with the length of 0", () =>
         {
             const v = Vector2.ZERO;
             v.normalize();
 
             expect(v.getLength()).to.equal(0);
+        });
+
+        it("does not change a vector with the length of 1", () =>
+        {
+            const vx = Vector2.UNIT_X;
+            vx.normalize();
+
+            expect(vx.getLength()).to.equal(1);
+
+            const vy = Vector2.UNIT_X;
+            vy.normalize();
+
+            expect(vy.getLength()).to.equal(1);
         });
 
         it("results in length ~= 1, for any non-zero vector", () =>

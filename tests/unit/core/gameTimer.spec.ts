@@ -1,4 +1,4 @@
-import { FunctionCounterGame } from "../_generators/game.gen";
+import { FunctionCounterGame } from "../_generators/core/game.gen";
 import { GameTimer } from "../../../src/core/gameTimer";
 import { Timestep } from "../../../src/core/timestep";
 import { expect } from "chai";

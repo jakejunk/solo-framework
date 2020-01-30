@@ -115,7 +115,7 @@ export class Color
     /**
      * Gets the red component as a value in the range [0, 255].
      */
-    public getR()
+    public getR(): number
     {
         return 0xff & this._packedColor;
     }
@@ -123,7 +123,7 @@ export class Color
     /**
      * Gets the green component as a value in the range [0, 255].
      */
-    public getG()
+    public getG(): number
     {
         return 0xff & (this._packedColor >>> 8);
     }
@@ -131,7 +131,7 @@ export class Color
     /**
      * Gets the blue component as a value in the range [0, 255].
      */
-    public getB()
+    public getB(): number
     {
         return 0xff & (this._packedColor >>> 16);
     }
@@ -139,7 +139,7 @@ export class Color
     /**
      * Gets the alpha component as a value in the range [0, 255].
      */
-    public getA()
+    public getA(): number
     {
         return 0xff & (this._packedColor >>> 24);
     }

@@ -2,7 +2,6 @@ import { ContentParser } from "./contentParser";
 import { Logger } from "../util/logger";
 import { Result } from "../util/result";
 import { Texture2D } from "../graphics/texture2d";
-import { Texture2DParser } from "./texture2dParser";
 import { GraphicsContext } from "../graphics/graphicsContext";
 
 /**
@@ -13,12 +12,12 @@ export class ContentLoader
     private static _Logger = new Logger("ContentLoader");
 
     private _rootDir: string;
-    private _texture2DParser: Texture2DParser;
+    private _graphicsContext: GraphicsContext;
 
-    private constructor(graphicsContext: GraphicsContext, rootDir: string)
+    private constructor(rootDir: string, graphicsContext: GraphicsContext)
     {
-        this._texture2DParser = new Texture2DParser(graphicsContext);
         this._rootDir = rootDir;
+        this._graphicsContext = graphicsContext;
     }
 
     public static Create(graphicsContext: GraphicsContext, rootDir = ""): Result<ContentLoader, Error>
@@ -32,7 +31,7 @@ export class ContentLoader
             return Result.OfError(error);
         }
 
-        return Result.OfOk(new ContentLoader(graphicsContext, rootDir));
+        return Result.OfOk(new ContentLoader(rootDir, graphicsContext));
     }
 
     /**
@@ -98,25 +97,52 @@ export class ContentLoader
             method: "GET",
         }
 
-        const isUriAbsolute = contentUri.charAt(0) === '/';
-        const fullPath = isUriAbsolute
-            ? contentUri
-            : this._rootDir + contentUri;
+        const fullPath = this._getFullPath(contentUri);
 
         ContentLoader._Logger.debug(`Fetching file: ${fullPath}`)
 
         return await fetch(fullPath, requestInit);
     }
 
-    // Some default loaders
-
-    public async loadTexture2D(contentUri: string): Promise<Texture2D>
+    private _getFullPath(contentUri: string): string
     {
-        return await this.load(this._texture2DParser, contentUri);
+        const isUriAbsolute = contentUri.charAt(0) === '/';
+        const fullPath = isUriAbsolute
+            ? contentUri
+            : this._rootDir + contentUri;
+
+        return fullPath;
     }
+
+    // Some special-case loaders
 
     public async tryLoadTexture2D(contentUri: string): Promise<Result<Texture2D, Error>>
     {
-        return await this.tryLoad(this._texture2DParser, contentUri);
+        try
+        {
+            const texture = await this.loadTexture2D(contentUri);
+
+            return Result.OfOk(texture);
+        }
+        catch (e)
+        {
+            return Result.OfError(e);
+        }
+    }
+
+    public async loadTexture2D(contentUri: string): Promise<Texture2D>
+    {
+        // TODO: Check a texture cache
+        
+        const image = await new Promise<HTMLImageElement>((resolve, reject) => {
+            const imageElement = new Image();
+
+            imageElement.onload = () => resolve(imageElement);
+            imageElement.onerror = () => reject();
+
+            imageElement.src = this._getFullPath(contentUri);
+        });
+        
+        return this._graphicsContext.textureManager.createTextureFromImage(image);
     }
 }
