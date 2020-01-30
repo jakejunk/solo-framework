@@ -31,7 +31,7 @@ describe("GameTimer", () =>
             {
                 timestamp += slowElapsedTime;
 
-                timer.tickGame(game, timestamp, false);
+                timer.tickGame(game, timestamp);
             }
 
             expect(timer.isRunningSlow()).to.be.true;
@@ -79,7 +79,7 @@ describe("GameTimer", () =>
 
                 const startTime = timer.getTotalGameTime();
 
-                timer.tickGame(game, targetFrameTime - 1, false);
+                timer.tickGame(game, targetFrameTime - 1);
 
                 const nextTime = timer.getTotalGameTime();
 
@@ -94,7 +94,7 @@ describe("GameTimer", () =>
 
                 const startTime = timer.getTotalGameTime();
 
-                timer.tickGame(game, targetFrameTime + 1, false);
+                timer.tickGame(game, targetFrameTime + 1);
 
                 const nextTime = timer.getTotalGameTime();
                 const totalElapsed = nextTime - startTime;
@@ -119,7 +119,7 @@ describe("GameTimer", () =>
                 {
                     timestamp += (targetFrameTime * 2) + 1;
 
-                    timer.tickGame(game, timestamp, false);
+                    timer.tickGame(game, timestamp);
                 }
 
                 expect(timer.isRunningSlow()).to.be.true;
@@ -138,7 +138,7 @@ describe("GameTimer", () =>
                 {
                     timestamp += (targetFrameTime * 2) + 1;
 
-                    timer.tickGame(game, timestamp, false);
+                    timer.tickGame(game, timestamp);
                 }
 
                 // 6 normal updates
@@ -146,7 +146,7 @@ describe("GameTimer", () =>
                 {
                     timestamp += targetFrameTime;
 
-                    timer.tickGame(game, timestamp, false);
+                    timer.tickGame(game, timestamp);
                 }
 
                 expect(timer.isRunningSlow()).to.be.false;
@@ -166,7 +166,7 @@ describe("GameTimer", () =>
                 {
                     timestamp += (targetFrameTime * 2) + 1;
 
-                    timer.tickGame(game, timestamp, false);
+                    timer.tickGame(game, timestamp);
                 }
 
                 expect(timer.isRunningSlow()).to.be.false;
@@ -181,7 +181,7 @@ describe("GameTimer", () =>
             const timer = new GameTimer();
             const game = new FunctionCounterGame();
 
-            timer.tickGame(game, -1, false);
+            timer.tickGame(game, -1);
 
             expect(timer.getTotalGameTime()).to.equal(0);
         });
@@ -191,7 +191,7 @@ describe("GameTimer", () =>
             const timer = new GameTimer();
             const game = new FunctionCounterGame();
 
-            timer.tickGame(game, 101, false);
+            timer.tickGame(game, 101);
 
             expect(timer.getTotalGameTime()).to.equal(100);
         });
@@ -204,7 +204,7 @@ describe("GameTimer", () =>
                 const game = new FunctionCounterGame();
                 const elapsedTime = 234;
 
-                timer.tickGame(game, elapsedTime, false);
+                timer.tickGame(game, elapsedTime);
 
                 expect(game.updateCalls).to.equal(1);
             });
@@ -215,7 +215,7 @@ describe("GameTimer", () =>
                 const game = new FunctionCounterGame();
                 const elapsedTime = 567;
 
-                timer.tickGame(game, elapsedTime, false);
+                timer.tickGame(game, elapsedTime);
 
                 expect(game.drawCalls).to.equal(1);
             });
@@ -229,7 +229,7 @@ describe("GameTimer", () =>
                 const timer = new GameTimer(Timestep.FIXED, targetFrameTime);
                 const game = new FunctionCounterGame();
 
-                timer.tickGame(game, targetFrameTime - 1, false);
+                timer.tickGame(game, targetFrameTime - 1);
 
                 expect(game.updateCalls).to.equal(0);
             });
@@ -240,7 +240,7 @@ describe("GameTimer", () =>
                 const timer = new GameTimer(Timestep.FIXED, targetFrameTime);
                 const game = new FunctionCounterGame();
 
-                timer.tickGame(game, targetFrameTime * 2, false);
+                timer.tickGame(game, targetFrameTime * 2);
 
                 expect(game.updateCalls).to.be.greaterThan(1);
             });
@@ -254,10 +254,10 @@ describe("GameTimer", () =>
                 const game = new FunctionCounterGame();
 
                 // Buffer up just enough time to avoid an update here
-                timer.tickGame(game, timestamp1, false);
+                timer.tickGame(game, timestamp1);
                 expect(game.updateCalls).to.equal(0);
 
-                timer.tickGame(game, timestamp2, false);
+                timer.tickGame(game, timestamp2);
                 expect(game.updateCalls).to.be.greaterThan(1);
             });
 
@@ -266,7 +266,7 @@ describe("GameTimer", () =>
                 const timer = new GameTimer(Timestep.FIXED, 1000 / 60);
                 const game = new FunctionCounterGame();
 
-                timer.tickGame(game, 234, false);
+                timer.tickGame(game, 234);
 
                 expect(game.drawCalls).to.equal(1);
             });

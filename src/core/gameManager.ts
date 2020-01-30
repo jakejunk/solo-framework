@@ -54,8 +54,6 @@ export class GameManager
 
     /**
      * Starts the game!
-     * 
-     * Calling this multiple times without calling `GameManager.stop()` is a no-op.
      */
     public start()
     {
@@ -67,31 +65,18 @@ export class GameManager
 
         GameManager._Logger.debug("Game.onLoad()");
 
-        this._isRunning = true;
-
         this._game.onLoad()
-            .then(() => this._tick(performance.now()));
-    }
-
-    /**
-     * Stops this game's execution and cancels any pending frames.
-     */
-    public stop()
-    {
-        cancelAnimationFrame(this._nextFrameHandle);
-
-        GameManager._Logger.debug("Game.onExit()");
-
-        if (this._game.onExit != undefined)
-        {
-            this._game.onExit();
-        }
-
-        this._isRunning = false;
+            .then(() => this.resume());
     }
 
     public resume()
     {
+        // If a game starts up without focus, don't "resume" it again
+        if (this._isRunning)
+        {
+            return;
+        }
+
         GameManager._Logger.debug("Game.onResume()");
 
         if (this._game.onResume != undefined)
@@ -106,13 +91,34 @@ export class GameManager
 
     public pause()
     {
+        this._stopRendering();
+
         GameManager._Logger.debug("Game.onPause()");
 
         if (this._game.onPause != undefined)
         {
             this._game.onPause();
         }
+    }
 
+    /**
+     * Stops this game's execution and cancels any pending frames.
+     */
+    public stop()
+    {
+        this._stopRendering();
+
+        GameManager._Logger.debug("Game.onExit()");
+
+        if (this._game.onExit != undefined)
+        {
+            this._game.onExit();
+        }
+    }
+
+    private _stopRendering()
+    {
+        cancelAnimationFrame(this._nextFrameHandle);
         this._isRunning = false;
     }
 
@@ -120,7 +126,7 @@ export class GameManager
     {
         this._nextFrameHandle = requestAnimationFrame(this._tickFunc);
 
-        this._timer.tickGame(this._game, timestamp, false);
+        this._timer.tickGame(this._game, timestamp);
 
         // Handle input managers
     }

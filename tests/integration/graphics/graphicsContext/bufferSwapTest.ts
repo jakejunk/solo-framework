@@ -4,9 +4,10 @@ import { Game } from "/solo/core/game.js";
 import { GameComponents } from "/solo/core/gameComponents.js"
 import { Color } from "/solo/graphics/color.js";
 import { ClearOptions } from "/solo/graphics/clearOptions.js";
+import { GameTimer } from "/solo/core/gameTimer";
 
 document.addEventListener("DOMContentLoaded", () => {
-    const game = GameManager.Create(ClearScreenTest, {
+    const game = GameManager.Create(BufferSwapTest, {
         bufferWidth: 300,
         bufferHeight: 300
     });
@@ -14,12 +15,18 @@ document.addEventListener("DOMContentLoaded", () => {
     game.start();
 });
 
-class ClearScreenTest implements Game
+let clicked = false;
+
+document.addEventListener("mousedown", () => clicked = true);
+document.addEventListener("mouseup", () => clicked = false);
+
+class BufferSwapTest implements Game
 {
     public shouldExit = false;
-    
+
     private timeAccumulator: number;
     private currentClearColor: number;
+    private readonly timer: GameTimer;
     private readonly graphics: GraphicsContext;
     private readonly clearColors: Color[];
 
@@ -32,6 +39,7 @@ class ClearScreenTest implements Game
             Color.Clone(Color.AMETHYST)
         ];
 
+        this.timer = components.timer;
         this.graphics = components.graphicsContext;
         this.graphics.setClearColor(this.clearColors[this.currentClearColor]);
     }
@@ -49,8 +57,15 @@ class ClearScreenTest implements Game
         {
             this.timeAccumulator = 0;
 
-            this.currentClearColor = (this.currentClearColor + 1) % this.clearColors.length;
+            
+        }
+
+        this.currentClearColor = (this.currentClearColor + 1) % this.clearColors.length;
             this.graphics.setClearColor(this.clearColors[this.currentClearColor]);
+
+        if (clicked)
+        {
+            this.timer.suppressRender();
         }
     }
 
