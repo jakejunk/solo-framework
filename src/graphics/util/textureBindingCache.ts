@@ -1,5 +1,9 @@
 import { Texture2D } from "../texture2d";
 
+/**
+ * Keeps a cache of GPU-uploaded textures to provide smart texture binding.
+ * This type is mainly used internally by `TextureManager`.
+ */
 export class TextureBindingCache
 {
     private readonly _boundTextures: (Texture2D | undefined)[];

@@ -121,11 +121,27 @@ export class Color
     }
 
     /**
+     * Sets the red component. Value must be in the range [0, 255].
+     */
+    public setR(r: number)
+    {
+        this._packedColor = (this._packedColor & 0x00ffffff) | (0xff & r);
+    }
+
+    /**
      * Gets the green component as a value in the range [0, 255].
      */
     public getG(): number
     {
         return 0xff & (this._packedColor >>> 8);
+    }
+
+    /**
+     * Sets the green component. Value must be in the range [0, 255].
+     */
+    public setG(g: number)
+    {
+        this._packedColor = (this._packedColor & 0xff00ffff) | ((0xff & g) << 8);
     }
 
     /**
@@ -137,6 +153,14 @@ export class Color
     }
 
     /**
+     * Sets the blue component. Value must be in the range [0, 255].
+     */
+    public setB(b: number)
+    {
+        this._packedColor = (this._packedColor & 0xffff00ff) | ((0xff & b) << 16);
+    }
+
+    /**
      * Gets the alpha component as a value in the range [0, 255].
      */
     public getA(): number
@@ -144,6 +168,17 @@ export class Color
         return 0xff & (this._packedColor >>> 24);
     }
 
+    /**
+     * Sets the alpha component. Value must be in the range [0, 255].
+     */
+    public setA(a: number)
+    {
+        this._packedColor = (this._packedColor & 0xffffff00) | ((0xff & a) << 24);
+    }
+
+    /**
+     * Sets this color equal to the provided color.
+     */
     public set(other: Color)
     {
         this._packedColor = other._packedColor;

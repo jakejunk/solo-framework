@@ -110,4 +110,100 @@ describe("Color", () =>
             expect(color1.equals(color2)).to.be.false;
         });
     });
+
+    describe("setR()", () =>
+    {
+        it("roundtrips with getR()", () =>
+        {
+            const value = 4;
+            const color = Color.FromInt(0);
+
+            color.setR(value);
+
+            expect(color.getR()).to.equal(value);
+        });
+
+        it("values > 255 do not affect other components", () =>
+        {
+            const color = Color.FromInt(0);
+
+            color.setR(500);
+
+            expect(color.getG()).to.equal(0);
+            expect(color.getB()).to.equal(0);
+            expect(color.getA()).to.equal(0);
+        });
+    });
+
+    describe("setG()", () =>
+    {
+        it("roundtrips with getG()", () =>
+        {
+            const value = 255;
+            const color = Color.FromInt(0);
+
+            color.setG(value);
+
+            expect(color.getG()).to.equal(value);
+        });
+
+        it("values > 255 do not affect other components", () =>
+        {
+            const color = Color.FromInt(0);
+
+            color.setG(500);
+
+            expect(color.getR()).to.equal(0);
+            expect(color.getB()).to.equal(0);
+            expect(color.getA()).to.equal(0);
+        });
+    });
+
+    describe("setB()", () =>
+    {
+        it("roundtrips with getB()", () =>
+        {
+            const value = 128;
+            const color = Color.FromInt(0);
+
+            color.setB(value);
+
+            expect(color.getB()).to.equal(value);
+        });
+
+        it("values > 255 do not affect other components", () =>
+        {
+            const color = Color.FromInt(0);
+
+            color.setB(500);
+
+            expect(color.getR()).to.equal(0);
+            expect(color.getG()).to.equal(0);
+            expect(color.getA()).to.equal(0);
+        });
+    });
+
+    describe("setA()", () =>
+    {
+        it("roundtrips with getA()", () =>
+        {
+            const value = 12;
+            const color = Color.FromInt(0);
+
+            color.setA(value);
+
+            expect(color.getA()).to.equal(value);
+        });
+
+        it("values > 255 do not affect other components", () =>
+        {
+            const color = Color.FromInt(0);
+
+            color.setA(500);
+
+            expect(color.getR()).to.equal(0);
+            expect(color.getG()).to.equal(0);
+            expect(color.getB()).to.equal(0);
+        });
+    });
 });
