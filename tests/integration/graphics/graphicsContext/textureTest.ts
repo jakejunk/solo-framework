@@ -4,6 +4,8 @@ import { Game } from "/solo/core/game.js";
 import { GameComponents } from "/solo/core/gameComponents.js"
 import { Color } from "/solo/graphics/color.js";
 import { ClearOptions } from "/solo/graphics/clearOptions.js";
+import { ContentLoader } from "/solo/content/contentLoader";
+import { Texture2D } from "/solo/graphics/texture2d";
 
 document.addEventListener("DOMContentLoaded", () => {
     const game = GameManager.Create(ClearScreenTest, {
@@ -18,44 +20,36 @@ class ClearScreenTest implements Game
 {
     public shouldExit = false;
     
-    private timeAccumulator: number;
-    private currentClearColor: number;
+    private readonly loader: ContentLoader;
     private readonly graphics: GraphicsContext;
-    private readonly clearColors: Color[];
+    private texture!: Texture2D;
 
     public constructor(components: GameComponents)
     {
-        this.timeAccumulator = 0;
-        this.currentClearColor = 0;
-        this.clearColors = [
-            Color.Clone(Color.BELIZE_HOLE),
-            Color.Clone(Color.AMETHYST)
-        ];
-
+        this.loader = components.loader;
         this.graphics = components.graphicsContext;
-        this.graphics.setClearColor(this.clearColors[this.currentClearColor]);
+        this.graphics.setClearColor(Color.BELIZE_HOLE);
     }
     
-    public onLoad(): Promise<void>
+    public async onLoad(): Promise<void>
     {
-        return Promise.resolve(undefined);
+        this.texture = await this.loader.loadTexture2D("/_assets/img/test.png");
     }
 
     public onUpdate(delta: number): void
     {
-        this.timeAccumulator += delta;
 
-        if (this.timeAccumulator >= 1)
-        {
-            this.timeAccumulator = 0;
-
-            this.currentClearColor = (this.currentClearColor + 1) % this.clearColors.length;
-            this.graphics.setClearColor(this.clearColors[this.currentClearColor]);
-        }
     }
 
     public onDraw(delta: number): void
     {
         this.graphics.clear(ClearOptions.COLOR_BUFFER);
+
+        this._renderTexture();
+    }
+
+    private _renderTexture()
+    {
+        
     }
 }

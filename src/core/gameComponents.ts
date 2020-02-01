@@ -23,14 +23,7 @@ export namespace GameComponents
      */
     export function Create(params: GameParamsCompleted): GameComponents
     {
-        const gameCanvas = GameCanvas.Create(
-            params.canvasId, params.defaultCanvasColor, params.scalingAlgorithm);
-
-        if (gameCanvas.parentElement == undefined)
-        {
-            params.parentElement.appendChild(gameCanvas);
-        }
-
+        const gameCanvas = _CreateCanvas(params);
         const timer = _CreateTimer(params);
         const graphicsContext = _CreateGraphicsContext(gameCanvas, params);
         const contentLoader = _CreateContentLoader(graphicsContext.textureManager, params);
@@ -41,6 +34,22 @@ export namespace GameComponents
             graphicsContext: graphicsContext,
             loader: contentLoader
         }
+    }
+
+    function _CreateCanvas(params: GameParamsCompleted): GameCanvas
+    {
+        const gameCanvas = GameCanvas.Create(
+            params.canvasId, params.defaultCanvasColor, params.scalingAlgorithm);
+
+        if (gameCanvas.parentElement == undefined)
+        {
+            params.parentElement.appendChild(gameCanvas);
+        }
+
+        // TODO: Should the game automatically steal focus?
+        //gameCanvas.focus();
+
+        return gameCanvas;
     }
 
     function _CreateTimer(params: GameParamsCompleted): GameTimer

@@ -13,7 +13,7 @@ const frameworkProj = ts.createProject("src/tsconfig.json");
 const integrationProj = ts.createProject("tests/integration/tsconfig.json");
 
 gulp.task("build-framework", BuildFramework);
-gulp.task("build-integration-tests", gulp.series(BuildTests, BuildTestHtmlFiles));
+gulp.task("build-integration-tests", gulp.series(BuildTests, BuildTestHtmlFiles, CopyAssets));
 gulp.task("serve-integration-tests", ServeTests);
 
 function BuildFramework()
@@ -53,38 +53,63 @@ function BuildTests()
 function BuildTestHtmlFiles()
 {
     const integrationTests = [];
-    const htmlFileStreams = [];
+    const htmlFiles = [];
     const buildDirAbsolute = path.join(process.cwd(), "build");
 
     for (const file of files)
     {
-        const htmlFileName = `${file.stem}.html`;
+        // E.g. given someTest.js ...
+        // testName      = someTest
+        // testJsFile    = someTest.js
+        // embedFileName = someTest.embed.html
+        // testFileName  = someTest.html
+
+        const testName = file.stem;
+        const testJsFile = file.basename;
+        const embedFileName = `${testName}.embed.html`;
+        const testFileName = `${testName}.html`;
+
         const relativeToBuildDir = path.relative(buildDirAbsolute, file.dirname);
-        const htmlFileUri = path.join("/", relativeToBuildDir, htmlFileName);
+        const testFileUri = path.join("/", relativeToBuildDir, testFileName);
 
         integrationTests.push({
             testName: file.stem,
-            testLink: htmlFileUri
+            testLink: testFileUri
         });
 
-        // Create a copy of the html template for every integration test
-        const stream = gulp.src("tests/integration/template.html")
-            .pipe(rename(htmlFileName))
+        // Create a copy of the embed template for every integration test
+        const embedFile = gulp.src("assets/htmlTemplates/embedTemplate.html")
+            .pipe(rename(embedFileName))
             .pipe(mustache({
-                testFile: file.basename
+                testFile: testJsFile
+            }))
+            .pipe(gulp.dest(file.dirname));
+
+        // Create a an associated test file to host the "embeds"
+        const testFile = gulp.src("assets/htmlTemplates/testTemplate.html")
+            .pipe(rename(testFileName))
+            .pipe(mustache({
+                testName: testName,
+                embedFileName: embedFileName
             }))
             .pipe(gulp.dest(file.dirname));
         
-        htmlFileStreams.push(stream);
+        htmlFiles.push(merge(embedFile, testFile));
     }
 
-    const indexFile = gulp.src("tests/integration/index.html")
+    const indexFile = gulp.src("assets/htmlTemplates/index.html")
         .pipe(mustache({
             integrationTests: integrationTests
         }))
         .pipe(gulp.dest("build"));
 
-    return merge(htmlFileStreams, indexFile);
+    return merge(htmlFiles, indexFile);
+}
+
+function CopyAssets()
+{
+    return gulp.src(["assets/**/*", "!assets/{htmlTemplates,htmlTemplates/**}"])
+        .pipe(gulp.dest("build/_assets"));
 }
 
 function ServeTests()

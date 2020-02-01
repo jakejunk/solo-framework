@@ -26,11 +26,17 @@ export class TextureBindingCache
         this._nextBindLocation = bindLocations - 1;
     }
 
+    /**
+     * Returns the number of bind locations this cache was configured to handle.
+     */
     public getNumBindLocations(): number
     {
         return this._bindLocations;
     }
     
+    /**
+     * Returns the location that the provided texture was previously bound to.
+     */
     public getBindLocation(texture: Texture2D): number | undefined
     {
         const boundIndex = this._boundTextures.indexOf(texture);

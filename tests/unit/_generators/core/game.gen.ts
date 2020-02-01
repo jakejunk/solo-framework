@@ -23,11 +23,11 @@ export class FunctionCounterGame implements Game
         this.exitCalls = 0;
     }
     
-    onLoad(): Promise<{}>
+    onLoad(): Promise<void>
     {
         this.loadCalls += 1;
 
-        return Promise.resolve({});
+        return Promise.resolve(undefined);
     }
 
     onUpdate(delta: number)

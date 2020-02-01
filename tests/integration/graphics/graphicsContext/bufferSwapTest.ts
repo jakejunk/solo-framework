@@ -44,9 +44,9 @@ class BufferSwapTest implements Game
         this.graphics.setClearColor(this.clearColors[this.currentClearColor]);
     }
     
-    public onLoad(): Promise<{}>
+    public onLoad(): Promise<void>
     {
-        return Promise.resolve({});
+        return Promise.resolve(undefined);
     }
 
     public onUpdate(delta: number): void

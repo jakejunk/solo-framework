@@ -25,7 +25,7 @@ export class GraphicsContextWebGl1 implements GraphicsContext
     private _initViewport(bufferWidth: number, bufferHeight: number)
     {
         this.gl.canvas.width = bufferWidth;
-        this.gl.canvas.width = bufferHeight;
+        this.gl.canvas.height = bufferHeight;
 
         this._bufferWidth = bufferWidth;
         this._bufferHeight = bufferHeight;
