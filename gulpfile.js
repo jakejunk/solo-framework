@@ -7,6 +7,7 @@ const rename = require("gulp-rename");
 const mustache = require("gulp-mustache");
 const connect = require("gulp-connect");
 const replace = require("gulp-replace");
+const path = require("path");
 
 const frameworkProj = ts.createProject("src/tsconfig.json");
 const integrationProj = ts.createProject("tests/integration/tsconfig.json");
@@ -51,13 +52,24 @@ function BuildTests()
 
 function BuildTestHtmlFiles()
 {
+    const integrationTests = [];
     const htmlFileStreams = [];
+    const buildDirAbsolute = path.join(process.cwd(), "build");
 
     for (const file of files)
     {
+        const htmlFileName = `${file.stem}.html`;
+        const relativeToBuildDir = path.relative(buildDirAbsolute, file.dirname);
+        const htmlFileUri = path.join("/", relativeToBuildDir, htmlFileName);
+
+        integrationTests.push({
+            testName: file.stem,
+            testLink: htmlFileUri
+        });
+
         // Create a copy of the html template for every integration test
         const stream = gulp.src("tests/integration/template.html")
-            .pipe(rename(`${file.stem}.html`))
+            .pipe(rename(htmlFileName))
             .pipe(mustache({
                 testFile: file.basename
             }))
@@ -66,7 +78,13 @@ function BuildTestHtmlFiles()
         htmlFileStreams.push(stream);
     }
 
-    return merge(htmlFileStreams);
+    const indexFile = gulp.src("tests/integration/index.html")
+        .pipe(mustache({
+            integrationTests: integrationTests
+        }))
+        .pipe(gulp.dest("build"));
+
+    return merge(htmlFileStreams, indexFile);
 }
 
 function ServeTests()
@@ -74,7 +92,6 @@ function ServeTests()
     connect.server({
         host: "0.0.0.0",
         port: 8000,
-        root: "build",
-        directoryListing: true
+        root: "build"
     });
 }
