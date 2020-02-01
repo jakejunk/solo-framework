@@ -11,15 +11,13 @@ export class Logger
 
         if (color == undefined)
         {
-            const hash = Logger._GenHashFromName(name);
-
-            color = Color.FromInt(hash);
+            color = Logger._GenColorFromName(name);
         }
 
         this._style = "background:" + color.toHexString() + ";";
     }
 
-    private static _GenHashFromName(name: string): number
+    private static _GenColorFromName(name: string): Color
     {
         let hash = 0;
         for (let i = 0; i < name.length; i += 1)
@@ -32,7 +30,7 @@ export class Logger
         // Color should not be transparent
         hash |= 0x000000ff;
 
-        return hash;
+        return Color.FromInt(hash);
     }
 
     public debug(message: string | object)

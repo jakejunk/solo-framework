@@ -3,6 +3,7 @@ import { GameTimer } from "./gameTimer";
 import { GraphicsContext } from "../graphics/graphicsContext";
 import { ContentLoader } from "../content/contentLoader";
 import { GameParamsCompleted } from "./gameParams";
+import { TextureManager } from "../graphics/textureManager";
 
 export interface GameComponents
 {
@@ -32,7 +33,7 @@ export namespace GameComponents
 
         const timer = _CreateTimer(params);
         const graphicsContext = _CreateGraphicsContext(gameCanvas, params);
-        const contentLoader = _CreateContentLoader(graphicsContext, params);
+        const contentLoader = _CreateContentLoader(graphicsContext.textureManager, params);
 
         return {
             canvas: gameCanvas,
@@ -62,9 +63,9 @@ export namespace GameComponents
         return graphicsContextResult.okValue;
     }
 
-    function _CreateContentLoader(graphicsContext: GraphicsContext, params: GameParamsCompleted)
+    function _CreateContentLoader(textureManager: TextureManager, params: GameParamsCompleted)
     {
-        const contentLoaderResult = ContentLoader.Create(graphicsContext, params.rootDirectory);
+        const contentLoaderResult = ContentLoader.Create(textureManager, params.rootDirectory);
 
         if (contentLoaderResult.isError())
         {

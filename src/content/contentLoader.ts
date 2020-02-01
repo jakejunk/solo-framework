@@ -2,7 +2,7 @@ import { ContentParser } from "./contentParser";
 import { Logger } from "../util/logger";
 import { Result } from "../util/result";
 import { Texture2D } from "../graphics/texture2d";
-import { GraphicsContext } from "../graphics/graphicsContext";
+import { TextureManager } from "../graphics/textureManager";
 
 /**
  * A `Promise`-based loader for game content.
@@ -12,15 +12,15 @@ export class ContentLoader
     private static _Logger = new Logger("ContentLoader");
 
     private _rootDir: string;
-    private _graphicsContext: GraphicsContext;
+    private _textureManager: TextureManager;
 
-    private constructor(rootDir: string, graphicsContext: GraphicsContext)
+    private constructor(rootDir: string, textureManager: TextureManager)
     {
         this._rootDir = rootDir;
-        this._graphicsContext = graphicsContext;
+        this._textureManager = textureManager;
     }
 
-    public static Create(graphicsContext: GraphicsContext, rootDir = ""): Result<ContentLoader, Error>
+    public static Create(textureManager: TextureManager, rootDir = ""): Result<ContentLoader, Error>
     {
         const hasFetch = "fetch" in window;
 
@@ -31,7 +31,7 @@ export class ContentLoader
             return Result.OfError(error);
         }
 
-        return Result.OfOk(new ContentLoader(rootDir, graphicsContext));
+        return Result.OfOk(new ContentLoader(rootDir, textureManager));
     }
 
     /**
@@ -132,7 +132,12 @@ export class ContentLoader
 
     public async loadTexture2D(contentUri: string): Promise<Texture2D>
     {
-        // TODO: Check a texture cache
+        const cachedTexture = this._textureManager.getManagedTexture(contentUri);
+
+        if (cachedTexture != undefined)
+        {
+            return cachedTexture;
+        }
         
         const image = await new Promise<HTMLImageElement>((resolve, reject) => {
             const imageElement = new Image();
@@ -143,6 +148,6 @@ export class ContentLoader
             imageElement.src = this._getFullPath(contentUri);
         });
         
-        return this._graphicsContext.textureManager.createTextureFromImage(image);
+        return this._textureManager.createTextureFromImage(image);
     }
 }

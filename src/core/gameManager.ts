@@ -1,6 +1,6 @@
 import { Game } from "./game";
 import { GameComponents } from "./gameComponents";
-import { GameParams, GameParamsCompleted } from "./gameParams";
+import { GameParams } from "./gameParams";
 import { GameTimer } from "./gameTimer";
 import { Logger } from "../util/logger";
 import { Color } from "../graphics/color";
