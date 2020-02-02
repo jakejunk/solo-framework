@@ -2,19 +2,28 @@ import { Color } from "../graphics/color";
 
 export class Logger
 {
-    readonly name: string;
-    private _style: string;
-    
-    constructor(name: string, color?: Readonly<Color>)
-    {
-        this.name = name;
+    public readonly debug: (message: string | object) => void;
 
+    public readonly log: (message: string | object) => void;
+
+    public readonly warn: (message: string | object) => void;
+
+    public readonly error: (message: string | object) => void;
+
+    public constructor(name: string, color?: Color)
+    {
         if (color == undefined)
         {
             color = Logger._GenColorFromName(name);
         }
 
-        this._style = "background:" + color.toHexString() + ";";
+        const style = "background:" + color.toHexString() + ";";
+        const prefix = `${name}:`;
+
+        this.debug = window.console.debug.bind(window.console, "%c ", style, prefix);
+        this.log = window.console.log.bind(window.console, "%c ", style, prefix);
+        this.warn = window.console.warn.bind(window.console, "%c ", style, prefix);
+        this.error = window.console.error.bind(window.console, "%c ", style, prefix);
     }
 
     private static _GenColorFromName(name: string): Color
@@ -31,25 +40,5 @@ export class Logger
         hash |= 0x000000ff;
 
         return Color.FromInt(hash);
-    }
-
-    public debug(message: string | object)
-    {
-        console.debug("%c ", this._style, `${this.name}: ${message}`);
-    }
-
-    public log(message: string | object)
-    {
-        console.log("%c ", this._style, `${this.name}: ${message}`);
-    }
-
-    public warn(message: string | object)
-    {
-        console.warn("%c ", this._style, `${this.name}: ${message}`);
-    }
-
-    public error(message: string | object)
-    {
-        console.error("%c ", this._style, `${this.name}: ${message}`);
     }
 }
