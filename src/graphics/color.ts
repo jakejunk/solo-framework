@@ -1,4 +1,4 @@
-import { SwapBytes } from "../util/bits";
+import { SwapBytes } from "../math/bits";
 
 /**
  * Represents an RGBA color packed into a 32-bit value.

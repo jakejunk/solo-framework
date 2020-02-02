@@ -1,5 +1,5 @@
 import { Gl } from "../constants/gl";
-import { IsPowerOfTwo } from "../../util/bits";
+import { IsPowerOfTwo } from "../../math/bits";
 import { Logger } from "../../util/logger";
 import { Result } from "../../util/result";
 import { Texture2D } from "../texture2d";
