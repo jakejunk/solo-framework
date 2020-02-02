@@ -29,6 +29,7 @@ export class Logger
     private static _GenColorFromName(name: string): Color
     {
         let hash = 0;
+        
         for (let i = 0; i < name.length; i += 1)
         {
             const char = name.charCodeAt(i) || 0; // Catch NaNs
