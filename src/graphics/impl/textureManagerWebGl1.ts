@@ -42,7 +42,7 @@ export class TextureManagerWebGl1 implements TextureManager
         const gl = this._gl;
 
         // Null should only happen here in the case of context loss
-        const glTexture = gl.createTexture() as WebGLTexture;
+        const glTexture = gl.createTexture()!;
 
         this._bindingCache.markDirty(7);
 

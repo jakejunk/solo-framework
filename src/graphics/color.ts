@@ -5,6 +5,9 @@ import { SwapBytes } from "../util/bits";
  */
 export class Color
 {
+    private static _translationBuffer = new Int8Array(4);
+    private static _asInt = new Int32Array(Color._translationBuffer.buffer, 0, 1);
+    private static _asFloat = new Float32Array(Color._translationBuffer.buffer, 0, 1);
     private static _shortFormRegex = /^(?:#|0x)?([a-f\d])([a-f\d])([a-f\d])([a-f\d])?$/i;
     private static _longFormRegex = /^(?:#|0x)?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})?$/i;
 
@@ -185,7 +188,17 @@ export class Color
     }
 
     /**
-     * Returns a string representing this color in `#rrggbbaa` format.
+     * Returns this color as an ABGR-encoded floating-point value.
+     */
+    public toFloatBits(): number
+    {
+        Color._asInt[0] = this._packedColor;
+        
+        return Color._asFloat[0];
+    }
+
+    /**
+     * Returns this color as a string in `#rrggbbaa` format.
      */
     public toHexString(): string
     {
