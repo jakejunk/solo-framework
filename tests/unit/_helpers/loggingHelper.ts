@@ -1,4 +1,4 @@
-import { stub, SinonStub } from "sinon";
+import { SinonStub, stub } from "sinon";
 
 let debugStub: SinonStub<[any?, ...any[]], void>;
 let logStub: SinonStub<[any?, ...any[]], void>;

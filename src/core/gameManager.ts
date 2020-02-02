@@ -1,9 +1,9 @@
+import { Color } from "../graphics/color";
 import { Game } from "./game";
 import { GameComponents } from "./gameComponents";
 import { GameParams } from "./gameParams";
 import { GameTimer } from "./gameTimer";
 import { Logger } from "../util/logger";
-import { Color } from "../graphics/color";
 
 type GameConstructor = { new(components: GameComponents): Game };
 type TickFunc = (timestap: number) => void;

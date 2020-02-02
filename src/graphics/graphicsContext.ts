@@ -1,10 +1,10 @@
-import { Color } from "./color";
 import { ClearOptions } from "./constants/clearOptions";
+import { Color } from "./color";
 import { GameCanvas } from "../core/gameCanvas";
+import { GraphicsContextWebGl1 } from "./impl/graphicsContextWebGl1";
 import { Logger } from "../util/logger";
 import { Result } from "../util/result";
 import { TextureManager } from "./textureManager";
-import { GraphicsContextWebGl1 } from "./impl/graphicsContextWebGl1";
 
 export interface GraphicsContext
 {

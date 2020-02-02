@@ -1,7 +1,7 @@
-import { GameManager } from "/solo/core/gameManager";
-import { Game } from "/solo/core/game";
-import { GameComponents } from "/solo/core/gameComponents"
 import { ContentLoader } from "/solo/content/contentLoader";
+import { Game } from "/solo/core/game";
+import { GameComponents } from "/solo/core/gameComponents";
+import { GameManager } from "/solo/core/gameManager";
 import { Logger } from "/solo/util/logger";
 
 document.addEventListener("DOMContentLoaded", () => {

@@ -1,6 +1,6 @@
+import { Color } from "../graphics/color";
 import { ScalingAlgorithm } from "./scalingAlgorithm";
 import { Timestep } from "./timestep";
-import { Color } from "../graphics/color";
 
 export type GameParamsCompleted = Required<Readonly<GameParams>>;
 

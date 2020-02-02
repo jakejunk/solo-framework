@@ -1,8 +1,8 @@
+import { ContentLoader } from "../content/contentLoader";
 import { GameCanvas } from "./gameCanvas";
+import { GameParamsCompleted } from "./gameParams";
 import { GameTimer } from "./gameTimer";
 import { GraphicsContext } from "../graphics/graphicsContext";
-import { ContentLoader } from "../content/contentLoader";
-import { GameParamsCompleted } from "./gameParams";
 import { TextureManager } from "../graphics/textureManager";
 
 export interface GameComponents

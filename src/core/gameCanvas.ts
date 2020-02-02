@@ -1,7 +1,7 @@
-import { ScalingAlgorithm } from "./scalingAlgorithm";
 import { Color } from "../graphics/color";
-import { QuerySelector } from "../util/querySelector";
 import { Logger } from "../util/logger";
+import { QuerySelector } from "../util/querySelector";
+import { ScalingAlgorithm } from "./scalingAlgorithm";
 
 export interface GameCanvas extends HTMLCanvasElement
 {
