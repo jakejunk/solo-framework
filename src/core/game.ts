@@ -8,7 +8,7 @@ export interface Game
     /**
      * Called when the game first starts.
      */
-    onLoad(): Promise<{}>;
+    onLoad(): Promise<void>;
 
     /**
      * Called when the game is ready to update its logic.

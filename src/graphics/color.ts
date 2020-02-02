@@ -5,6 +5,9 @@ import { SwapBytes } from "../util/bits";
  */
 export class Color
 {
+    private static _translationBuffer = new Int8Array(4);
+    private static _asInt = new Int32Array(Color._translationBuffer.buffer, 0, 1);
+    private static _asFloat = new Float32Array(Color._translationBuffer.buffer, 0, 1);
     private static _shortFormRegex = /^(?:#|0x)?([a-f\d])([a-f\d])([a-f\d])([a-f\d])?$/i;
     private static _longFormRegex = /^(?:#|0x)?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})?$/i;
 
@@ -115,42 +118,87 @@ export class Color
     /**
      * Gets the red component as a value in the range [0, 255].
      */
-    public getR()
+    public getR(): number
     {
         return 0xff & this._packedColor;
     }
 
     /**
+     * Sets the red component. Value must be in the range [0, 255].
+     */
+    public setR(r: number)
+    {
+        this._packedColor = (this._packedColor & 0x00ffffff) | (0xff & r);
+    }
+
+    /**
      * Gets the green component as a value in the range [0, 255].
      */
-    public getG()
+    public getG(): number
     {
         return 0xff & (this._packedColor >>> 8);
     }
 
     /**
+     * Sets the green component. Value must be in the range [0, 255].
+     */
+    public setG(g: number)
+    {
+        this._packedColor = (this._packedColor & 0xff00ffff) | ((0xff & g) << 8);
+    }
+
+    /**
      * Gets the blue component as a value in the range [0, 255].
      */
-    public getB()
+    public getB(): number
     {
         return 0xff & (this._packedColor >>> 16);
     }
 
     /**
+     * Sets the blue component. Value must be in the range [0, 255].
+     */
+    public setB(b: number)
+    {
+        this._packedColor = (this._packedColor & 0xffff00ff) | ((0xff & b) << 16);
+    }
+
+    /**
      * Gets the alpha component as a value in the range [0, 255].
      */
-    public getA()
+    public getA(): number
     {
         return 0xff & (this._packedColor >>> 24);
     }
 
+    /**
+     * Sets the alpha component. Value must be in the range [0, 255].
+     */
+    public setA(a: number)
+    {
+        this._packedColor = (this._packedColor & 0xffffff00) | ((0xff & a) << 24);
+    }
+
+    /**
+     * Sets this color equal to the provided color.
+     */
     public set(other: Color)
     {
         this._packedColor = other._packedColor;
     }
 
     /**
-     * Returns a string representing this color in `#rrggbbaa` format.
+     * Returns this color as an ABGR-encoded floating-point value.
+     */
+    public toFloatBits(): number
+    {
+        Color._asInt[0] = this._packedColor;
+        
+        return Color._asFloat[0];
+    }
+
+    /**
+     * Returns this color as a string in `#rrggbbaa` format.
      */
     public toHexString(): string
     {

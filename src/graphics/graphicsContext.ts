@@ -3,23 +3,30 @@ import { ClearOptions } from "./clearOptions";
 import { GameCanvas } from "../core/gameCanvas";
 import { Logger } from "../util/logger";
 import { Result } from "../util/result";
+import { TextureManager } from "./textureManager";
+import { GraphicsContextWebGl1 } from "./impl/graphicsContextWebGl1";
 
-export class GraphicsContext
+export interface GraphicsContext
 {
-    private static readonly _Logger = new Logger("GraphicsContext");
-
     readonly gl: WebGLRenderingContext;
-    private _bufferWidth!: number;
-    private _bufferHeight!: number;
+    readonly textureManager: TextureManager;
 
-    private constructor(context: WebGLRenderingContext, bufferWidth: number, bufferHeight: number)
-    {
-        this.gl = context;
+    /**
+     * Clears the specified buffers to preset values.
+     */
+    clear(clearMask: ClearOptions | number): void;
 
-        this._initViewport(bufferWidth, bufferHeight);
-    }
+    /**
+     * Specifies the color used when clearing color buffers.
+     */
+    setClearColor(color: Color): void;
+}
 
-    public static Create(canvas: GameCanvas, bufferWidth: number, bufferHeight: number, bufferAlpha = false): Result<GraphicsContext, string>
+export namespace GraphicsContext
+{
+    const _Logger = new Logger("GraphicsContext");
+
+    export function Create(canvas: GameCanvas, bufferWidth: number, bufferHeight: number, bufferAlpha = false): Result<GraphicsContext, Error>
     {
         const contextAttributes: WebGLContextAttributes = {
             alpha: bufferAlpha,
@@ -39,41 +46,13 @@ export class GraphicsContext
         const webglContext = canvas.getContext("webgl", contextAttributes);
         if (webglContext != undefined)
         {
-            this._Logger.debug("Found a WebGL rendering context");
+            _Logger.debug("Found a WebGL rendering context");
 
-            return new GraphicsContext(webglContext, bufferWidth, bufferHeight);
+            return Result.OfOk(new GraphicsContextWebGl1(webglContext, bufferWidth, bufferHeight));
         }
 
-        return "Could not find a WebGL rendering context";
-    }
+        const error = new Error("Could not find a WebGL rendering context");
 
-    private _initViewport(bufferWidth: number, bufferHeight: number)
-    {
-        this.gl.canvas.width = bufferWidth;
-        this.gl.canvas.width = bufferHeight;
-
-        this._bufferWidth = bufferWidth;
-        this._bufferHeight = bufferHeight;
-    }
-
-    /**
-     * Clears the specified buffers to preset values.
-     */
-    public clear(clearMask: ClearOptions | number)
-    {
-        this.gl.clear(clearMask);
-    }
-
-    /**
-     * Specifies the color used when clearing color buffers.
-     */
-    public setClearColor(color: Color)
-    {
-        const r = color.getR() / 255;
-        const g = color.getG() / 255;
-        const b = color.getB() / 255;
-        const a = color.getA() / 255;
-
-        this.gl.clearColor(r, g, b, a);
+        return Result.OfError(error);
     }
 }

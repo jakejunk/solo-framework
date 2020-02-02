@@ -57,6 +57,11 @@ export interface GameParams
      * Tells the canvas how to handle upscaling. Default value is `ScalingAlgorithm.SMOOTH`.
      */
     scalingAlgorithm?: ScalingAlgorithm;
+
+    /**
+     * The directory from which all content will be loaded. Default value is `""`.
+     */
+    rootDirectory?: string;
 }
 
 export namespace GameParams
@@ -72,7 +77,8 @@ export namespace GameParams
             timestep: _CompleteProperty(params.timestep, Timestep.VARIABLE),
             defaultCanvasColor: _CompleteProperty(params.defaultCanvasColor, "#000000"),
             backBufferAlpha: _CompleteProperty(params.backBufferAlpha, false),
-            scalingAlgorithm: _CompleteProperty(params.scalingAlgorithm, ScalingAlgorithm.SMOOTH)
+            scalingAlgorithm: _CompleteProperty(params.scalingAlgorithm, ScalingAlgorithm.SMOOTH),
+            rootDirectory: _CompleteProperty(params.rootDirectory, "")
         };
     }
 

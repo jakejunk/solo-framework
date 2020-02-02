@@ -10,3 +10,8 @@ export function SwapBytes(int: number)
 
     return flipped;
 }
+
+export function IsPowerOfTwo(num: number): boolean
+{
+    return (num & (num - 1)) === 0;
+}

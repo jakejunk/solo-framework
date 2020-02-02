@@ -15,10 +15,12 @@ export class GameTimer
     private _lastTimestamp!: number;
     private _frameTimeAccumulator!: number;
     private _frameLag!: number;
+    private _suppressRender: boolean;
 
     public constructor(timestep = Timestep.VARIABLE, frameTime = 1000 / 60)
     {
         this._totalGameTime = 0;
+        this._suppressRender = false;
 
         this.setTimestep(timestep);
         this.setTargetFrameTime(frameTime);
@@ -96,6 +98,15 @@ export class GameTimer
     }
 
     /**
+     * Tells this timer to skip the next render.
+     * This will prevent `Game.onDraw()` from being called.
+     */
+    public suppressRender()
+    {
+        this._suppressRender = true;
+    }
+
+    /**
      * Resets the elapsed time of this timer.
      * Useful for preventing large amounts of "catch-up" when running on
      * a fixed timestep after long timing delays.
@@ -113,7 +124,7 @@ export class GameTimer
     /**
      * Ticks the provided game forward to a specified timestamp.
      */
-    public tickGame(game: Game, timestamp: number, suppressRender: false)
+    public tickGame(game: Game, timestamp: number)
     {
         const targetFrameTime = this._targetFrameTime;
         const accumulatedElapsed = this._frameTimeAccumulator + (timestamp - this._lastTimestamp);
@@ -152,12 +163,12 @@ export class GameTimer
             game.onUpdate(elapsed / 1000);
         }
 
-        // TODO: Check if it's even possible to skip frames in WebGL.
-        // The buffer swap behavior will basically decide that... 
-        if (!suppressRender)
+        if (!this._suppressRender)
         {
             game.onDraw(elapsed / 1000);
         }
+
+        this._suppressRender = false;
     }
 
     private _updateFrameLag(numUpdates: number)

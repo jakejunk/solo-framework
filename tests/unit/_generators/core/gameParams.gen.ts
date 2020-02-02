@@ -1,4 +1,4 @@
-import { GameParams, GameParamsCompleted } from "../../../src/core/gameParams";
+import { GameParams, GameParamsCompleted } from "../../../../src/core/gameParams";
 
 export const CreatedWithDefaults: GameParamsCompleted = GameParams.Complete({
     bufferWidth: 300,
