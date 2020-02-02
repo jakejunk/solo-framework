@@ -1,8 +1,12 @@
+import { Gl } from "./gl";
+
 export const enum ClearOptions
 {
-    COLOR_BUFFER = 16384,
-    DEPTH_BUFFER = 256,
-    STENCIL_BUFFER = 1024,
+    COLOR_BUFFER = Gl.COLOR_BUFFER_BIT,
+
+    DEPTH_BUFFER = Gl.DEPTH_BUFFER_BIT,
+    
+    STENCIL_BUFFER = Gl.STENCIL_BUFFER_BIT,
 
     /**
      * Clear the color and depth buffers.

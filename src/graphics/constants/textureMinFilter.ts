@@ -1,0 +1,16 @@
+import { Gl } from "./gl";
+
+export const enum TextureMinFilter
+{
+    LINEAR = Gl.LINEAR,
+    
+    NEAREST = Gl.NEAREST,
+    
+    NEAREST_MIPMAP_NEAREST = Gl.NEAREST_MIPMAP_NEAREST,
+    
+    LINEAR_MIPMAP_NEAREST = Gl.LINEAR_MIPMAP_NEAREST,
+    
+    NEAREST_MIPMAP_LINEAR = Gl.NEAREST_MIPMAP_LINEAR,
+    
+    LINEAR_MIPMAP_LINEAR = Gl.LINEAR_MIPMAP_LINEAR
+}
