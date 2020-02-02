@@ -43,6 +43,7 @@ function BuildTests()
     return integrationProj.src()
         .pipe(sourcemaps.init())
         .pipe(integrationProj()).js
+        .pipe(replace(/(import .* from\s+['"])(.*)(?=['"])/g, "$1$2.js"))
         .pipe(sourcemaps.write())
         .pipe(gulp.dest("build/tests"))
         .pipe(tap(function(file) {

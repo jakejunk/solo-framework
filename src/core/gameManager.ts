@@ -37,6 +37,9 @@ export class GameManager
 
     public static Create(gameConstructor: GameConstructor, params: GameParams): GameManager
     {
+        // TODO: Inject this value
+        this._Logger.log("v0.0.0");
+
         const gameParams = GameParams.Complete(params);
         const components = GameComponents.Create(gameParams);
 
