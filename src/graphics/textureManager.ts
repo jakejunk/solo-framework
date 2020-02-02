@@ -1,4 +1,7 @@
 import { Texture2D } from "./texture2d";
+import { TextureMagFilter } from "./constants/textureMagFilter";
+import { TextureMinFilter } from "./constants/textureMinFilter";
+import { TextureWrap } from "./constants/textureWrap";
 
 export interface TextureManager
 {
@@ -8,9 +11,9 @@ export interface TextureManager
 
     bindTextureToLocation(texture: Texture2D, location: number): void;
 
-    setTextureFilter(texture: Texture2D, minFilter: number, magFilter: number): void;
+    setTextureFilter(texture: Texture2D, minFilter: TextureMinFilter, magFilter: TextureMagFilter): void;
 
-    setTextureWrap(texture: Texture2D, wrapS: number, wrapT: number): void;
+    setTextureWrap(texture: Texture2D, wrapS: TextureWrap, wrapT: TextureWrap): void;
 
     addManagedTexture(texture: Texture2D): void;
 

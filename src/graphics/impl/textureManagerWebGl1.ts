@@ -1,10 +1,13 @@
-import { Texture2D } from "../texture2d";
-import { Logger } from "../../util/logger";
-import { TextureManager } from "../textureManager";
-import { Gl } from "../util/gl";
+import { Gl } from "../constants/gl";
 import { IsPowerOfTwo } from "../../util/bits";
+import { Logger } from "../../util/logger";
 import { Result } from "../../util/result";
+import { Texture2D } from "../texture2d";
 import { TextureBindingCache } from "../util/textureBindingCache";
+import { TextureMagFilter } from "../constants/textureMagFilter";
+import { TextureManager } from "../textureManager";
+import { TextureMinFilter } from "../constants/textureMinFilter";
+import { TextureWrap } from "../constants/textureWrap";
 
 export class TextureManagerWebGl1 implements TextureManager
 {
@@ -14,10 +17,10 @@ export class TextureManagerWebGl1 implements TextureManager
     private _managedTextures: Map<string, Texture2D>;
     private _bindingCache: TextureBindingCache;
     private _shouldMipMap: boolean;
-    private _defaultMinFilter: number;
-    private _defaultMagFilter: number;
+    private _defaultMinFilter: TextureMinFilter;
+    private _defaultMagFilter: TextureMagFilter;
 
-    public constructor(gl: WebGLRenderingContext, defaultMinFilter = Gl.LINEAR, defaultMagFilter = Gl.LINEAR)
+    public constructor(gl: WebGLRenderingContext, defaultMinFilter = TextureMinFilter.LINEAR, defaultMagFilter = TextureMagFilter.LINEAR)
     {
         this._gl = gl;
         this._managedTextures = new Map();
@@ -35,9 +38,9 @@ export class TextureManagerWebGl1 implements TextureManager
 
         const isPowerOfTwoImage = IsPowerOfTwo(image.width) && IsPowerOfTwo(image.height);
         const shouldMipMap = isPowerOfTwoImage && this._shouldMipMap;
-        const minFilter = shouldMipMap ? this._defaultMinFilter : Gl.LINEAR;
+        const minFilter = shouldMipMap ? this._defaultMinFilter : TextureMinFilter.LINEAR;
         const magFilter = this._defaultMagFilter;
-        const wrapS = isPowerOfTwoImage ? Gl.REPEAT : Gl.CLAMP_TO_EDGE;
+        const wrapS = isPowerOfTwoImage ? TextureWrap.REPEAT : TextureWrap.CLAMP_TO_EDGE;
         const wrapT = wrapS;
         const gl = this._gl;
 
@@ -73,25 +76,25 @@ export class TextureManagerWebGl1 implements TextureManager
         return texture;
     }
 
-    public setTextureFilter(texture: Texture2D, minFilter: number, magFilter: number)
+    public setTextureFilter(texture: Texture2D, minFilter: TextureMinFilter, magFilter: TextureMagFilter)
     {
         this._bindTempTexture(texture);
         this._setBoundTextureFilter(minFilter, magFilter);
     }
 
-    private _setBoundTextureFilter(minFilter: number, magFilter: number)
+    private _setBoundTextureFilter(minFilter: TextureMinFilter, magFilter: TextureMagFilter)
     {
         this._gl.texParameteri(Gl.TEXTURE_2D, Gl.TEXTURE_MIN_FILTER, minFilter);
         this._gl.texParameteri(Gl.TEXTURE_2D, Gl.TEXTURE_MAG_FILTER, magFilter);
     }
 
-    public setTextureWrap(texture: Texture2D, wrapS: number, wrapT: number)
+    public setTextureWrap(texture: Texture2D, wrapS: TextureWrap, wrapT: TextureWrap)
     {
         this._bindTempTexture(texture);
         this._setBoundTextureWrap(wrapS, wrapT);
     }
 
-    private _setBoundTextureWrap(wrapS: number, wrapT: number)
+    private _setBoundTextureWrap(wrapS: TextureWrap, wrapT: TextureWrap)
     {
         this._gl.texParameteri(Gl.TEXTURE_2D, Gl.TEXTURE_WRAP_S, wrapS);
         this._gl.texParameteri(Gl.TEXTURE_2D, Gl.TEXTURE_WRAP_T, wrapT);

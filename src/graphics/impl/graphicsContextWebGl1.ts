@@ -1,5 +1,5 @@
 import { Color } from "../color";
-import { ClearOptions } from "../clearOptions";
+import { ClearOptions } from "../constants/clearOptions";
 import { Logger } from "../../util/logger";
 import { GraphicsContext } from "../graphicsContext";
 import { TextureManager } from "../textureManager";

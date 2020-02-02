@@ -1,13 +1,13 @@
-import { GraphicsContext } from "/solo/graphics/graphicsContext.js";
-import { GameManager } from "/solo/core/gameManager.js";
-import { Game } from "/solo/core/game.js";
-import { GameComponents } from "/solo/core/gameComponents.js"
-import { Color } from "/solo/graphics/color.js";
-import { ClearOptions } from "/solo/graphics/clearOptions.js";
+import { ClearOptions } from "/solo/graphics/constants/clearOptions";
+import { Color } from "/solo/graphics/color";
 import { ContentLoader } from "/solo/content/contentLoader";
-import { Texture2D } from "/solo/graphics/texture2d";
-import { Gl } from "/solo/graphics/util/gl";
+import { Game } from "/solo/core/game";
+import { GameComponents } from "/solo/core/gameComponents";
+import { GameManager } from "/solo/core/gameManager";
+import { Gl } from "/solo/graphics/constants/gl";
+import { GraphicsContext } from "/solo/graphics/graphicsContext";
 import { ScalingAlgorithm } from "/solo/core/scalingAlgorithm";
+import { Texture2D } from "/solo/graphics/texture2d";
 
 const vertexShader = 
 `attribute vec2 a_position;
@@ -133,10 +133,10 @@ class TextureTest implements Game
         const vertexBuffer = gl.createBuffer();
         gl.bindBuffer(Gl.ARRAY_BUFFER, vertexBuffer);
         gl.bufferData(Gl.ARRAY_BUFFER, new Float32Array([
-            -0.5, -0.5, Color.WHITE.toFloatBits(), 0.0, 0.0,
-            -0.5, +0.5, Color.WHITE.toFloatBits(), 0.0, 1.0,
-            +0.5, +0.5, Color.WHITE.toFloatBits(), 1.0, 1.0,
-            +0.5, -0.5, Color.WHITE.toFloatBits(), 1.0, 0.0]), gl.STATIC_DRAW);
+            -0.5, -0.5, Color.WHITE.toEncodedFloat(), 0.0, 0.0,
+            -0.5, +0.5, Color.WHITE.toEncodedFloat(), 0.0, 1.0,
+            +0.5, +0.5, Color.WHITE.toEncodedFloat(), 1.0, 1.0,
+            +0.5, -0.5, Color.WHITE.toEncodedFloat(), 1.0, 0.0]), gl.STATIC_DRAW);
         
         gl.enableVertexAttribArray(posLocation);
         gl.vertexAttribPointer(posLocation, 2, Gl.FLOAT, false, 20, 0);

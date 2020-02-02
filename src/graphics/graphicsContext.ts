@@ -1,5 +1,5 @@
 import { Color } from "./color";
-import { ClearOptions } from "./clearOptions";
+import { ClearOptions } from "./constants/clearOptions";
 import { GameCanvas } from "../core/gameCanvas";
 import { Logger } from "../util/logger";
 import { Result } from "../util/result";
