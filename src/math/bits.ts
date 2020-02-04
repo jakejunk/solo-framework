@@ -13,5 +13,5 @@ export function SwapBytes(int: number)
 
 export function IsPowerOfTwo(num: number): boolean
 {
-    return (num & (num - 1)) === 0;
+    return num !== 0 && (num & (num - 1)) === 0;
 }

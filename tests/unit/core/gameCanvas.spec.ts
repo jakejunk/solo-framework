@@ -1,7 +1,6 @@
 import { expect } from "chai";
 import { GameCanvas } from "../../../src/core/gameCanvas";
 import { ScalingAlgorithm } from "../../../src/core/scalingAlgorithm";
-import "../_helpers/loggingHelper";
 import "mocha";
 
 describe("GameCanvas", () =>

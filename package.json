@@ -12,10 +12,11 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@types/chai": "^4.2.0",
-    "@types/mocha": "^5.2.7",
-    "@types/sinon": "^7.0.13",
+    "@types/chai": "^4.2.8",
+    "@types/mocha": "^7.0.1",
+    "@types/sinon": "^7.5.1",
     "chai": "^4.2.0",
+    "cross-env": "^7.0.0",
     "gulp": "^4.0.2",
     "gulp-connect": "^5.7.0",
     "gulp-mustache": "^4.1.2",
@@ -24,19 +25,19 @@
     "gulp-sourcemaps": "^2.6.5",
     "gulp-tap": "^2.0.0",
     "gulp-typescript": "^5.0.1",
-    "jsdom": "^15.1.1",
+    "jsdom": "^16.1.0",
     "jsdom-global": "^3.0.2",
     "merge-stream": "^2.0.0",
-    "mocha": "^6.2.0",
-    "sinon": "^7.4.1",
-    "ts-node": "^8.3.0",
-    "typescript": "^3.5.3"
+    "mocha": "^7.0.1",
+    "sinon": "^8.1.1",
+    "ts-node": "^8.6.2",
+    "typescript": "^3.7.5"
   },
   "scripts": {
     "build-framework": "npx gulp build-framework",
     "build-integration-tests": "npx gulp build-integration-tests",
     "serve-integration-tests": "npx gulp serve-integration-tests",
-    "run-unit-tests": "mocha --require tests/unit/_helpers/tsNodeHook.js -r jsdom-global/register tests/unit/**/*.spec.ts"
+    "run-unit-tests": "cross-env NODE_ENV=testing mocha --require tests/unit/_helpers/tsNodeHook.js -r jsdom-global/register tests/unit/**/*.spec.ts"
   },
   "repository": {
     "type": "git",
