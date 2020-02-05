@@ -1,17 +1,36 @@
 import { expect } from "chai";
-import { IsPowerOfTwo } from "../../../src/math/bits";
+import { IsPowerOfTwo, SwapBytes } from "../../../src/math/bits";
 import "mocha";
 
 describe("Bits", () =>
 {
+    describe("SwapBytes()", () =>
+    {
+        it("swaps bytes for any 32-bit integer value", () =>
+        {
+            const int = 8675309;
+            const reversed = SwapBytes(int);
+            
+            const intView = new Int32Array([reversed]);
+            new Int8Array(intView.buffer).reverse();
+
+            expect(int).to.equal(intView[0]);
+        });
+
+        it("roundtrips every 2 calls", () =>
+        {
+            const int = 8675309;
+            const reversed = SwapBytes(int);
+            const original = SwapBytes(reversed);
+
+            expect(int).to.equal(original);
+        });
+    });
+
     describe("IsPowerOfTwo()", () =>
     {
-        const powersOfTwo = [
-            1,       2 << 0,  2 << 1,  2 << 2,  2 << 3,  2 << 4,  2 << 5,  2 << 6,  
-            2 << 7,  2 << 8,  2 << 9,  2 << 10, 2 << 11, 2 << 12, 2 << 13, 2 << 14, 
-            2 << 15, 2 << 16, 2 << 17, 2 << 18, 2 << 19, 2 << 20, 2 << 21, 2 << 22, 
-            2 << 23, 2 << 24, 2 << 25, 2 << 26, 2 << 27, 2 << 28, 2 << 29, 2 << 30,
-        ];
+        // Generates 32 unsigned power-of-two integers
+        const powersOfTwo = Array.from({length: 32}, (_, i) => (1 << i) >>> 0);
 
         it("returns true for powers of two", () =>
         {
