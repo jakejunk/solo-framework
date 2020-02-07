@@ -15,13 +15,13 @@ export class ContentLoader
 
     private readonly _fetchFn: FetchFn;
     private readonly _textureManager: TextureManager;
-    private _rootDir: string;
+    private _rootDir!: string;
 
-    constructor(fetchFn: FetchFn, textureManager: TextureManager, rootDir: string)
+    public constructor(fetchFn: FetchFn, textureManager: TextureManager, rootDir: string)
     {
         this._fetchFn = fetchFn;
         this._textureManager = textureManager;
-        this._rootDir = rootDir;
+        this.setRootDirectory(rootDir);
     }
 
     /**
