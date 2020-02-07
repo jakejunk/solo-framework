@@ -1,7 +1,7 @@
 import { CreatedWithDefaults } from "../_generators/core/gameParams.gen";
+import { expect } from "chai";
 import { GameComponents } from "../../../src/core/gameComponents";
 import { stub } from "sinon";
-import { expect } from "chai";
 import "mocha";
 
 describe("GameComponents", () =>

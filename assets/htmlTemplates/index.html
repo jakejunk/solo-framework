@@ -5,13 +5,37 @@
 </head>
 <body>
 <style>
+header > h1 {
+    font-family: monospace;
+    font-weight: lighter;
+    text-align: center;
+}
 
+.test-links {
+    margin: 0 auto;
+    max-width: 1100px;
+}
+
+.test-link {
+    background-color: #3498db;
+    color: #fff;
+    display: inline-block;
+    font-family: monospace;
+    padding: 8px;
+    text-decoration: none;
+}
+
+.test-link:visited {
+    background-color: #9b59b6;
+}
 </style>
-
+<header>
+    <h1>Solo Framework Integration Tests</h1>
+</header>
+<div class="test-links">
 {{#integrationTests}}
-<div class="test-link">
-    <a href="{{testLink}}">{{testName}}</a>
-</div>
+    <a class="test-link" href="{{testLink}}">{{testName}}</a>
 {{/integrationTests}}
+</div>
 </body>
 </html>

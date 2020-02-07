@@ -4,6 +4,8 @@ import { Result } from "../util/result";
 import { Texture2D } from "../graphics/texture2d";
 import { TextureManager } from "../graphics/textureManager";
 
+export type FetchFn = (input: RequestInfo, init?: RequestInit) => Promise<Response>
+
 /**
  * A `Promise`-based loader for game content.
  */
@@ -11,27 +13,15 @@ export class ContentLoader
 {
     private static _Logger = new Logger("ContentLoader");
 
-    private _rootDir: string;
-    private _textureManager: TextureManager;
+    private readonly _fetchFn: FetchFn;
+    private readonly _textureManager: TextureManager;
+    private _rootDir!: string;
 
-    private constructor(rootDir: string, textureManager: TextureManager)
+    public constructor(fetchFn: FetchFn, textureManager: TextureManager, rootDir: string)
     {
-        this._rootDir = rootDir;
+        this._fetchFn = fetchFn;
         this._textureManager = textureManager;
-    }
-
-    public static Create(textureManager: TextureManager, rootDir = ""): Result<ContentLoader, Error>
-    {
-        const hasFetch = "fetch" in window;
-
-        if (!hasFetch)
-        {
-            const error = new Error("The Fetch API is not supported.");
-
-            return Result.OfError(error);
-        }
-
-        return Result.OfOk(new ContentLoader(rootDir, textureManager));
+        this.setRootDirectory(rootDir);
     }
 
     /**
@@ -101,7 +91,7 @@ export class ContentLoader
 
         ContentLoader._Logger.debug(`Fetching file: ${fullPath}`)
 
-        return await fetch(fullPath, requestInit);
+        return await this._fetchFn(fullPath, requestInit);
     }
 
     private _getFullPath(contentUri: string): string

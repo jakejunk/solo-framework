@@ -1,5 +1,5 @@
-import { Vector2 } from "../../../src/math/vector2";
 import { expect } from "chai";
+import { Vector2 } from "../../../src/math/vector2";
 import "mocha";
 
 describe("Vector2", () =>

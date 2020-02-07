@@ -1,7 +1,7 @@
-import { Game } from "./game";
-import { Timestep } from "./timestep";
 import { Clamp } from "../math/mathHelper";
+import { Game } from "./game";
 import { Logger } from "../util/logger";
+import { Timestep } from "./timestep";
 
 export class GameTimer
 {

@@ -1,12 +1,14 @@
+import { TextureMagFilter } from "../../../../../src/graphics/constants/textureMagFilter";
+import { TextureMinFilter } from "../../../../../src/graphics/constants/textureMinFilter";
 import { TextureParams } from "../../../../../src/graphics/util/textureParams";
-import { Gl } from "../../../../../src/graphics/util/gl";
+import { TextureWrap } from "../../../../../src/graphics/constants/textureWrap";
 
 export const TextureParamsNoHandle: TextureParams = {
     handle: 0,
     width: 32,
     height: 32,
-    minFilter: Gl.LINEAR,
-    magFilter: Gl.LINEAR,
-    wrapS: Gl.REPEAT,
-    wrapT: Gl.REPEAT
+    minFilter: TextureMinFilter.LINEAR,
+    magFilter: TextureMagFilter.LINEAR,
+    wrapS: TextureWrap.REPEAT,
+    wrapT: TextureWrap.REPEAT
 }

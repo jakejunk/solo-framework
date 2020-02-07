@@ -1,3 +1,7 @@
+import { TextureMagFilter } from "../constants/textureMagFilter";
+import { TextureMinFilter } from "../constants/textureMinFilter";
+import { TextureWrap } from "../constants/textureWrap";
+
 /**
  * Contains the values necessary to contruct a new `Texture2D`.
  * This type is mainly used internally by `TextureManager`.
@@ -24,20 +28,20 @@ export interface TextureParams
     /**
      * The texture's minification filter.
      */
-    readonly minFilter: number;
+    readonly minFilter: TextureMinFilter;
 
     /**
      * The texture's magnification filter.
      */
-    readonly magFilter: number;
+    readonly magFilter: TextureMagFilter;
 
     /**
      * The wrapping function used for this texture's `s` coordinate.
      */
-    readonly wrapS: number;
+    readonly wrapS: TextureWrap;
 
     /**
      * The wrapping function used for this texture's `t` coordinate.
      */
-    readonly wrapT: number;
+    readonly wrapT: TextureWrap;
 }

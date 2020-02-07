@@ -1,9 +1,9 @@
-import { GraphicsContext } from "/solo/graphics/graphicsContext.js";
-import { GameManager } from "/solo/core/gameManager.js";
-import { Game } from "/solo/core/game.js";
-import { GameComponents } from "/solo/core/gameComponents.js"
-import { Color } from "/solo/graphics/color.js";
-import { ClearOptions } from "/solo/graphics/clearOptions.js";
+import { ClearOptions } from "/solo/graphics/constants/clearOptions";
+import { Color } from "/solo/graphics/color";
+import { Game } from "/solo/core/game";
+import { GameComponents } from "/solo/core/gameComponents";
+import { GameManager } from "/solo/core/gameManager";
+import { GraphicsContext } from "/solo/graphics/graphicsContext";
 
 document.addEventListener("DOMContentLoaded", () => {
     const game = GameManager.Create(ClearScreenTest, {

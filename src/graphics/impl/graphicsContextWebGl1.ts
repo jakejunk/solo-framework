@@ -1,7 +1,7 @@
+import { ClearOptions } from "../constants/clearOptions";
 import { Color } from "../color";
-import { ClearOptions } from "../clearOptions";
-import { Logger } from "../../util/logger";
 import { GraphicsContext } from "../graphicsContext";
+import { Logger } from "../../util/logger";
 import { TextureManager } from "../textureManager";
 import { TextureManagerWebGl1 } from "./textureManagerWebGl1";
 
