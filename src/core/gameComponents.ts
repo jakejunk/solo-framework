@@ -72,15 +72,16 @@ export namespace GameComponents
         return graphicsContextResult.okValue;
     }
 
-    function _CreateContentLoader(textureManager: TextureManager, params: GameParamsCompleted)
+    function _CreateContentLoader(textureManager: TextureManager, params: GameParamsCompleted): ContentLoader
     {
-        const contentLoaderResult = ContentLoader.Create(textureManager, params.rootDirectory);
+        const hasFetch = "fetch" in window;
 
-        if (contentLoaderResult.isError())
+        if (!hasFetch)
         {
-            throw contentLoaderResult.errorValue;
+            // TODO: Maybe use a polyfill... eh
+            throw new Error("The Fetch API is not supported.");
         }
 
-        return contentLoaderResult.okValue;
+        return new ContentLoader(window.fetch, textureManager, params.rootDirectory);
     }
 }

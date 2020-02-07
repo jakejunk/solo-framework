@@ -22,7 +22,7 @@ export class Logger
         }
 
         // FIXME: I would love a way around this...
-        // If we are testing, then disable loggers so as to not pollute the console
+        // If testing, disable loggers so we don't pollute the console
         if (typeof process !== "undefined" && process?.env?.NODE_ENV === "testing")
         {
             this.debug = this.log = this.info = this.warn = this.error = function() { }
