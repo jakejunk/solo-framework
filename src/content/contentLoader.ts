@@ -1,6 +1,6 @@
 import { ContentParser } from "./contentParser";
+import { Err, Ok, Result } from "../util/result";
 import { Logger } from "../util/logger";
-import { Result } from "../util/result";
 import { Texture2D } from "../graphics/texture2d";
 import { TextureManager } from "../graphics/textureManager";
 
@@ -11,7 +11,7 @@ export type FetchFn = (input: RequestInfo, init?: RequestInit) => Promise<Respon
  */
 export class ContentLoader
 {
-    private static _Logger = new Logger("ContentLoader");
+    private static _Logger = new Logger(ContentLoader.name);
 
     private readonly _fetchFn: FetchFn;
     private readonly _textureManager: TextureManager;
@@ -58,7 +58,7 @@ export class ContentLoader
         }
         catch (error)
         {
-            return Result.OfError(error as TypeError)
+            return new Err(error as TypeError);
         }
     }
 
@@ -73,12 +73,7 @@ export class ContentLoader
         const response = await this._makeRequest(contentUri);
         const parseResult = await parser.fromFetchResponse(response);
 
-        if (parseResult.isError())
-        {
-            throw parseResult.errorValue;
-        }
-
-        return parseResult.okValue;
+        return parseResult.unwrap();
     }
 
     private async _makeRequest(contentUri: string): Promise<Response>
@@ -112,11 +107,11 @@ export class ContentLoader
         {
             const texture = await this.loadTexture2D(contentUri);
 
-            return Result.OfOk(texture);
+            return new Ok(texture);
         }
         catch (e)
         {
-            return Result.OfError(e);
+            return new Err(e);
         }
     }
 

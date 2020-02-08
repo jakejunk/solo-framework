@@ -1,8 +1,8 @@
 import { ContentLoader } from "../../../src/content/contentLoader";
 import { ContentParser } from "../../../src/content/contentParser";
 import { DummyTextureManager } from "../_generators/graphics/textureManager.gen";
+import { Err } from "../../../src/util/result";
 import { expect } from "chai";
-import { Result } from "../../../src/util/result";
 import "mocha";
 
 const throwingFetch: () => Promise<Response> = () => {
@@ -18,7 +18,7 @@ const fetchNothing: () => Promise<Response> = () => {
 const badParser: ContentParser<string> = {
     fromFetchResponse: () => {
         return new Promise(resolve => {
-            resolve(Result.OfError(new Error()))
+            resolve(new Err(new Error()))
         });
     }
 }
@@ -70,7 +70,7 @@ describe("ContentLoader", () =>
 
             const loadResult = await loader.tryLoad(undefined, "");
 
-            expect(loadResult.isError()).to.be.true;
+            expect(loadResult.isErr()).to.be.true;
         });
 
         it("returns an error if parser encounters error", async () =>
@@ -79,7 +79,7 @@ describe("ContentLoader", () =>
 
             const loadResult = await loader.tryLoad(badParser, "");
 
-            expect(loadResult.isError()).to.be.true;
+            expect(loadResult.isErr()).to.be.true;
         });
     });
 
@@ -108,7 +108,7 @@ describe("ContentLoader", () =>
             
             const textureLoadResult = await loader.tryLoadTexture2D("");
 
-            expect(textureLoadResult.isError()).to.be.true;
+            expect(textureLoadResult.isErr()).to.be.true;
         });
     });
 

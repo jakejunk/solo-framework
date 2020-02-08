@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 class ContentLoaderTest implements Game
 {
-    private static readonly _Logger = new Logger("ContentLoaderTest");
+    private static readonly _Logger = new Logger(ContentLoaderTest.name);
 
     public shouldExit = false;
 
@@ -35,7 +35,7 @@ class ContentLoaderTest implements Game
         // Should load from cache
         const sameTextureResult = await this.loader.tryLoadTexture2D("img/test.png");
         
-        if (sameTextureResult.isError())
+        if (sameTextureResult.isErr())
         {
             throw new Error("This should not happen");
         }

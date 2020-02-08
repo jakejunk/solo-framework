@@ -54,9 +54,7 @@ export class TextureBindingCache
      */
     public bindAnywhere(texture: Texture2D): number
     {
-        // Calculate the next suggested bind location:
-        // _nextTextureBindLocation starts at `maxTextures - 1` at initialization.
-        // This cycles `location` backwards from `maxTextures - 1` to `0`
+        // Calculate the next suggested bind location by cycling `location` backwards to `0`
 
         this._nextBindLocation += 1;
         this._nextBindLocation %= this._bindLocations;
