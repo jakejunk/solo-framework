@@ -11,7 +11,7 @@ import { TextureWrap } from "../constants/textureWrap";
 
 export class TextureManagerWebGl1 implements TextureManager
 {
-    private static _Logger = new Logger("TextureManagerWebGl1");
+    private static _Logger = new Logger(TextureManagerWebGl1.name);
 
     private _gl: WebGLRenderingContext;
     private _managedTextures: Map<string, Texture2D>;

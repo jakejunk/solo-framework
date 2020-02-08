@@ -7,7 +7,7 @@ import { TextureManagerWebGl1 } from "./textureManagerWebGl1";
 
 export class GraphicsContextWebGl1 implements GraphicsContext
 {
-    private static readonly _Logger = new Logger("GraphicsContextWebGl1");
+    private static readonly _Logger = new Logger(GraphicsContextWebGl1.name);
 
     readonly gl: WebGLRenderingContext;
     readonly textureManager: TextureManager;

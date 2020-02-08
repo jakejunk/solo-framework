@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 class ContentLoaderTest implements Game
 {
-    private static readonly _Logger = new Logger("ContentLoaderTest");
+    private static readonly _Logger = new Logger(ContentLoaderTest.name);
 
     public shouldExit = false;
 

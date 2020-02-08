@@ -11,7 +11,7 @@ export type FetchFn = (input: RequestInfo, init?: RequestInit) => Promise<Respon
  */
 export class ContentLoader
 {
-    private static _Logger = new Logger("ContentLoader");
+    private static _Logger = new Logger(ContentLoader.name);
 
     private readonly _fetchFn: FetchFn;
     private readonly _textureManager: TextureManager;

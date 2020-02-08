@@ -5,7 +5,7 @@ import { Timestep } from "./timestep";
 
 export class GameTimer
 {
-    private static readonly _Logger = new Logger("GameTimer");
+    private static readonly _Logger = new Logger(GameTimer.name);
 
     private _timestep!: Timestep;
     private _isRunningSlow!: boolean;
