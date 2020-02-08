@@ -1,3 +1,8 @@
+/**
+ * A union representing either a result or an error.
+ */
+export type Result<T, TErr> = Ok<T> | Err<TErr>;
+
 export class Ok<T>
 {
     public constructor(readonly okValue: T) { }
@@ -8,7 +13,7 @@ export class Ok<T>
 
     /**
      * Returns the value of an `Ok` result.
-     * If this result is instead of type `Error`, then the error value will be thrown.
+     * If this result is instead of type `Err`, then the error value will be thrown.
      */
     public unwrapOk(): T
     {
@@ -16,7 +21,7 @@ export class Ok<T>
     }
 
     /**
-     * Returns the value of an `Error` result.
+     * Returns the value of an `Err` result.
      * If this result is instead of type `Ok`, then the ok value will be thrown.
      */
     public unwrapErr<TErr>(): TErr
@@ -27,7 +32,7 @@ export class Ok<T>
 
 export class Err<TErr>
 {
-    public constructor(readonly errorValue: TErr) { }
+    public constructor(readonly errValue: TErr) { }
 
     public isOk<T>(): this is Ok<T> { return false; }
 
@@ -35,16 +40,11 @@ export class Err<TErr>
 
     public unwrapOk<T>(): T
     {
-        throw this.errorValue;
+        throw this.errValue;
     }
 
-    public unwrapError(): TErr
+    public unwrapErr(): TErr
     {
-        return this.errorValue;
+        return this.errValue;
     }
 }
-
-/**
- * A union representing either a result or an error.
- */
-export type Result<T, TErr> = Ok<T> | Err<TErr>;
