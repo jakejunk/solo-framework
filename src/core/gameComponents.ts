@@ -64,7 +64,7 @@ export namespace GameComponents
         const graphicsContextResult = GraphicsContext.Create(
             canvas, params.bufferWidth, params.bufferHeight, params.backBufferAlpha);
 
-        return graphicsContextResult.unwrapOk();
+        return graphicsContextResult.unwrap();
     }
 
     function _CreateContentLoader(textureManager: TextureManager, params: GameParamsCompleted): ContentLoader

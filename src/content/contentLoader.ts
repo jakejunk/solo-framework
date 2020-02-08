@@ -73,7 +73,7 @@ export class ContentLoader
         const response = await this._makeRequest(contentUri);
         const parseResult = await parser.fromFetchResponse(response);
 
-        return parseResult.unwrapOk();
+        return parseResult.unwrap();
     }
 
     private async _makeRequest(contentUri: string): Promise<Response>
