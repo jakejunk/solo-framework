@@ -1,7 +1,7 @@
+import { Err, Ok, Result } from "../../util/result";
 import { Gl } from "../constants/gl";
 import { IsPowerOfTwo } from "../../math/bits";
 import { Logger } from "../../util/logger";
-import { Result } from "../../util/result";
 import { Texture2D } from "../texture2d";
 import { TextureBindingCache } from "../util/textureBindingCache";
 import { TextureMagFilter } from "../constants/textureMagFilter";
@@ -139,19 +139,19 @@ export class TextureManagerWebGl1 implements TextureManager
 
         if (textureUri == undefined)
         {
-            return Result.OfError(new Error(`Texture cannot be managed`));
+            return new Err(new Error(`Texture cannot be managed`));
         }
 
         if (this._managedTextures.has(textureUri))
         {
             TextureManagerWebGl1._Logger.debug(`Texture "${textureUri}" is already managed`);
-            return Result.OfOk(undefined);
+            return new Ok(undefined);
         }
         
         this._managedTextures.set(textureUri, texture);
 
         TextureManagerWebGl1._Logger.debug(`Managing texture "${textureUri}"`);
-        return Result.OfOk(undefined);
+        return new Ok(undefined);
     }
 
     public getManagedTexture(uri: string): Texture2D | undefined

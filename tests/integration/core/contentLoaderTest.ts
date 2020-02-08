@@ -35,7 +35,7 @@ class ContentLoaderTest implements Game
         // Should load from cache
         const sameTextureResult = await this.loader.tryLoadTexture2D("img/test.png");
         
-        if (sameTextureResult.isError())
+        if (sameTextureResult.isErr())
         {
             throw new Error("This should not happen");
         }

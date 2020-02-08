@@ -1,35 +1,50 @@
-class Ok<T>
+export class Ok<T>
 {
-    constructor(readonly okValue: T) { }
+    public constructor(readonly okValue: T) { }
 
-    isOk<T>(): this is Ok<T> { return true; }
+    public isOk<T>(): this is Ok<T> { return true; }
 
-    isError<TError>(): this is Error<TError> { return false; }
+    public isErr<TErr>(): this is Err<TErr> { return false; }
+
+    /**
+     * Returns the value of an `Ok` result.
+     * If this result is instead of type `Error`, then the error value will be thrown.
+     */
+    public unwrapOk(): T
+    {
+        return this.okValue;
+    }
+
+    /**
+     * Returns the value of an `Error` result.
+     * If this result is instead of type `Ok`, then the ok value will be thrown.
+     */
+    public unwrapErr<TErr>(): TErr
+    {
+        throw this.okValue;
+    }
 }
 
-class Error<TError>
+export class Err<TErr>
 {
-    constructor(readonly errorValue: TError) { }
+    public constructor(readonly errorValue: TErr) { }
 
-    isOk<T>(): this is Ok<T> { return false; }
+    public isOk<T>(): this is Ok<T> { return false; }
 
-    isError<TError>(): this is Error<TError> { return true; }
+    public isErr<TErr>(): this is Err<TErr> { return true; }
+
+    public unwrapOk<T>(): T
+    {
+        throw this.errorValue;
+    }
+
+    public unwrapError(): TErr
+    {
+        return this.errorValue;
+    }
 }
 
 /**
  * A union representing either a result or an error.
  */
-export type Result<T, TError> = Ok<T> | Error<TError>;
-
-export namespace Result
-{
-    export function OfOk<T, TError>(value: T): Result<T, TError>
-    {
-        return new Ok(value);
-    }
-
-    export function OfError<T, TError>(value: TError): Result<T, TError>
-    {
-        return new Error(value);
-    }
-}
+export type Result<T, TErr> = Ok<T> | Err<TErr>;
