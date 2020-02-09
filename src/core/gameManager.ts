@@ -14,7 +14,7 @@ type TickFunc = (timestap: number) => void;
  */
 export class GameManager
 {
-    private static readonly _Logger = new Logger("Solo", Color.BELIZE_HOLE);
+    private static readonly _Logger = new Logger("Solo", Color.PETER_RIVER);
 
     private readonly _tickFunc: TickFunc;
     private readonly _game: Game;
