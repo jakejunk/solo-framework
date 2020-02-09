@@ -1,0 +1,1 @@
+export const FrameworkVersion = "_INJECT_BUILD_VERSION_HERE_";

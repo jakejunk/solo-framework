@@ -8,6 +8,9 @@ const mustache = require("gulp-mustache");
 const connect = require("gulp-connect");
 const replace = require("gulp-replace");
 const path = require("path");
+const crypto = require("crypto");
+const filter = require("gulp-filter");
+const package = require("./package.json");
 
 const frameworkProj = ts.createProject("src/tsconfig.json");
 const integrationProj = ts.createProject("tests/integration/tsconfig.json");
@@ -18,7 +21,12 @@ gulp.task("serve-integration-tests", ServeTests);
 
 function BuildFramework()
 {
+    const buildInfoFilter = filter("**/buildInfo.ts", {restore: true});
+
     const compiled = frameworkProj.src()
+        .pipe(buildInfoFilter)
+        .pipe(replace("_INJECT_BUILD_VERSION_HERE_", `v${package.version}`))
+        .pipe(buildInfoFilter.restore)
         .pipe(sourcemaps.init())
         .pipe(frameworkProj());
 
@@ -34,7 +42,7 @@ function BuildFramework()
 }
 
 /**
- * @type File
+ * @type Vinyl
  */
 const files = [];
 
@@ -73,9 +81,15 @@ function BuildTestHtmlFiles()
         const relativeToBuildDir = path.relative(buildDirAbsolute, file.dirname);
         const testFileUri = path.join("/", relativeToBuildDir, testFileName);
 
+        // Add query string with hash for caching/":visited" reasons
+        const fileHash = crypto
+            .createHash("md5")
+            .update(file.sourceMap.sourcesContent[0])
+            .digest("hex");
+
         integrationTests.push({
             testName: file.stem,
-            testLink: testFileUri
+            testLink: `${testFileUri}?v=${fileHash}`
         });
 
         // Create a copy of the embed template for every integration test

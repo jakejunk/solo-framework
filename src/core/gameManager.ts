@@ -1,4 +1,5 @@
 import { Color } from "../graphics/color";
+import { FrameworkVersion } from "./buildInfo";
 import { Game } from "./game";
 import { GameComponents } from "./gameComponents";
 import { GameParams } from "./gameParams";
@@ -37,8 +38,7 @@ export class GameManager
 
     public static Create(gameConstructor: GameConstructor, params: GameParams): GameManager
     {
-        // TODO: Inject this value
-        this._Logger.log("v0.0.0");
+        this._Logger.log(FrameworkVersion);
 
         const gameParams = GameParams.Complete(params);
         const components = GameComponents.Create(gameParams);
