@@ -55,7 +55,7 @@ export class ShaderManagerWebGl1 implements ShaderManager
             return new Err(error);
         }
 
-        ShaderManagerWebGl1._Logger.debug(`Successfully created new shader program: ${program}`);
+        ShaderManagerWebGl1._Logger.debug("Successfully created new shader program");
 
         return new Ok(new ShaderProgram(this, program));
     }
@@ -78,15 +78,18 @@ export class ShaderManagerWebGl1 implements ShaderManager
         return new Ok(shader);
     }
 
+    public useProgram(program: ShaderProgram)
+    {
+        this._gl.useProgram(program.getHandle());
+    }
+
     public getAttribLocation(program: ShaderProgram, name: string): number
     {
-        throw new Error("Method not implemented.");
+        return this._gl.getAttribLocation(program.getHandle(), name);
     }
     
     public getUniformLocation(program: ShaderProgram, name: string): UniformLocation
     {
-        const handle = program.getHandle();
-
-        return this._gl.getUniformLocation(handle, name)!;
+        return this._gl.getUniformLocation(program.getHandle(), name)!;
     }
 }

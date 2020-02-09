@@ -5,7 +5,9 @@ export type UniformLocation = WebGLUniformLocation;
 
 export interface ShaderManager
 {
-    createShaderProgram(vShaderSrc: string, fShaderSrc: string): Result<ShaderProgram, Error>
+    createShaderProgram(vShaderSrc: string, fShaderSrc: string): Result<ShaderProgram, Error>;
+
+    useProgram(program: ShaderProgram): void;
 
     /**
      * Gets the location of an attribute variable in the provided program.
