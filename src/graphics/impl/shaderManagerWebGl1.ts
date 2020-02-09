@@ -1,11 +1,14 @@
 import { Err, Ok, Result } from "../../util/result";
 import { Gl } from "../constants/gl";
+import { Logger } from "../../util/logger";
 import { ShaderManager, UniformLocation } from "../shaderManager";
 import { ShaderProgram } from "../shaderProgram";
 import { ShaderType } from "../constants/shaderType";
 
 export class ShaderManagerWebGl1 implements ShaderManager
 {
+    private static readonly _Logger = new Logger(ShaderManagerWebGl1.name);
+
     private _gl: WebGLRenderingContext;
 
     public constructor(gl: WebGLRenderingContext)
@@ -51,6 +54,8 @@ export class ShaderManagerWebGl1 implements ShaderManager
 
             return new Err(error);
         }
+
+        ShaderManagerWebGl1._Logger.debug(`Successfully created new shader program: ${program}`);
 
         return new Ok(new ShaderProgram(this, program));
     }
