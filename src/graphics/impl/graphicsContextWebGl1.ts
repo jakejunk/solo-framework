@@ -2,6 +2,8 @@ import { ClearOptions } from "../constants/clearOptions";
 import { Color } from "../color";
 import { GraphicsContext } from "../graphicsContext";
 import { Logger } from "../../util/logger";
+import { ShaderManager } from "../shaderManager";
+import { ShaderManagerWebGl1 } from "./shaderManagerWebGl1";
 import { TextureManager } from "../textureManager";
 import { TextureManagerWebGl1 } from "./textureManagerWebGl1";
 
@@ -11,6 +13,8 @@ export class GraphicsContextWebGl1 implements GraphicsContext
 
     readonly gl: WebGLRenderingContext;
     readonly textureManager: TextureManager;
+    readonly shaderManager: ShaderManager;
+
     private _bufferWidth!: number;
     private _bufferHeight!: number;
 
@@ -18,6 +22,7 @@ export class GraphicsContextWebGl1 implements GraphicsContext
     {
         this.gl = context;
         this.textureManager = new TextureManagerWebGl1(context);
+        this.shaderManager = new ShaderManagerWebGl1(context);
 
         this._initViewport(bufferWidth, bufferHeight);
     }

@@ -4,12 +4,14 @@ import { Err, Ok, Result } from "../util/result";
 import { GameCanvas } from "../core/gameCanvas";
 import { GraphicsContextWebGl1 } from "./impl/graphicsContextWebGl1";
 import { Logger } from "../util/logger";
+import { ShaderManager } from "./shaderManager";
 import { TextureManager } from "./textureManager";
 
 export interface GraphicsContext
 {
     readonly gl: WebGLRenderingContext;
     readonly textureManager: TextureManager;
+    readonly shaderManager: ShaderManager;
 
     /**
      * Clears the specified buffers to preset values.
@@ -33,15 +35,7 @@ export namespace GraphicsContext
             preserveDrawingBuffer: false
         };
 
-        // FIXME: This becomes a `CanvasRenderingContext2D | WebGLRenderingContext`, apparently
-        /*
-        const webgl2Context = canvas.getContext("webgl2", contextAttributes);
-        if (webgl2Context != undefined)
-        {
-            this._Logger.debug("Found a WebGL2 rendering context");
-
-            return new GraphicsContext(webgl2Context, bufferWidth, bufferHeight);
-        }*/
+        // TODO: WebGL2
 
         const webglContext = canvas.getContext("webgl", contextAttributes);
         if (webglContext != undefined)

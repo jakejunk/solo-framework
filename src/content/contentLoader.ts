@@ -101,6 +101,28 @@ export class ContentLoader
 
     // Some special-case loaders
 
+    public async tryLoadText(contentUri: string): Promise<Result<string, Error>>
+    {
+        try
+        {
+            const fileText = await this.loadText(contentUri);
+            
+            return new Ok(fileText);
+        }
+        catch (e)
+        {
+            return new Err(e);
+        }
+    }
+
+    public async loadText(contentUri: string): Promise<string>
+    {
+        const response = await this._makeRequest(contentUri);
+        const fileText = await response.text();
+
+        return fileText;
+    }
+
     public async tryLoadTexture2D(contentUri: string): Promise<Result<Texture2D, Error>>
     {
         try
@@ -123,6 +145,10 @@ export class ContentLoader
         {
             return cachedTexture;
         }
+
+        const fullPath = this._getFullPath(contentUri);
+
+        ContentLoader._Logger.debug(`Fetching file: ${fullPath}`)
         
         const image = await new Promise<HTMLImageElement>((resolve, reject) => {
             const imageElement = new Image();
@@ -130,7 +156,7 @@ export class ContentLoader
             imageElement.onload = () => resolve(imageElement);
             imageElement.onerror = () => reject();
 
-            imageElement.src = this._getFullPath(contentUri);
+            imageElement.src = fullPath;
         });
         
         return this._textureManager.createTextureFromImage(image);

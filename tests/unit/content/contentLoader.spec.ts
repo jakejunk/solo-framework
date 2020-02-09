@@ -100,6 +100,28 @@ describe("ContentLoader", () =>
         });
     });
 
+    describe("tryLoadText()", () =>
+    {
+        it("return an error if fetch throws", async () =>
+        {
+            const loader = new ContentLoader(throwingFetch, new DummyTextureManager(), "");
+            
+            const textureLoadResult = await loader.tryLoadText("");
+
+            expect(textureLoadResult.isErr()).to.be.true;
+        });
+    });
+
+    describe("loadText()", () =>
+    {
+        it("throws if fetch throws", () =>
+        {
+            const loader = new ContentLoader(throwingFetch, new DummyTextureManager(), "");
+
+            expect(async _ => await loader.loadText("")).to.throw;
+        });
+    });
+
     describe("tryLoadTexture2D()", () =>
     {
         it("return an error if fetch throws", async () =>
