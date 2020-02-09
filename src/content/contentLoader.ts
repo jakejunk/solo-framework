@@ -145,6 +145,10 @@ export class ContentLoader
         {
             return cachedTexture;
         }
+
+        const fullPath = this._getFullPath(contentUri);
+
+        ContentLoader._Logger.debug(`Fetching file: ${fullPath}`)
         
         const image = await new Promise<HTMLImageElement>((resolve, reject) => {
             const imageElement = new Image();
@@ -152,7 +156,7 @@ export class ContentLoader
             imageElement.onload = () => resolve(imageElement);
             imageElement.onerror = () => reject();
 
-            imageElement.src = this._getFullPath(contentUri);
+            imageElement.src = fullPath;
         });
         
         return this._textureManager.createTextureFromImage(image);

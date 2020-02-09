@@ -77,6 +77,8 @@ export namespace GameComponents
             throw new Error("The Fetch API is not supported.");
         }
 
-        return new ContentLoader(window.fetch, textureManager, params.rootDirectory);
+        const fetchFn = window.fetch.bind(window);
+
+        return new ContentLoader(fetchFn, textureManager, params.rootDirectory);
     }
 }
