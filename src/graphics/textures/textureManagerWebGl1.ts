@@ -2,10 +2,10 @@ import { Err, Ok, Result } from "../../util/result";
 import { Gl } from "../constants/gl";
 import { IsPowerOfTwo } from "../../math/bits";
 import { Logger } from "../../util/logger";
-import { Texture2D } from "../texture2d";
-import { TextureBindingCache } from "../util/textureBindingCache";
+import { Texture2D } from "./texture2d";
+import { TextureBindingCache } from "./textureBindingCache";
 import { TextureMagFilter } from "../constants/textureMagFilter";
-import { TextureManager } from "../textureManager";
+import { TextureManager } from "./textureManager";
 import { TextureMinFilter } from "../constants/textureMinFilter";
 import { TextureWrap } from "../constants/textureWrap";
 

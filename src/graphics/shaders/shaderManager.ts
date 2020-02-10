@@ -1,4 +1,4 @@
-import { Result } from "../util/result";
+import { Result } from "../../util/result";
 import { ShaderProgram } from "./shaderProgram";
 
 export type UniformLocation = WebGLUniformLocation;

@@ -3,7 +3,7 @@ import { GameCanvas } from "./gameCanvas";
 import { GameParamsCompleted } from "./gameParams";
 import { GameTimer } from "./gameTimer";
 import { GraphicsContext } from "../graphics/graphicsContext";
-import { TextureManager } from "../graphics/textureManager";
+import { TextureManager } from "../graphics/textures/textureManager";
 
 export interface GameComponents
 {

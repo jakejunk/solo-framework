@@ -4,7 +4,7 @@ import { GameManager } from "/solo/core/gameManager";
 import { GameTimer } from "/solo/core/gameTimer";
 import { Logger } from "/solo/util/logger";
 import { ScalingAlgorithm } from "/solo/core/scalingAlgorithm";
-import { ShaderManager } from "/solo/graphics/shaderManager";
+import { ShaderManager } from "/solo/graphics/shaders/shaderManager";
 
 const vertexShader = 
 `void main() {

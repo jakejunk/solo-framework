@@ -1,11 +1,11 @@
-import { ClearOptions } from "../constants/clearOptions";
-import { Color } from "../color";
-import { GraphicsContext } from "../graphicsContext";
-import { Logger } from "../../util/logger";
-import { ShaderManager } from "../shaderManager";
-import { ShaderManagerWebGl1 } from "./shaderManagerWebGl1";
-import { TextureManager } from "../textureManager";
-import { TextureManagerWebGl1 } from "./textureManagerWebGl1";
+import { ClearOptions } from "./constants/clearOptions";
+import { Color } from "./color";
+import { GraphicsContext } from "./graphicsContext";
+import { Logger } from "../util/logger";
+import { ShaderManager } from "./shaders/shaderManager";
+import { ShaderManagerWebGl1 } from "./shaders/shaderManagerWebGl1";
+import { TextureManager } from "./textures/textureManager";
+import { TextureManagerWebGl1 } from "./textures/textureManagerWebGl1";
 
 export class GraphicsContextWebGl1 implements GraphicsContext
 {

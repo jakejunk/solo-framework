@@ -1,8 +1,8 @@
 import { Err, Ok, Result } from "../../util/result";
 import { Gl } from "../constants/gl";
 import { Logger } from "../../util/logger";
-import { ShaderManager, UniformLocation } from "../shaderManager";
-import { ShaderProgram } from "../shaderProgram";
+import { ShaderManager, UniformLocation } from "./shaderManager";
+import { ShaderProgram } from "./shaderProgram";
 import { ShaderType } from "../constants/shaderType";
 
 export class ShaderManagerWebGl1 implements ShaderManager

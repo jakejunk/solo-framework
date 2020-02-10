@@ -1,7 +1,7 @@
 import { Texture2D } from "./texture2d";
-import { TextureMagFilter } from "./constants/textureMagFilter";
-import { TextureMinFilter } from "./constants/textureMinFilter";
-import { TextureWrap } from "./constants/textureWrap";
+import { TextureMagFilter } from "../constants/textureMagFilter";
+import { TextureMinFilter } from "../constants/textureMinFilter";
+import { TextureWrap } from "../constants/textureWrap";
 
 export interface TextureManager
 {

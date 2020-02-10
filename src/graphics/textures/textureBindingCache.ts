@@ -1,4 +1,4 @@
-import { Texture2D } from "../texture2d";
+import { Texture2D } from "./texture2d";
 
 /**
  * Keeps a cache of GPU-uploaded textures to provide smart texture binding.

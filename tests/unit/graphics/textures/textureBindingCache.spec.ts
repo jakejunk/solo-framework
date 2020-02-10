@@ -1,6 +1,6 @@
 import { expect } from "chai";
-import { Texture2D } from "../../../../src/graphics/texture2d";
-import { TextureBindingCache } from "../../../../src/graphics/util/textureBindingCache";
+import { Texture2D } from "../../../../src/graphics/textures/texture2d";
+import { TextureBindingCache } from "../../../../src/graphics/textures/textureBindingCache";
 import { TextureNoHandle } from "../../_generators/graphics/texture2d.gen";
 import "mocha";
 
