@@ -68,13 +68,10 @@ class ShaderTest implements Game
      */
     private _renderTexture(gl: WebGLRenderingContext)
     {
-        const shaderManager = this.graphics.shaderManager;
+        this.graphics.shaderManager.bind(this.shaderProgram);
 
-        shaderManager.useProgram(this.shaderProgram);
-
-        // Try both ways
-        const posLocation = shaderManager.getAttribLocation(this.shaderProgram, "a_position");
-        const colorLocation = shaderManager.getAttribLocation(this.shaderProgram, "a_color");
+        const posLocation = this.shaderProgram.getAttribLocation("a_position");
+        const colorLocation = this.shaderProgram.getAttribLocation("a_color");
         const texCoordLocation = this.shaderProgram.getAttribLocation("a_texCoord");
 
         this.graphics.textureManager.bindTextureToLocation(this.texture, 0);

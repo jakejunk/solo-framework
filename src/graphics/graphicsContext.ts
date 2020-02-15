@@ -6,12 +6,15 @@ import { GraphicsContextWebGl1 } from "./graphicsContextWebGl1";
 import { Logger } from "../util/logger";
 import { ShaderManager } from "./shaders/shaderManager";
 import { TextureManager } from "./textures/textureManager";
+import { VertexManager } from "./vertices/vertexManager";
 
 export interface GraphicsContext
 {
     readonly gl: WebGLRenderingContext;
-    readonly textureManager: TextureManager;
+    
+    readonly vertexManager: VertexManager;
     readonly shaderManager: ShaderManager;
+    readonly textureManager: TextureManager;
 
     /**
      * Clears the specified buffers to preset values.

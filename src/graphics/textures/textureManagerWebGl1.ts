@@ -76,6 +76,34 @@ export class TextureManagerWebGl1 implements TextureManager
         return texture;
     }
 
+    public bindTexture(texture: Texture2D): number
+    {
+        const bindLocation = this._bindingCache.getBindLocation(texture);
+
+        if (bindLocation != undefined)
+        {
+            return bindLocation;
+        }
+        
+        const location = this._bindingCache.bindAnywhere(texture);
+
+        this._gl.activeTexture(Gl.TEXTURE0 + location);
+        this._gl.bindTexture(Gl.TEXTURE_2D, texture.getHandle());
+
+        return location;
+    }
+
+    public bindTextureToLocation(texture: Texture2D, location: number)
+    {
+        if (this._bindingCache.bindAtLocation(texture, location))
+        {
+            return;
+        }
+
+        this._gl.activeTexture(Gl.TEXTURE0 + location);
+        this._gl.bindTexture(Gl.TEXTURE_2D, texture.getHandle());
+    }
+
     public setTextureFilter(texture: Texture2D, minFilter: TextureMinFilter, magFilter: TextureMagFilter)
     {
         this._bindTempTexture(texture);
@@ -103,34 +131,6 @@ export class TextureManagerWebGl1 implements TextureManager
     private _bindTempTexture(texture: Texture2D)
     {
         this.bindTextureToLocation(texture, 7);
-    }
-
-    public bindTexture(texture: Texture2D): number
-    {
-        const bindLocation = this._bindingCache.getBindLocation(texture);
-
-        if (bindLocation != undefined)
-        {
-            return bindLocation;
-        }
-        
-        const location = this._bindingCache.bindAnywhere(texture);
-
-        this._gl.activeTexture(Gl.TEXTURE0 + location);
-        this._gl.bindTexture(Gl.TEXTURE_2D, texture.getHandle());
-
-        return location;
-    }
-
-    public bindTextureToLocation(texture: Texture2D, location: number)
-    {
-        if (this._bindingCache.bindAtLocation(texture, location))
-        {
-            return;
-        }
-
-        this._gl.activeTexture(Gl.TEXTURE0 + location);
-        this._gl.bindTexture(Gl.TEXTURE_2D, texture.getHandle());
     }
 
     public addManagedTexture(texture: Texture2D): Result<undefined, Error>

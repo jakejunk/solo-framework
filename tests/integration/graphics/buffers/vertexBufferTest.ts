@@ -1,3 +1,4 @@
+import { AttributeType } from "/solo/graphics/constants/attributeType";
 import { ClearOptions } from "/solo/graphics/constants/clearOptions";
 import { Color } from "/solo/graphics/color";
 import { ContentLoader } from "/solo/content/contentLoader";
@@ -9,6 +10,8 @@ import { GraphicsContext } from "/solo/graphics/graphicsContext";
 import { ScalingAlgorithm } from "/solo/core/scalingAlgorithm";
 import { ShaderProgram } from "/solo/graphics/shaders/shaderProgram";
 import { Texture2D } from "/solo/graphics/textures/texture2d";
+import { VertexAttribute } from "/solo/graphics/vertices/vertexAttribute";
+import { VertexBuffer } from "/solo/graphics/vertices/vertexBuffer";
 
 const vertexShader = 
 `attribute vec2 a_position;
@@ -34,12 +37,11 @@ varying vec4 v_color;
 varying vec2 v_texCoord;
  
 void main() {
-    vec4 color = v_color * texture2D(u_image, v_texCoord);
-    gl_FragColor = vec4(1.0 - color.r, 1.0 - color.g, 1.0 - color.b, color.a);
+    gl_FragColor = v_color * texture2D(u_image, v_texCoord);
 }`;
 
 document.addEventListener("DOMContentLoaded", () => {
-    const game = GameManager.Create(ShaderTest, {
+    const game = GameManager.Create(VertexBufferTest, {
         bufferWidth: 200,
         bufferHeight: 200,
         scalingAlgorithm: ScalingAlgorithm.PIXELATED
@@ -48,13 +50,14 @@ document.addEventListener("DOMContentLoaded", () => {
     game.start();
 });
 
-class ShaderTest implements Game
+class VertexBufferTest implements Game
 {
     public shouldExit = false;
     
     private readonly loader: ContentLoader;
     private readonly graphics: GraphicsContext;
     private shaderProgram!: ShaderProgram;
+    private vertexBuffer!: VertexBuffer;
     private texture!: Texture2D;
 
     public constructor(components: GameComponents)
@@ -72,7 +75,43 @@ class ShaderTest implements Game
         gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
         this.shaderProgram = this.graphics.shaderManager.createShaderProgram(vertexShader, fragmentShader).unwrap();
+        this.vertexBuffer = this.graphics.vertexManager.createBufferFromAttributes(4,
+            new VertexAttribute("a_position", 2, AttributeType.FLOAT, false),
+            new VertexAttribute("a_color", 4, AttributeType.UNSIGNED_BYTE, true),
+            new VertexAttribute("a_texCoord", 2, AttributeType.FLOAT, false));
+
+        this.vertexBuffer.updateAttributeLocations(this.shaderProgram);
+
+        this._setBufferValues(this.vertexBuffer.buffer);
+
         this.texture = await texturePromise;
+    }
+
+    private _setBufferValues(b: Float32Array)
+    {
+        b[0] = -0.5;
+        b[1] = -0.5;
+        b[2] = Color.ALIZARIN.toEncodedFloat();
+        b[3] = 0.0;
+        b[4] = 0.0;
+
+        b[5] = -0.5;
+        b[6] = +0.5;
+        b[7] = Color.ALIZARIN.toEncodedFloat();
+        b[8] = 0.0;
+        b[9] = 1.0;
+
+        b[10] = +0.5;
+        b[11] = +0.5;
+        b[12] = Color.PETER_RIVER.toEncodedFloat();
+        b[13] = 1.0;
+        b[14] = 1.0;
+
+        b[15] = +0.5;
+        b[16] = -0.5;
+        b[17] = Color.PETER_RIVER.toEncodedFloat();
+        b[18] = 1.0;
+        b[19] = 0.0;
     }
 
     public onUpdate(delta: number): void
@@ -93,27 +132,8 @@ class ShaderTest implements Game
     private _renderTexture(gl: WebGLRenderingContext)
     {
         this.graphics.shaderManager.bind(this.shaderProgram);
-
-        const posLocation = this.shaderProgram.getAttribLocation("a_position");
-        const colorLocation = this.shaderProgram.getAttribLocation("a_color");
-        const texCoordLocation = this.shaderProgram.getAttribLocation("a_texCoord");
-
         this.graphics.textureManager.bindTextureToLocation(this.texture, 0);
-
-        const vertexBuffer = gl.createBuffer();
-        gl.bindBuffer(Gl.ARRAY_BUFFER, vertexBuffer);
-        gl.bufferData(Gl.ARRAY_BUFFER, new Float32Array([
-            -0.5, -0.5, Color.WHITE.toEncodedFloat(), 0.0, 0.0,
-            -0.5, +0.5, Color.WHITE.toEncodedFloat(), 0.0, 1.0,
-            +0.5, +0.5, Color.WHITE.toEncodedFloat(), 1.0, 1.0,
-            +0.5, -0.5, Color.WHITE.toEncodedFloat(), 1.0, 0.0]), gl.STATIC_DRAW);
-        
-        gl.enableVertexAttribArray(posLocation);
-        gl.vertexAttribPointer(posLocation, 2, Gl.FLOAT, false, 20, 0);
-        gl.enableVertexAttribArray(colorLocation);
-        gl.vertexAttribPointer(colorLocation, 4, Gl.UNSIGNED_BYTE, true, 20, 8);
-        gl.enableVertexAttribArray(texCoordLocation);
-        gl.vertexAttribPointer(texCoordLocation, 2, Gl.FLOAT, false, 20, 12);
+        this.graphics.vertexManager.flushVertexBuffer(this.vertexBuffer);
 
         const indexBuffer = gl.createBuffer();
         gl.bindBuffer(Gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
