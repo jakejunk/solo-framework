@@ -14,7 +14,7 @@ import {
     } from "../../_generators/graphics/textures/textureParams.gen";
 import { TextureWrap } from "../../../../src/graphics/constants/textureWrap";
 
-describe("ShaderProgram", () =>
+describe("Texture2D", () =>
 {
     describe("getUri()", () =>
     {
