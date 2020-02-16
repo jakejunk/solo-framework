@@ -68,7 +68,7 @@ export class Texture2D
         return this._magFilter;
     }
 
-    public setMinFilter(minFilter: TextureMinFilter, magFilter: TextureMagFilter)
+    public setFilter(minFilter: TextureMinFilter, magFilter: TextureMagFilter)
     {
         this._textureManager.setTextureFilter(this, minFilter, magFilter);
 

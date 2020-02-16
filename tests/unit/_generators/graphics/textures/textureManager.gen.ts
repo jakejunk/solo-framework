@@ -1,6 +1,6 @@
-import { Texture2D } from "../../../../src/graphics/textures/texture2d";
-import { TextureManager } from "../../../../src/graphics/textures/textureManager";
-import { TextureParamsNoHandle } from "./util/textureParams.gen";
+import { Texture2D } from "../../../../../src/graphics/textures/texture2d";
+import { TextureManager } from "../../../../../src/graphics/textures/textureManager";
+import { TextureParamsNoHandle } from "../util/textureParams.gen";
 
 export class DummyTextureManager implements TextureManager
 {
