@@ -1,6 +1,6 @@
 import { ContentLoader } from "../../../src/content/contentLoader";
 import { ContentParser } from "../../../src/content/contentParser";
-import { DummyTextureManager } from "../_generators/graphics/textureManager.gen";
+import { DummyTextureManager } from "../_generators/graphics/textures/textureManager.gen";
 import { Err } from "../../../src/util/result";
 import { expect } from "chai";
 import "mocha";

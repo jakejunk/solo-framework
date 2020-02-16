@@ -1,8 +1,8 @@
 import { ContentParser } from "./contentParser";
 import { Err, Ok, Result } from "../util/result";
 import { Logger } from "../util/logger";
-import { Texture2D } from "../graphics/texture2d";
-import { TextureManager } from "../graphics/textureManager";
+import { Texture2D } from "../graphics/textures/texture2d";
+import { TextureManager } from "../graphics/textures/textureManager";
 
 export type FetchFn = (input: RequestInfo, init?: RequestInit) => Promise<Response>
 
@@ -148,7 +148,7 @@ export class ContentLoader
 
         const fullPath = this._getFullPath(contentUri);
 
-        ContentLoader._Logger.debug(`Fetching file: ${fullPath}`)
+        ContentLoader._Logger.debug(`Fetching file: ${fullPath}`);
         
         const image = await new Promise<HTMLImageElement>((resolve, reject) => {
             const imageElement = new Image();

@@ -7,8 +7,8 @@ import { GameManager } from "/solo/core/gameManager";
 import { Gl } from "/solo/graphics/constants/gl";
 import { GraphicsContext } from "/solo/graphics/graphicsContext";
 import { ScalingAlgorithm } from "/solo/core/scalingAlgorithm";
-import { ShaderProgram } from "/solo/graphics/shaderProgram";
-import { Texture2D } from "/solo/graphics/texture2d";
+import { ShaderProgram } from "/solo/graphics/shaders/shaderProgram";
+import { Texture2D } from "/solo/graphics/textures/texture2d";
 
 const vertexShader = 
 `attribute vec2 a_position;
@@ -61,7 +61,7 @@ class ShaderTest implements Game
     {
         this.loader = components.loader;
         this.graphics = components.graphicsContext;
-        this.graphics.setClearColor(Color.AMETHYST);
+        this.graphics.setClearColor(Color.PETER_RIVER);
     }
     
     public async onLoad(): Promise<void>
@@ -92,13 +92,10 @@ class ShaderTest implements Game
      */
     private _renderTexture(gl: WebGLRenderingContext)
     {
-        const shaderManager = this.graphics.shaderManager;
+        this.graphics.shaderManager.bindShader(this.shaderProgram);
 
-        shaderManager.useProgram(this.shaderProgram);
-
-        // Try both ways
-        const posLocation = shaderManager.getAttribLocation(this.shaderProgram, "a_position");
-        const colorLocation = shaderManager.getAttribLocation(this.shaderProgram, "a_color");
+        const posLocation = this.shaderProgram.getAttribLocation("a_position");
+        const colorLocation = this.shaderProgram.getAttribLocation("a_color");
         const texCoordLocation = this.shaderProgram.getAttribLocation("a_texCoord");
 
         this.graphics.textureManager.bindTextureToLocation(this.texture, 0);

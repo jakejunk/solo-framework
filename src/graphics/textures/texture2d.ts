@@ -1,12 +1,12 @@
-import { TextureMagFilter } from "./constants/textureMagFilter";
-import { TextureManager } from "./textureManager";
-import { TextureMinFilter } from "./constants/textureMinFilter";
-import { TextureParams } from "./util/textureParams";
-import { TextureWrap } from "./constants/textureWrap";
+import { TextureMagFilter } from "../constants/textureMagFilter";
+import { TextureManagerInternal } from "./textureManager";
+import { TextureMinFilter } from "../constants/textureMinFilter";
+import { TextureParams } from "./textureParams";
+import { TextureWrap } from "../constants/textureWrap";
 
 export class Texture2D
 {
-    private readonly _textureManager: TextureManager;
+    private readonly _textureManager: TextureManagerInternal;
     private _handle: WebGLTexture;
     private _uri?: string;
     private _width: number;
@@ -16,7 +16,10 @@ export class Texture2D
     private _wrapS: TextureWrap;
     private _wrapT: TextureWrap;
 
-    public constructor(textureManager: TextureManager, params: TextureParams)
+    /**
+     * @internal
+     */
+    public constructor(textureManager: TextureManagerInternal, params: TextureParams)
     {
         this._textureManager = textureManager;
         this._handle = params.handle;
@@ -65,7 +68,7 @@ export class Texture2D
         return this._magFilter;
     }
 
-    public setMinFilter(minFilter: TextureMinFilter, magFilter: TextureMagFilter)
+    public setFilter(minFilter: TextureMinFilter, magFilter: TextureMagFilter)
     {
         this._textureManager.setTextureFilter(this, minFilter, magFilter);
 

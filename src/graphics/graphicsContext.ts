@@ -2,16 +2,18 @@ import { ClearOptions } from "./constants/clearOptions";
 import { Color } from "./color";
 import { Err, Ok, Result } from "../util/result";
 import { GameCanvas } from "../core/gameCanvas";
-import { GraphicsContextWebGl1 } from "./impl/graphicsContextWebGl1";
+import { GraphicsContextWebGl1 } from "./graphicsContextWebGl1";
 import { Logger } from "../util/logger";
-import { ShaderManager } from "./shaderManager";
-import { TextureManager } from "./textureManager";
+import { ShaderManager } from "./shaders/shaderManager";
+import { TextureManager } from "./textures/textureManager";
+import { VertexManager } from "./vertices/vertexManager";
 
 export interface GraphicsContext
 {
     readonly gl: WebGLRenderingContext;
-    readonly textureManager: TextureManager;
     readonly shaderManager: ShaderManager;
+    readonly textureManager: TextureManager;
+    readonly vertexManager: VertexManager;
 
     /**
      * Clears the specified buffers to preset values.

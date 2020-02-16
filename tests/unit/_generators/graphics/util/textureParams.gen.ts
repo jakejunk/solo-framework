@@ -1,6 +1,6 @@
 import { TextureMagFilter } from "../../../../../src/graphics/constants/textureMagFilter";
 import { TextureMinFilter } from "../../../../../src/graphics/constants/textureMinFilter";
-import { TextureParams } from "../../../../../src/graphics/util/textureParams";
+import { TextureParams } from "../../../../../src/graphics/textures/textureParams";
 import { TextureWrap } from "../../../../../src/graphics/constants/textureWrap";
 
 export const TextureParamsNoHandle: TextureParams = {

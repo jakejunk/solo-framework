@@ -7,7 +7,7 @@ import { GameManager } from "/solo/core/gameManager";
 import { Gl } from "/solo/graphics/constants/gl";
 import { GraphicsContext } from "/solo/graphics/graphicsContext";
 import { ScalingAlgorithm } from "/solo/core/scalingAlgorithm";
-import { Texture2D } from "/solo/graphics/texture2d";
+import { Texture2D } from "/solo/graphics/textures/texture2d";
 
 const vertexShader = 
 `attribute vec2 a_position;
