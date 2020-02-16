@@ -15,6 +15,15 @@ export class VertexBuffer
      * Use `VertexManager.flushVertexBuffer()` to send these values to the graphics device.
      */
     public readonly buffer: Float32Array;
+
+    /**
+     * The number of vertices that this buffer can hold.
+     */
+    public readonly numVerts: number;
+
+    /**
+     * Returns the size of each vertex in this buffer, in bytes.
+     */
     public readonly vertexSize: number;
     
     private readonly _vertexManager: VertexManagerInternal;
@@ -25,7 +34,10 @@ export class VertexBuffer
      */
     public constructor(bufferManager: VertexManagerInternal, params: VertexBufferParams)
     {
-        this.buffer = new Float32Array(params.numVerts * params.vertexSize / 4);
+        const bufferLength = Math.ceil(params.numVerts * params.vertexSize / Float32Array.BYTES_PER_ELEMENT);
+        this.buffer = new Float32Array(bufferLength);
+
+        this.numVerts = params.numVerts;
         this.vertexSize = params.vertexSize;
         this.attributes = params.attributes;
 
@@ -39,22 +51,20 @@ export class VertexBuffer
     }
 
     /**
-     * Gets the total number of vertices that this buffer can hold.
-     */
-    public getNumVertices(): number
-    {
-        return this.buffer.length / this.vertexSize;
-    }
-
-    /**
      * Finds and grabs the locations of all attributes in the provided shader program.
-     * Returns `false` if any attributes were not found.
+     * Returns `false` if the attributes of the program do match up with the attributes of this buffer.
      */
     public updateAttributeLocations(program: ShaderProgram): boolean
     {
-        let allFound = +true;
         const attributes = this.attributes;
         const numAttributes = attributes.length;
+
+        if (numAttributes !== program.getNumAttributes())
+        {
+            return false;
+        }
+        
+        let allFound = +true;
 
         for (let i = 0; i < numAttributes; ++i)
         {

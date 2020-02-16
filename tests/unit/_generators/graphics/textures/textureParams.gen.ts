@@ -15,7 +15,15 @@ export function TextureParamsAllDefault(): TextureParams
         wrapS: TextureWrap.CLAMP_TO_EDGE,
         wrapT: TextureWrap.CLAMP_TO_EDGE
     };
-};
+}
+
+export function TextureParamsWithHandle(handle: number): TextureParams
+{
+    const params: Writeable<TextureParams> = TextureParamsAllDefault();
+    params.handle = handle;
+
+    return params;
+}
 
 export function TextureParamsWithUri(uri: string): TextureParams
 {

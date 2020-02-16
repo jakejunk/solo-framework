@@ -4,6 +4,7 @@ import { TextureMagFilter } from "../../../../src/graphics/constants/textureMagF
 import { TextureMinFilter } from "../../../../src/graphics/constants/textureMinFilter";
 import { TextureNoHandle } from "../../_generators/graphics/textures/texture2d.gen";
 import {
+    TextureParamsWithHandle,
     TextureParamsWithHeight,
     TextureParamsWithMagFilter,
     TextureParamsWithMinFilter,
@@ -16,9 +17,20 @@ import { TextureWrap } from "../../../../src/graphics/constants/textureWrap";
 
 describe("Texture2D", () =>
 {
+    describe("getHandle()", () =>
+    {
+        it("returns correct value after construction", () =>
+        {
+            const handle = 12345;
+            const texture = new Texture2D(undefined, TextureParamsWithHandle(handle));
+
+            expect(texture.getHandle()).to.equal(handle);
+        });
+    });
+
     describe("getUri()", () =>
     {
-        it("returns correct value", () =>
+        it("returns correct value after construction", () =>
         {
             const uri = "/home/";
             const texture = new Texture2D(undefined, TextureParamsWithUri(uri));
@@ -29,7 +41,7 @@ describe("Texture2D", () =>
 
     describe("getWidth()", () =>
     {
-        it("returns correct value", () =>
+        it("returns correct value after construction", () =>
         {
             const width = 200;
             const texture = new Texture2D(undefined, TextureParamsWithWidth(width));
@@ -40,7 +52,7 @@ describe("Texture2D", () =>
 
     describe("getHeight()", () =>
     {
-        it("returns correct value", () =>
+        it("returns correct value after construction", () =>
         {
             const height = 400;
             const texture = new Texture2D(undefined, TextureParamsWithHeight(height));
@@ -51,7 +63,7 @@ describe("Texture2D", () =>
 
     describe("getMinFilter()", () =>
     {
-        it("returns correct value", () =>
+        it("returns correct value after construction", () =>
         {
             const minFilter = TextureMinFilter.LINEAR_MIPMAP_NEAREST;
             const texture = new Texture2D(undefined, TextureParamsWithMinFilter(minFilter));
@@ -62,7 +74,7 @@ describe("Texture2D", () =>
 
     describe("getMagFilter()", () =>
     {
-        it("returns correct value", () =>
+        it("returns correct value after construction", () =>
         {
             const magFilter = TextureMagFilter.NEAREST;
             const texture = new Texture2D(undefined, TextureParamsWithMagFilter(magFilter));
@@ -73,7 +85,7 @@ describe("Texture2D", () =>
 
     describe("getWrapS()", () =>
     {
-        it("returns correct value", () =>
+        it("returns correct value after construction", () =>
         {
             const wrapS = TextureWrap.REPEAT;
             const texture = new Texture2D(undefined, TextureParamsWithWrapS(wrapS));
@@ -84,7 +96,7 @@ describe("Texture2D", () =>
 
     describe("getWrapT()", () =>
     {
-        it("returns correct value", () =>
+        it("returns correct value after construction", () =>
         {
             const wrapT = TextureWrap.REPEAT;
             const texture = new Texture2D(undefined, TextureParamsWithWrapT(wrapT));

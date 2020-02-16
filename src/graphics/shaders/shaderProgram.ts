@@ -24,6 +24,16 @@ export class ShaderProgram
         return this._handle;
     }
 
+    public getNumAttributes(): number
+    {
+        return this._attributeMap.size;
+    }
+
+    public getNumUniforms(): number
+    {
+        return this._uniformMap.size;
+    }
+
     /**
      * Gets the location of an attribute variable in this program.
      * Returns `-1` if the attribute variable is not found.

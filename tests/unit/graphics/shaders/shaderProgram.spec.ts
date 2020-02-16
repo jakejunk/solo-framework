@@ -1,10 +1,64 @@
 import { expect } from "chai";
 import { ShaderProgram } from "../../../../src/graphics/shaders/shaderProgram";
-import { ShaderProgramParamsWithAttribute, ShaderProgramParamsWithUniform } from "../../_generators/graphics/shaders/shaderProgramParams.gen";
+import { ShaderProgramParamsWithAttribute, ShaderProgramParamsWithHandle, ShaderProgramParamsWithUniform, ShaderProgramParamsWithAttributes, ShaderProgramParamsWithUniforms } from "../../_generators/graphics/shaders/shaderProgramParams.gen";
 import "mocha";
+import { UniformLocation } from "../../../../src/graphics/shaders/shaderManager";
 
 describe("ShaderProgram", () =>
 {
+    describe("getHandle()", () =>
+    {
+        it("returns correct value after construction", () =>
+        {
+            const handle = 69;
+            const params = ShaderProgramParamsWithHandle(handle);
+
+            const program = new ShaderProgram(undefined, params);
+
+            expect(program.getHandle()).to.equal(handle);
+        });
+    });
+
+    describe("getNumAttributes()", () =>
+    {
+        it("returns correct value after construction", () =>
+        {
+            const numAttributes = 15;
+            const attributes: [string, number][] = [];
+
+            for (let i = 0; i < numAttributes; ++i)
+            {
+                attributes.push([`attr${i}`, i]);
+            }
+
+            const params = ShaderProgramParamsWithAttributes(attributes);
+
+            const program = new ShaderProgram(undefined, params);
+
+            expect(program.getNumAttributes()).to.equal(numAttributes);
+        });
+    });
+
+    describe("getNumUniforms()", () =>
+    {
+        it("returns correct value after construction", () =>
+        {
+            const numUniforms = 15;
+            const uniforms: [string, UniformLocation][] = [];
+
+            for (let i = 0; i < numUniforms; ++i)
+            {
+                uniforms.push([`uniform${i}`, i]);
+            }
+
+            const params = ShaderProgramParamsWithUniforms(uniforms);
+
+            const program = new ShaderProgram(undefined, params);
+
+            expect(program.getNumUniforms()).to.equal(numUniforms);
+        });
+    });
+
     describe("getAttribLocation()", () =>
     {
         it("returns location matching attribute exists", () =>
