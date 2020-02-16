@@ -3,8 +3,8 @@ import { TextureMinFilter } from "../constants/textureMinFilter";
 import { TextureWrap } from "../constants/textureWrap";
 
 /**
- * Contains the values necessary to contruct a new `Texture2D`.
- * This type is mainly used internally by `TextureManager`.
+ * @internal
+ * Contains the values necessary to construct a new `Texture2D`.
  */
 export interface TextureParams
 {

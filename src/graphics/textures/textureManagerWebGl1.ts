@@ -5,11 +5,14 @@ import { Logger } from "../../util/logger";
 import { Texture2D } from "./texture2d";
 import { TextureBindingCache } from "./textureBindingCache";
 import { TextureMagFilter } from "../constants/textureMagFilter";
-import { TextureManager } from "./textureManager";
+import { TextureManagerInternal } from "./textureManager";
 import { TextureMinFilter } from "../constants/textureMinFilter";
 import { TextureWrap } from "../constants/textureWrap";
 
-export class TextureManagerWebGl1 implements TextureManager
+/**
+ * @internal
+ */
+export class TextureManagerWebGl1 implements TextureManagerInternal
 {
     private static _Logger = new Logger(TextureManagerWebGl1.name);
 

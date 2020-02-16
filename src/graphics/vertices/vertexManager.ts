@@ -2,16 +2,34 @@ import { IndexBuffer } from "./indexBuffer";
 import { VertexAttribute } from "./vertexAttribute";
 import { VertexBuffer } from "./vertexBuffer";
 
+/**
+ * Provides an interface to all vertex-related functions of the graphics context.
+ */
 export interface VertexManager
 {
-    createBufferFromAttributes(numVerts: number, ...attributes: VertexAttribute[]): VertexBuffer;
+    createVertexBuffer(numVerts: number, ...attributes: VertexAttribute[]): VertexBuffer;
+
+    createIndexBuffer(indices: Uint16Array): IndexBuffer;
 
     bindVertexBuffer(vertexBuffer: VertexBuffer): void;
 
     bindIndexBuffer(indexBuffer: IndexBuffer): void;
 
     /**
-     * Flushes the contents of the provided buffer to the graphics device.
+     * Binds the provided vertex buffer and flushes its contents to the graphics device.
      */
     flushVertexBuffer(vertexBuffer: VertexBuffer, offset?: number, count?: number): void;
+
+    /**
+     * Binds the provided index buffer and flushes its contents to the graphics device.
+     */
+    flushIndexBuffer(indexBuffer: IndexBuffer, offset?: number, count?: number): void;
+}
+
+/**
+ * @internal
+ */
+export interface VertexManagerInternal extends VertexManager
+{
+    
 }

@@ -1,8 +1,8 @@
 import { VertexAttribute } from "./vertexAttribute";
 
 /**
- * Contains the values necessary to contruct a new `VertexBuffer`.
- * This type is mainly used internally by `BufferManager`.
+ * @internal
+ * Contains the values necessary to construct a new `VertexBuffer`.
  */
 export interface VertexBufferParams
 {

@@ -148,7 +148,7 @@ export class ContentLoader
 
         const fullPath = this._getFullPath(contentUri);
 
-        ContentLoader._Logger.debug(`Fetching file: ${fullPath}`)
+        ContentLoader._Logger.debug(`Fetching file: ${fullPath}`);
         
         const image = await new Promise<HTMLImageElement>((resolve, reject) => {
             const imageElement = new Image();

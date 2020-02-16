@@ -1,7 +1,7 @@
 import { ShaderProgram } from "../shaders/shaderProgram";
 import { VertexAttribute } from "./vertexAttribute";
 import { VertexBufferParams } from "./vertexBufferParams";
-import { VertexManager } from "./vertexManager";
+import { VertexManagerInternal } from "./vertexManager";
 
 export class VertexBuffer
 {
@@ -12,21 +12,24 @@ export class VertexBuffer
 
     /**
      * The underlying array containing the values of this buffer.
-     * Call `flush()` to send these values to the graphics device.
+     * Use `VertexManager.flushVertexBuffer()` to send these values to the graphics device.
      */
     public readonly buffer: Float32Array;
     public readonly vertexSize: number;
     
-    private readonly _manager: VertexManager;
+    private readonly _vertexManager: VertexManagerInternal;
     private _handle: WebGLBuffer;
 
-    public constructor(bufferManager: VertexManager, params: VertexBufferParams)
+    /**
+     * @internal
+     */
+    public constructor(bufferManager: VertexManagerInternal, params: VertexBufferParams)
     {
         this.buffer = new Float32Array(params.numVerts * params.vertexSize / 4);
         this.vertexSize = params.vertexSize;
         this.attributes = params.attributes;
 
-        this._manager = bufferManager;
+        this._vertexManager = bufferManager;
         this._handle = params.handle;
     }
 
@@ -59,14 +62,5 @@ export class VertexBuffer
         }
 
         return !!allFound;
-    }
-
-    /**
-     * Flushes the contents of this buffer's internal store to the graphics device.
-     * No operation occurs if this buffer is not marked as dirty.
-     */
-    public flush(offset = 0, count = this.buffer.length)
-    {
-        this._manager.flushVertexBuffer(this, offset, count);
     }
 }

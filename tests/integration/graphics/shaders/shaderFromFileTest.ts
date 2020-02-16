@@ -68,7 +68,7 @@ class ShaderTest implements Game
      */
     private _renderTexture(gl: WebGLRenderingContext)
     {
-        this.graphics.shaderManager.bind(this.shaderProgram);
+        this.graphics.shaderManager.bindShader(this.shaderProgram);
 
         const posLocation = this.shaderProgram.getAttribLocation("a_position");
         const colorLocation = this.shaderProgram.getAttribLocation("a_color");

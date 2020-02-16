@@ -1,8 +1,8 @@
 import { UniformLocation } from "./shaderManager";
 
 /**
- * Contains the values necessary to contruct a new `ShaderProgram`.
- * This type is mainly used internally by `ShaderManager`.
+ * @internal
+ * Contains the values necessary to construct a new `ShaderProgram`.
  */
 export interface ShaderProgramParams
 {

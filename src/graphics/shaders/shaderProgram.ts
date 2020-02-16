@@ -1,14 +1,17 @@
-import { ShaderManager, UniformLocation } from "./shaderManager";
+import { ShaderManagerInternal, UniformLocation } from "./shaderManager";
 import { ShaderProgramParams } from "./shaderProgramParams";
 
 export class ShaderProgram
 {
-    private readonly _shaderManager: ShaderManager;
+    private readonly _shaderManager: ShaderManagerInternal;
     private _handle: WebGLProgram;
     private _attributeMap: Map<string, number>;
     private _uniformMap: Map<string, UniformLocation>;
     
-    public constructor(shaderManager: ShaderManager, params: ShaderProgramParams)
+    /**
+     * @internal
+     */
+    public constructor(shaderManager: ShaderManagerInternal, params: ShaderProgramParams)
     {
         this._shaderManager = shaderManager;
         this._handle = params.handle;

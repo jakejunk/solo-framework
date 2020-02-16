@@ -12,6 +12,7 @@ import { ShaderProgram } from "/solo/graphics/shaders/shaderProgram";
 import { Texture2D } from "/solo/graphics/textures/texture2d";
 import { VertexAttribute } from "/solo/graphics/vertices/vertexAttribute";
 import { VertexBuffer } from "/solo/graphics/vertices/vertexBuffer";
+import { IndexBuffer } from "/solo/graphics/vertices/indexBuffer";
 
 document.addEventListener("DOMContentLoaded", () => {
     const game = GameManager.Create(VertexBufferTest, {
@@ -32,13 +33,14 @@ class VertexBufferTest implements Game
     private readonly graphics: GraphicsContext;
     private shaderProgram!: ShaderProgram;
     private vertexBuffer!: VertexBuffer;
+    private indexBuffer!: IndexBuffer;
     private texture!: Texture2D;
 
     public constructor(components: GameComponents)
     {
         this.loader = components.loader;
         this.graphics = components.graphicsContext;
-        this.graphics.setClearColor(Color.AMETHYST);
+        this.graphics.setClearColor(Color.TURQUOISE);
     }
     
     public async onLoad(): Promise<void>
@@ -57,10 +59,12 @@ class VertexBufferTest implements Game
             new VertexAttribute("a_position", 2, AttributeType.FLOAT, false),
             new VertexAttribute("a_color", 4, AttributeType.UNSIGNED_BYTE, true),
             new VertexAttribute("a_texCoord", 2, AttributeType.FLOAT, false));
-
         this.vertexBuffer.updateAttributeLocations(this.shaderProgram);
-
         this._setBufferValues(this.vertexBuffer.buffer);
+
+        this.indexBuffer = this.graphics.vertexManager.createIndexBuffer(new Uint16Array([
+            0, 1, 2, 2, 3, 0
+        ]));
 
         this.texture = await texturePromise;
     }
@@ -69,25 +73,25 @@ class VertexBufferTest implements Game
     {
         b[0] = -0.5;
         b[1] = -0.5;
-        b[2] = Color.ALIZARIN.toEncodedFloat();
+        b[2] = Color.ORANGE.toEncodedFloat();
         b[3] = 0.0;
         b[4] = 0.0;
 
         b[5] = -0.5;
         b[6] = +0.5;
-        b[7] = Color.ALIZARIN.toEncodedFloat();
+        b[7] = Color.ORANGE.toEncodedFloat();
         b[8] = 0.0;
         b[9] = 1.0;
 
         b[10] = +0.5;
         b[11] = +0.5;
-        b[12] = Color.PETER_RIVER.toEncodedFloat();
+        b[12] = Color.ORANGE.toEncodedFloat();
         b[13] = 1.0;
         b[14] = 1.0;
 
         b[15] = +0.5;
         b[16] = -0.5;
-        b[17] = Color.PETER_RIVER.toEncodedFloat();
+        b[17] = Color.ORANGE.toEncodedFloat();
         b[18] = 1.0;
         b[19] = 0.0;
     }
@@ -111,13 +115,9 @@ class VertexBufferTest implements Game
     {
         this.graphics.shaderManager.bindShader(this.shaderProgram);
         this.graphics.textureManager.bindTextureToLocation(this.texture, 0);
-        this.graphics.vertexManager.flushVertexBuffer(this.vertexBuffer);
 
-        const indexBuffer = gl.createBuffer();
-        gl.bindBuffer(Gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
-        gl.bufferData(Gl.ELEMENT_ARRAY_BUFFER, new Int16Array([
-            0, 1, 2, 2, 3, 0
-        ]), Gl.STATIC_DRAW);
+        this.graphics.vertexManager.bindIndexBuffer(this.indexBuffer);
+        this.graphics.vertexManager.flushVertexBuffer(this.vertexBuffer);
 
         gl.drawElements(Gl.TRIANGLES, 6, Gl.UNSIGNED_SHORT, 0);
     }

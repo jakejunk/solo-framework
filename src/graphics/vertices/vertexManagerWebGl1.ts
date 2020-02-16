@@ -2,19 +2,23 @@ import { Gl } from "../constants/gl";
 import { IndexBuffer } from "./indexBuffer";
 import { VertexAttribute } from "./vertexAttribute";
 import { VertexBuffer } from "./vertexBuffer";
-import { VertexManager } from "./vertexManager";
+import { VertexManagerInternal } from "./vertexManager";
 
-export class VertexManagerWebGl1 implements VertexManager
+/**
+ * @internal
+ */
+export class VertexManagerWebGl1 implements VertexManagerInternal
 {
     private readonly _gl: WebGLRenderingContext;
     private _boundVertexBuffer?: VertexBuffer;
+    private _boundIndexBuffer?: IndexBuffer;
 
     public constructor(gl: WebGLRenderingContext)
     {
         this._gl = gl;
     }
 
-    public createBufferFromAttributes(numVerts: number, ...attributes: VertexAttribute[]): VertexBuffer
+    public createVertexBuffer(numVerts: number, ...attributes: VertexAttribute[]): VertexBuffer
     {
         const gl = this._gl;
         const vertexSize = attributes
@@ -28,14 +32,28 @@ export class VertexManagerWebGl1 implements VertexManager
 
         this._boundVertexBuffer = undefined;
 
-        const vertexBuffer = new VertexBuffer(this, {
+        return new VertexBuffer(this, {
             handle: handle,
             numVerts,
             vertexSize,
             attributes
         });
+    }
 
-        return vertexBuffer;
+    public createIndexBuffer(indices: Uint16Array): IndexBuffer
+    {
+        const gl = this._gl;
+        const handle = gl.createBuffer()!;
+
+        gl.bindBuffer(Gl.ELEMENT_ARRAY_BUFFER, handle);
+        gl.bufferData(Gl.ELEMENT_ARRAY_BUFFER, indices, Gl.STATIC_DRAW);
+
+        this._boundIndexBuffer = undefined;
+
+        return new IndexBuffer(this, {
+            handle: handle,
+            indices: indices
+        });
     }
     
     public bindVertexBuffer(vertexBuffer: VertexBuffer)
@@ -52,6 +70,8 @@ export class VertexManagerWebGl1 implements VertexManager
 
         gl.bindBuffer(Gl.ARRAY_BUFFER, vertexBuffer.getHandle());
 
+        this._boundVertexBuffer = vertexBuffer;
+
         for (let i = 0, offset = 0; i < numAttributes; ++i)
         {
             const attr = attributes[i];
@@ -65,13 +85,18 @@ export class VertexManagerWebGl1 implements VertexManager
 
             offset += attr.totalSize;
         }
-
-        this._boundVertexBuffer = vertexBuffer;
     }
     
     public bindIndexBuffer(indexBuffer: IndexBuffer)
     {
-        throw new Error("Method not implemented.");
+        if (indexBuffer === this._boundIndexBuffer)
+        {
+            return;
+        }
+
+        this._gl.bindBuffer(Gl.ELEMENT_ARRAY_BUFFER, indexBuffer.getHandle());
+
+        this._boundIndexBuffer = indexBuffer;
     }
 
     public flushVertexBuffer(vertexBuffer: VertexBuffer, offset = 0, count = vertexBuffer.buffer.length)
@@ -82,5 +107,10 @@ export class VertexManagerWebGl1 implements VertexManager
         const bufferView = vertexBuffer.buffer.subarray(offset, offset + count);
         
         this._gl.bufferSubData(Gl.ARRAY_BUFFER, byteOffset, bufferView);
+    }
+
+    public flushIndexBuffer(indexBuffer: IndexBuffer, offset?: number | undefined, count?: number | undefined)
+    {
+        throw new Error("Method not implemented.");
     }
 }

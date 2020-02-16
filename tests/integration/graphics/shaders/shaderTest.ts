@@ -61,7 +61,7 @@ class ShaderTest implements Game
     {
         this.loader = components.loader;
         this.graphics = components.graphicsContext;
-        this.graphics.setClearColor(Color.AMETHYST);
+        this.graphics.setClearColor(Color.PETER_RIVER);
     }
     
     public async onLoad(): Promise<void>
@@ -92,7 +92,7 @@ class ShaderTest implements Game
      */
     private _renderTexture(gl: WebGLRenderingContext)
     {
-        this.graphics.shaderManager.bind(this.shaderProgram);
+        this.graphics.shaderManager.bindShader(this.shaderProgram);
 
         const posLocation = this.shaderProgram.getAttribLocation("a_position");
         const colorLocation = this.shaderProgram.getAttribLocation("a_color");

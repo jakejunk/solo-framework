@@ -3,6 +3,9 @@ import { ShaderProgram } from "./shaderProgram";
 
 export type UniformLocation = WebGLUniformLocation;
 
+/**
+ * Provides an interface to all shader-related functions of the graphics context.
+ */
 export interface ShaderManager
 {
     /**
@@ -13,5 +16,13 @@ export interface ShaderManager
     /**
      * Binds the provided program for rendering.
      */
-    bind(program: ShaderProgram): void;
+    bindShader(program: ShaderProgram): void;
+}
+
+/**
+ * @internal
+ */
+export interface ShaderManagerInternal extends ShaderManager
+{
+    // TODO
 }

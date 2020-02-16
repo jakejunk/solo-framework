@@ -1,11 +1,14 @@
 import { Err, Ok, Result } from "../../util/result";
 import { Gl } from "../constants/gl";
 import { Logger } from "../../util/logger";
-import { ShaderManager, UniformLocation } from "./shaderManager";
+import { ShaderManagerInternal, UniformLocation } from "./shaderManager";
 import { ShaderProgram } from "./shaderProgram";
 import { ShaderType } from "../constants/shaderType";
 
-export class ShaderManagerWebGl1 implements ShaderManager
+/**
+ * @internal
+ */
+export class ShaderManagerWebGl1 implements ShaderManagerInternal
 {
     private static readonly _Logger = new Logger(ShaderManagerWebGl1.name);
 
@@ -119,7 +122,7 @@ export class ShaderManagerWebGl1 implements ShaderManager
         return uniformMap;
     }
 
-    public bind(program: ShaderProgram)
+    public bindShader(program: ShaderProgram)
     {
         this._gl.useProgram(program.getHandle());
     }

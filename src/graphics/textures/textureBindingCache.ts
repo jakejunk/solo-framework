@@ -1,8 +1,8 @@
 import { Texture2D } from "./texture2d";
 
 /**
+ * @internal
  * Keeps a cache of GPU-uploaded textures to provide smart texture binding.
- * This type is mainly used internally by `TextureManager`.
  */
 export class TextureBindingCache
 {

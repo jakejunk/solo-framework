@@ -11,10 +11,9 @@ import { VertexManager } from "./vertices/vertexManager";
 export interface GraphicsContext
 {
     readonly gl: WebGLRenderingContext;
-    
-    readonly vertexManager: VertexManager;
     readonly shaderManager: ShaderManager;
     readonly textureManager: TextureManager;
+    readonly vertexManager: VertexManager;
 
     /**
      * Clears the specified buffers to preset values.

@@ -2,21 +2,24 @@ import { ClearOptions } from "./constants/clearOptions";
 import { Color } from "./color";
 import { GraphicsContext } from "./graphicsContext";
 import { Logger } from "../util/logger";
-import { ShaderManager } from "./shaders/shaderManager";
+import { ShaderManagerInternal } from "./shaders/shaderManager";
 import { ShaderManagerWebGl1 } from "./shaders/shaderManagerWebGl1";
-import { TextureManager } from "./textures/textureManager";
+import { TextureManagerInternal } from "./textures/textureManager";
 import { TextureManagerWebGl1 } from "./textures/textureManagerWebGl1";
-import { VertexManager } from "./vertices/vertexManager";
+import { VertexManagerInternal } from "./vertices/vertexManager";
 import { VertexManagerWebGl1 } from "./vertices/vertexManagerWebGl1";
 
+/**
+ * @internal
+ */
 export class GraphicsContextWebGl1 implements GraphicsContext
 {
     private static readonly _Logger = new Logger(GraphicsContextWebGl1.name);
 
     public readonly gl: WebGLRenderingContext;
-    public readonly vertexManager: VertexManager;
-    public readonly shaderManager: ShaderManager;
-    public readonly textureManager: TextureManager;
+    public readonly vertexManager: VertexManagerInternal;
+    public readonly shaderManager: ShaderManagerInternal;
+    public readonly textureManager: TextureManagerInternal;
 
     private _bufferWidth!: number;
     private _bufferHeight!: number;
