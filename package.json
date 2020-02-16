@@ -1,6 +1,6 @@
 {
   "name": "solo-framework",
-  "version": "0.3.0",
+  "version": "0.2.0",
   "description": "A simple framework for developing WebGL games",
   "module": "dist/solo-framework.js",
   "files": [

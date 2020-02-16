@@ -17,9 +17,9 @@ export class GraphicsContextWebGl1 implements GraphicsContext
     private static readonly _Logger = new Logger(GraphicsContextWebGl1.name);
 
     public readonly gl: WebGLRenderingContext;
-    public readonly vertexManager: VertexManagerInternal;
     public readonly shaderManager: ShaderManagerInternal;
     public readonly textureManager: TextureManagerInternal;
+    public readonly vertexManager: VertexManagerInternal;
 
     private _bufferWidth!: number;
     private _bufferHeight!: number;
@@ -27,9 +27,9 @@ export class GraphicsContextWebGl1 implements GraphicsContext
     constructor(context: WebGLRenderingContext, bufferWidth: number, bufferHeight: number)
     {
         this.gl = context;
-        this.vertexManager = new VertexManagerWebGl1(context);
         this.shaderManager = new ShaderManagerWebGl1(context);
         this.textureManager = new TextureManagerWebGl1(context);
+        this.vertexManager = new VertexManagerWebGl1(context);
 
         this._initViewport(bufferWidth, bufferHeight);
     }
