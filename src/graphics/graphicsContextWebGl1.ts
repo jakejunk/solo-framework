@@ -24,7 +24,7 @@ export class GraphicsContextWebGl1 implements GraphicsContext
     private _bufferWidth!: number;
     private _bufferHeight!: number;
 
-    constructor(context: WebGLRenderingContext, bufferWidth: number, bufferHeight: number)
+    public constructor(context: WebGLRenderingContext, bufferWidth: number, bufferHeight: number)
     {
         this.gl = context;
         this.shaderManager = new ShaderManagerWebGl1(context);
