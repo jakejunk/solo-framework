@@ -9,30 +9,30 @@ export class Vector2
         this.y = y;
     }
 
-    public static Clone(other: Readonly<Vector2>): Vector2
+    public static Clone(other: Vector2): Vector2
     {
         return new Vector2(other.x, other.y);
     }
 
-    public add(other: Readonly<Vector2>) 
+    public add(other: Vector2) 
     {
         this.x += other.x;
         this.y += other.y;
     }
 
-    public sub(other: Readonly<Vector2>)
+    public sub(other: Vector2)
     {
         this.x -= other.x;
         this.y -= other.y;
     }
 
-    public mul(other: Readonly<Vector2>)
+    public mul(other: Vector2)
     {
         this.x *= other.x;
         this.y *= other.y;
     }
 
-    public div(other: Readonly<Vector2>)
+    public div(other: Vector2)
     {
         this.x /= other.x;
         this.y /= other.y;
@@ -44,7 +44,7 @@ export class Vector2
         this.y *= factor;
     }
 
-    public set(other: Readonly<Vector2>)
+    public set(other: Vector2)
     {
         this.x = other.x;
         this.y = other.y;
@@ -62,6 +62,7 @@ export class Vector2
     public normalize()
     {
         const factor = 1 / this.getLength();
+
         if (isFinite(factor))
         {
             this.x *= factor;
@@ -69,7 +70,7 @@ export class Vector2
         }
     }
 
-    public dot(other: Readonly<Vector2>): number
+    public dot(other: Vector2): number
     {
         return this.x * other.x + this.y * other.y
     }
@@ -99,11 +100,11 @@ export class Vector2
 export namespace Vector2
 {
     /** (0, 0) */
-    export const ZERO: Readonly<Vector2> = new Vector2();
+    export const ZERO = new Vector2();
 
     /** (1, 0) */
-    export const UNIT_X: Readonly<Vector2> = new Vector2(1, 0);
+    export const UNIT_X = new Vector2(1, 0);
 
     /** (0, 1) */
-    export const UNIT_Y: Readonly<Vector2> = new Vector2(0, 1);
+    export const UNIT_Y = new Vector2(0, 1);
 }
