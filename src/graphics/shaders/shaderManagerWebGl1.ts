@@ -1,6 +1,7 @@
 import { Err, Ok, Result } from "../../util/result";
 import { Gl } from "../constants/gl";
 import { Logger } from "../../util/logger";
+import { Matrix4 } from "../../math/matrix44";
 import { ShaderManagerInternal, UniformLocation } from "./shaderManager";
 import { ShaderProgram } from "./shaderProgram";
 import { ShaderType } from "../constants/shaderType";
@@ -12,7 +13,8 @@ export class ShaderManagerWebGl1 implements ShaderManagerInternal
 {
     private static readonly _Logger = new Logger(ShaderManagerWebGl1.name);
 
-    private _gl: WebGLRenderingContext;
+    private readonly _gl: WebGLRenderingContext;
+    private _boundShader?: ShaderProgram;
 
     public constructor(gl: WebGLRenderingContext)
     {
@@ -124,6 +126,18 @@ export class ShaderManagerWebGl1 implements ShaderManagerInternal
 
     public bindShader(program: ShaderProgram)
     {
+        if (this._boundShader === program)
+        {
+            return;
+        }
+
         this._gl.useProgram(program.getHandle());
+    }
+
+    public setUniformMatrix4(program: ShaderProgram, location: WebGLUniformLocation, matrix: Matrix4)
+    {
+        this.bindShader(program);
+
+        this._gl.uniformMatrix4fv(location, false, matrix);
     }
 }

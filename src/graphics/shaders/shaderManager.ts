@@ -1,3 +1,4 @@
+import { Matrix4 } from "../../math/matrix44";
 import { Result } from "../../util/result";
 import { ShaderProgram } from "./shaderProgram";
 
@@ -24,5 +25,5 @@ export interface ShaderManager
  */
 export interface ShaderManagerInternal extends ShaderManager
 {
-    // TODO
+    setUniformMatrix4(program: ShaderProgram, location: UniformLocation, matrix: Matrix4): void;
 }

@@ -1,3 +1,4 @@
+import { Matrix4 } from "../../math/matrix44";
 import { ShaderManagerInternal, UniformLocation } from "./shaderManager";
 import { ShaderProgramParams } from "./shaderProgramParams";
 
@@ -49,5 +50,13 @@ export class ShaderProgram
     public getUniformLocation(name: string): UniformLocation | undefined
     {
         return this._uniformMap.get(name);
+    }
+
+    /**
+     * Sets a uniform variable to the provided matrix.
+     */
+    public setUniformMatrix4(location: UniformLocation, matrix: Matrix4)
+    {
+        this._shaderManager.setUniformMatrix4(this, location, matrix);
     }
 }

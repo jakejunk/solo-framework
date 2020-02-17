@@ -49,7 +49,7 @@ class VertexBufferTest implements Game
         gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
         const vertexShader = await this.loader.loadText("shaders/vertexShader.vert");
-        const fragmentShader = await this.loader.loadText("shaders/fragmentShader.frag");
+        const fragmentShader = await this.loader.loadText("shaders/invertedFragmentShader.frag");
 
         this.shaderProgram = this.graphics.shaderManager.createShaderProgram(vertexShader, fragmentShader).unwrap();
 
