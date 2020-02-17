@@ -1,5 +1,6 @@
 require("ts-node").register({
     compilerOptions: {
-        lib: ["es2017", "dom"]
+        lib: ["es2017", "dom"],
+        target: "es2017"
     },
 });

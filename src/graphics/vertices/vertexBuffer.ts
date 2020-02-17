@@ -3,18 +3,12 @@ import { VertexAttribute } from "./vertexAttribute";
 import { VertexBufferParams } from "./vertexBufferParams";
 import { VertexManagerInternal } from "./vertexManager";
 
-export class VertexBuffer
+export class VertexBuffer extends Float32Array
 {
     /**
      * Defines the layout of each vertex in this buffer.
      */
     public readonly attributes: VertexAttribute[];
-
-    /**
-     * The underlying array containing the values of this buffer.
-     * Use `VertexManager.flushVertexBuffer()` to send these values to the graphics device.
-     */
-    public readonly buffer: Float32Array;
 
     /**
      * The number of vertices that this buffer can hold.
@@ -34,8 +28,7 @@ export class VertexBuffer
      */
     public constructor(bufferManager: VertexManagerInternal, params: VertexBufferParams)
     {
-        const bufferLength = Math.ceil(params.numVerts * params.vertexSize / Float32Array.BYTES_PER_ELEMENT);
-        this.buffer = new Float32Array(bufferLength);
+        super(Math.ceil(params.numVerts * params.vertexSize / Float32Array.BYTES_PER_ELEMENT));
 
         this.numVerts = params.numVerts;
         this.vertexSize = params.vertexSize;
@@ -43,6 +36,13 @@ export class VertexBuffer
 
         this._vertexManager = bufferManager;
         this._handle = params.handle;
+    }
+
+    // TODO: See if this creates any weird side effects
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/species
+    public static get [Symbol.species]()
+    {
+        return Float32Array;
     }
 
     public getHandle(): WebGLBuffer

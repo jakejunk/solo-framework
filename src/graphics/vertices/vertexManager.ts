@@ -23,7 +23,7 @@ export interface VertexManager
     /**
      * Binds the provided index buffer and flushes its contents to the graphics device.
      */
-    flushIndexBuffer(indexBuffer: IndexBuffer, offset?: number, count?: number): void;
+    flushIndexBuffer(indexBuffer: IndexBuffer): void;
 }
 
 /**

@@ -1,14 +1,8 @@
 import { VertexManagerInternal } from "./vertexManager";
 import { IndexBufferParams } from "./indexBufferParams";
 
-export class IndexBuffer
+export class IndexBuffer extends Uint16Array
 {
-    /**
-     * The underlying index array containing the values of this buffer.
-     * Use `VertexManager.flushIndexBuffer()` to send these values to the graphics device.
-     */
-    public readonly indices: Uint16Array;
-
     private readonly _vertexManager: VertexManagerInternal;
     private _handle: WebGLBuffer;
 
@@ -17,10 +11,16 @@ export class IndexBuffer
      */
     public constructor(bufferManager: VertexManagerInternal, params: IndexBufferParams)
     {
-        this.indices = params.indices;
+        super(params.indices);
 
         this._vertexManager = bufferManager;
         this._handle = params.handle;
+    }
+
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/species
+    public static get [Symbol.species]()
+    {
+        return Uint16Array;
     }
 
     public getHandle(): WebGLBuffer

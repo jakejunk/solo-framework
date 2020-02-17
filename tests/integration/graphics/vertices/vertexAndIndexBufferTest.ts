@@ -60,7 +60,7 @@ class VertexBufferTest implements Game
             new VertexAttribute("a_color", 4, AttributeType.UNSIGNED_BYTE, true),
             new VertexAttribute("a_texCoord", 2, AttributeType.FLOAT, false));
         this.vertexBuffer.updateAttributeLocations(this.shaderProgram);
-        this._setBufferValues(this.vertexBuffer.buffer);
+        this._setBufferValues(this.vertexBuffer);
 
         this.indexBuffer = this.graphics.vertexManager.createIndexBuffer(new Uint16Array([
             0, 1, 2, 2, 3, 0
@@ -69,7 +69,7 @@ class VertexBufferTest implements Game
         this.texture = await texturePromise;
     }
 
-    private _setBufferValues(b: Float32Array)
+    private _setBufferValues(b: VertexBuffer)
     {
         b[0] = -0.5;
         b[1] = -0.5;

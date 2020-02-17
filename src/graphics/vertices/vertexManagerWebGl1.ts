@@ -99,18 +99,20 @@ export class VertexManagerWebGl1 implements VertexManagerInternal
         this._boundIndexBuffer = indexBuffer;
     }
 
-    public flushVertexBuffer(vertexBuffer: VertexBuffer, offset = 0, count = vertexBuffer.buffer.length)
+    public flushVertexBuffer(vertexBuffer: VertexBuffer, offset = 0, count = vertexBuffer.length)
     {
         this.bindVertexBuffer(vertexBuffer);
 
         const byteOffset = offset * vertexBuffer.vertexSize;
-        const bufferView = vertexBuffer.buffer.subarray(offset, offset + count);
+        const bufferView = vertexBuffer.subarray(offset, offset + count);
         
         this._gl.bufferSubData(Gl.ARRAY_BUFFER, byteOffset, bufferView);
     }
 
-    public flushIndexBuffer(indexBuffer: IndexBuffer, offset?: number | undefined, count?: number | undefined)
+    public flushIndexBuffer(indexBuffer: IndexBuffer)
     {
-        throw new Error("Method not implemented.");
+        this.bindIndexBuffer(indexBuffer);
+
+        this._gl.bufferSubData(Gl.ELEMENT_ARRAY_BUFFER, 0, indexBuffer);
     }
 }

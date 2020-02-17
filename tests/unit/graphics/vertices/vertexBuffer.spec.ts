@@ -8,6 +8,16 @@ import { VertexBufferParamsWithAttributes, VertexBufferParamsWithHandle, VertexB
 
 describe("VertexBuffer", () =>
 {
+    it("is correct length based on vertex size and number of vertices", () =>
+    {
+        const numVerts = 5;
+        const vertexSize = 7;
+        const expectedBufferSize = Math.ceil(numVerts * vertexSize / Float32Array.BYTES_PER_ELEMENT);
+        const vertexBuffer = new VertexBuffer(undefined, VertexBufferParamsWithVerts(numVerts, vertexSize));
+
+        expect(vertexBuffer.length).to.equal(expectedBufferSize);
+    });
+
     describe("attributes", () =>
     {
         it("returns correct value after construction", () =>
@@ -19,19 +29,6 @@ describe("VertexBuffer", () =>
             const vertexBuffer = new VertexBuffer(undefined, VertexBufferParamsWithAttributes(attributes));
 
             expect(vertexBuffer.attributes).to.equal(attributes);
-        });
-    });
-
-    describe("buffer", () =>
-    {
-        it("is correct length based on vertex size and number of vertices", () =>
-        {
-            const numVerts = 5;
-            const vertexSize = 7;
-            const expectedBufferSize = Math.ceil(numVerts * vertexSize / Float32Array.BYTES_PER_ELEMENT);
-            const vertexBuffer = new VertexBuffer(undefined, VertexBufferParamsWithVerts(numVerts, vertexSize));
-
-            expect(vertexBuffer.buffer.length).to.equal(expectedBufferSize);
         });
     });
 

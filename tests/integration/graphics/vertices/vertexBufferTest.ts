@@ -60,12 +60,12 @@ class VertexBufferTest implements Game
 
         this.vertexBuffer.updateAttributeLocations(this.shaderProgram);
 
-        this._setBufferValues(this.vertexBuffer.buffer);
+        this._setBufferValues(this.vertexBuffer);
 
         this.texture = await texturePromise;
     }
 
-    private _setBufferValues(b: Float32Array)
+    private _setBufferValues(b: VertexBuffer)
     {
         b[0] = -0.5;
         b[1] = -0.5;

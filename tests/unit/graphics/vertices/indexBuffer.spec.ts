@@ -4,15 +4,13 @@ import { IndexBufferParamsWithHandle, IndexBufferParamsWithIndices } from "../..
 
 describe("IndexBuffer", () =>
 {
-    describe("indices", () =>
+    it("contains the same values used during construction", () =>
     {
-        it("returns correct value after construction", () =>
-        {
-            const indices = new Uint16Array([8, 6, 7, 5, 3, 0, 9]);
-            const indexBuffer = new IndexBuffer(undefined, IndexBufferParamsWithIndices(indices));
+        const indices = new Uint16Array([8, 6, 7, 5, 3, 0, 9]);
+        const indexBuffer = new IndexBuffer(undefined, IndexBufferParamsWithIndices(indices));
 
-            expect(indexBuffer.indices).to.equal(indices);
-        });
+        // "eql" vs "equal" is important here, unfortunately
+        expect(indexBuffer).to.eql(indices);
     });
 
     describe("getHandle()", () =>
