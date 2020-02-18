@@ -53,7 +53,7 @@ export class ShaderProgram
     }
 
     /**
-     * Sets a uniform variable to the provided matrix.
+     * Sets a uniform variable in this program to the provided matrix.
      */
     public setUniformMatrix4(location: UniformLocation, matrix: Matrix4)
     {

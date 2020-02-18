@@ -108,16 +108,14 @@ class VertexBufferTest implements Game
         this._renderTexture(this.graphics.gl);
     }
 
-    /**
-     * Naive texture rendering.
-     */
     private _renderTexture(gl: WebGLRenderingContext)
     {
-        this.graphics.shaderManager.bindShader(this.shaderProgram);
-        this.graphics.textureManager.bindTextureToLocation(this.texture, 0);
+        const g = this.graphics;
 
-        this.graphics.vertexManager.bindIndexBuffer(this.indexBuffer);
-        this.graphics.vertexManager.flushVertexBuffer(this.vertexBuffer);
+        g.shaderManager.bindShader(this.shaderProgram);
+        g.textureManager.bindTextureToLocation(this.texture, 0);
+        g.vertexManager.bindIndexBuffer(this.indexBuffer);
+        g.vertexManager.flushVertexBuffer(this.vertexBuffer);
 
         gl.drawElements(Gl.TRIANGLES, 6, Gl.UNSIGNED_SHORT, 0);
     }

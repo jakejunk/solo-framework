@@ -7,6 +7,7 @@ import { GameComponents } from "/solo/core/gameComponents";
 import { GameManager } from "/solo/core/gameManager";
 import { Gl } from "/solo/graphics/constants/gl";
 import { GraphicsContext } from "/solo/graphics/graphicsContext";
+import { IndexBuffer } from "/solo/graphics/vertices/indexBuffer";
 import { Matrix4 } from "/solo/math/matrix44";
 import { ScalingAlgorithm } from "/solo/core/scalingAlgorithm";
 import { ShaderProgram } from "/solo/graphics/shaders/shaderProgram";
@@ -17,8 +18,8 @@ import { VertexBuffer } from "/solo/graphics/vertices/vertexBuffer";
 
 document.addEventListener("DOMContentLoaded", () => {
     const game = GameManager.Create(ProjectionMatrixTest, {
-        bufferWidth: 200,
-        bufferHeight: 200,
+        bufferWidth: 400,
+        bufferHeight: 400,
         scalingAlgorithm: ScalingAlgorithm.PIXELATED,
         rootDirectory: "/_assets"
     });
@@ -34,6 +35,7 @@ class ProjectionMatrixTest implements Game
     private readonly graphics: GraphicsContext;
     private shaderProgram!: ShaderProgram;
     private vertexBuffer!: VertexBuffer;
+    private indexBuffer!: IndexBuffer;
     private matrixUniform!: UniformLocation;
     private texture!: Texture2D;
     private projectionMatrix!: Matrix4;
@@ -71,6 +73,10 @@ class ProjectionMatrixTest implements Game
 
         this.vertexBuffer.updateAttributeLocations(this.shaderProgram);
 
+        this.indexBuffer = this.graphics.vertexManager.createIndexBuffer(new Uint16Array([
+            0, 1, 2, 2, 3, 0
+        ]));
+
         this.projectionMatrix = Matrix4.CreateOrtho(0, gl.canvas.width, gl.canvas.height, 0, -1, 1);
 
         this.texture = await texturePromise;
@@ -81,16 +87,28 @@ class ProjectionMatrixTest implements Game
         this.x += this.dx * 20 * delta;
         this.y += this.dy * 20 * delta;
 
-        if (this.x < 0 || this.x + this.texture.getWidth() > this.graphics.gl.canvas.width)
+        if (this.x < 0)
         {
             this.dx *= -1;
-            this.x += this.dx * 50 * delta;
+            this.x = 0;
+        }
+        
+        if (this.x + this.texture.getWidth() > this.graphics.gl.canvas.width)
+        {
+            this.dx *= -1;
+            this.x = this.graphics.gl.canvas.width - this.texture.getWidth();
         }
 
-        if (this.y < 0 || this.y + this.texture.getHeight() > this.graphics.gl.canvas.height)
+        if (this.y < 0)
         {
             this.dy *= -1;
-            this.y += this.dy * 50 * delta;
+            this.y = 0;
+        }
+        
+        if (this.y + this.texture.getHeight() > this.graphics.gl.canvas.height)
+        {
+            this.dy *= -1;
+            this.y = this.graphics.gl.canvas.height - this.texture.getHeight();
         }
 
         this._setBufferValues(this.x, this.y, Color.WHITE);
@@ -135,21 +153,16 @@ class ProjectionMatrixTest implements Game
         this._renderTexture(this.graphics.gl);
     }
 
-    /**
-     * Naive texture rendering.
-     */
     private _renderTexture(gl: WebGLRenderingContext)
     {
-        this.shaderProgram.setUniformMatrix4(this.matrixUniform, this.projectionMatrix);
-        
-        this.graphics.textureManager.bindTextureToLocation(this.texture, 0);
-        this.graphics.vertexManager.flushVertexBuffer(this.vertexBuffer);
+        const g = this.graphics;
 
-        const indexBuffer = gl.createBuffer();
-        gl.bindBuffer(Gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
-        gl.bufferData(Gl.ELEMENT_ARRAY_BUFFER, new Int16Array([
-            0, 1, 2, 2, 3, 0
-        ]), Gl.STATIC_DRAW);
+        g.shaderManager.bindShader(this.shaderProgram);
+        g.textureManager.bindTextureToLocation(this.texture, 0);
+        g.vertexManager.bindIndexBuffer(this.indexBuffer);
+        g.vertexManager.flushVertexBuffer(this.vertexBuffer);
+
+        this.shaderProgram.setUniformMatrix4(this.matrixUniform, this.projectionMatrix);
 
         gl.drawElements(Gl.TRIANGLES, 6, Gl.UNSIGNED_SHORT, 0);
     }
