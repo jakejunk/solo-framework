@@ -6,6 +6,7 @@ if (Float32Array.prototype.fill == undefined)
 
 /**
  * Defines a 4x4 matrix.
+ * Matrix values are stored in column-major order.
  */
 export class Matrix4 extends Float32Array
 {
@@ -86,8 +87,6 @@ export class Matrix4 extends Float32Array
         // |  ..  |   |  ..  |
         // |  ..  | X |  ..  |
         // l30--l33   r30--r33
-        //
-        // NOTE: These matrices are stored column-major
 
         const l00 = l[0],  l10 = l[1],  l20 = l[2],  l30 = l[3];
         const l01 = l[4],  l11 = l[5],  l21 = l[6],  l31 = l[7];
