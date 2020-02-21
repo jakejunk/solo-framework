@@ -7,14 +7,14 @@ import { GameComponents } from "/solo/core/gameComponents";
 import { GameManager } from "/solo/core/gameManager";
 import { Gl } from "/solo/graphics/constants/gl";
 import { GraphicsContext } from "/solo/graphics/graphicsContext";
-import { IndexBuffer } from "/solo/graphics/vertices/indexBuffer";
+import { IndexBuffer } from "/solo/graphics/meshes/indexBuffer";
 import { Matrix4 } from "/solo/math/matrix44";
 import { ScalingAlgorithm } from "/solo/core/scalingAlgorithm";
 import { ShaderProgram } from "/solo/graphics/shaders/shaderProgram";
 import { Texture2D } from "/solo/graphics/textures/texture2d";
 import { UniformLocation } from "/solo/graphics/shaders/shaderManager";
-import { VertexAttribute } from "/solo/graphics/vertices/vertexAttribute";
-import { VertexBuffer } from "/solo/graphics/vertices/vertexBuffer";
+import { VertexAttribute } from "/solo/graphics/meshes/vertexAttribute";
+import { VertexBuffer } from "/solo/graphics/meshes/vertexBuffer";
 
 document.addEventListener("DOMContentLoaded", () => {
     const game = GameManager.Create(ProjectionMatrixTest, {
@@ -66,14 +66,14 @@ class ProjectionMatrixTest implements Game
         this.shaderProgram = this.graphics.shaderManager.createShaderProgram(vertexShader, fragmentShader).unwrap();
         this.matrixUniform = this.shaderProgram.getUniformLocation("u_pMatrix")!;
 
-        this.vertexBuffer = this.graphics.vertexManager.createVertexBuffer(4,
+        this.vertexBuffer = this.graphics.meshManager.createVertexBuffer(4,
             new VertexAttribute("a_position", 2, AttributeType.FLOAT, false),
             new VertexAttribute("a_color", 4, AttributeType.UNSIGNED_BYTE, true),
             new VertexAttribute("a_texCoord", 2, AttributeType.FLOAT, false));
 
         this.vertexBuffer.updateAttributeLocations(this.shaderProgram);
 
-        this.indexBuffer = this.graphics.vertexManager.createIndexBuffer(new Uint16Array([
+        this.indexBuffer = this.graphics.meshManager.createIndexBuffer(new Uint16Array([
             0, 1, 2, 2, 3, 0
         ]));
 
@@ -159,8 +159,8 @@ class ProjectionMatrixTest implements Game
 
         g.shaderManager.bindShader(this.shaderProgram);
         g.textureManager.bindTextureToLocation(this.texture, 0);
-        g.vertexManager.bindIndexBuffer(this.indexBuffer);
-        g.vertexManager.flushVertexBuffer(this.vertexBuffer);
+        g.meshManager.bindIndexBuffer(this.indexBuffer);
+        g.meshManager.flushVertexBuffer(this.vertexBuffer);
 
         this.shaderProgram.setUniformMatrix4(this.matrixUniform, this.projectionMatrix);
 

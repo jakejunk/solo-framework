@@ -5,7 +5,7 @@ import { VertexBuffer } from "./vertexBuffer";
 /**
  * Provides an interface to all vertex-related functions of the graphics context.
  */
-export interface VertexManager
+export interface MeshManager
 {
     createVertexBuffer(numVerts: number, ...attributes: VertexAttribute[]): VertexBuffer;
 
@@ -29,7 +29,7 @@ export interface VertexManager
 /**
  * @internal
  */
-export interface VertexManagerInternal extends VertexManager
+export interface MeshManagerInternal extends MeshManager
 {
     
 }

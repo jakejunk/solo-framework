@@ -2,9 +2,9 @@ import { AttributeType } from "../../../../src/graphics/constants/attributeType"
 import { expect } from "chai";
 import { ShaderProgram } from "../../../../src/graphics/shaders/shaderProgram";
 import { ShaderProgramParamsWithAttributes } from "../../_generators/graphics/shaders/shaderProgramParams.gen";
-import { VertexAttribute } from "../../../../src/graphics/vertices/vertexAttribute";
-import { VertexBuffer } from "../../../../src/graphics/vertices/vertexBuffer";
-import { VertexBufferParamsWithAttributes, VertexBufferParamsWithHandle, VertexBufferParamsWithVerts } from "../../_generators/graphics/vertices/vertexBufferParams.gen";
+import { VertexAttribute } from "../../../../src/graphics/meshes/vertexAttribute";
+import { VertexBuffer } from "../../../../src/graphics/meshes/vertexBuffer";
+import { VertexBufferParamsWithAttributes, VertexBufferParamsWithHandle, VertexBufferParamsWithVerts } from "../../_generators/graphics/meshes/vertexBufferParams.gen";
 
 describe("VertexBuffer", () =>
 {

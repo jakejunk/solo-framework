@@ -1,6 +1,6 @@
 import { AttributeType } from "../../../../src/graphics/constants/attributeType";
 import { expect } from "chai";
-import { VertexAttribute } from "../../../../src/graphics/vertices/vertexAttribute";
+import { VertexAttribute } from "../../../../src/graphics/meshes/vertexAttribute";
 
 describe("VertexAttribute", () =>
 {

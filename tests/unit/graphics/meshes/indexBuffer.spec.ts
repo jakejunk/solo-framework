@@ -1,6 +1,6 @@
 import { expect } from "chai";
-import { IndexBuffer } from "../../../../src/graphics/vertices/indexBuffer";
-import { IndexBufferParamsWithHandle, IndexBufferParamsWithIndices } from "../../_generators/graphics/vertices/indexBufferParams.gen";
+import { IndexBuffer } from "../../../../src/graphics/meshes/indexBuffer";
+import { IndexBufferParamsWithHandle, IndexBufferParamsWithIndices } from "../../_generators/graphics/meshes/indexBufferParams.gen";
 
 describe("IndexBuffer", () =>
 {

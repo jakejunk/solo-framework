@@ -1,7 +1,7 @@
+import { MeshManagerInternal } from "./meshManager";
 import { ShaderProgram } from "../shaders/shaderProgram";
 import { VertexAttribute } from "./vertexAttribute";
 import { VertexBufferParams } from "./vertexBufferParams";
-import { VertexManagerInternal } from "./vertexManager";
 
 export class VertexBuffer extends Float32Array
 {
@@ -20,13 +20,13 @@ export class VertexBuffer extends Float32Array
      */
     public readonly vertexSize: number;
     
-    private readonly _vertexManager: VertexManagerInternal;
+    private readonly _meshManager: MeshManagerInternal;
     private _handle: WebGLBuffer;
 
     /**
      * @internal
      */
-    public constructor(bufferManager: VertexManagerInternal, params: VertexBufferParams)
+    public constructor(meshManager: MeshManagerInternal, params: VertexBufferParams)
     {
         super(Math.ceil(params.numVerts * params.vertexSize / Float32Array.BYTES_PER_ELEMENT));
 
@@ -34,7 +34,7 @@ export class VertexBuffer extends Float32Array
         this.vertexSize = params.vertexSize;
         this.attributes = params.attributes;
 
-        this._vertexManager = bufferManager;
+        this._meshManager = meshManager;
         this._handle = params.handle;
     }
 

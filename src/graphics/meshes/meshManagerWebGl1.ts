@@ -1,13 +1,13 @@
 import { Gl } from "../constants/gl";
 import { IndexBuffer } from "./indexBuffer";
+import { MeshManagerInternal } from "./meshManager";
 import { VertexAttribute } from "./vertexAttribute";
 import { VertexBuffer } from "./vertexBuffer";
-import { VertexManagerInternal } from "./vertexManager";
 
 /**
  * @internal
  */
-export class VertexManagerWebGl1 implements VertexManagerInternal
+export class MeshManagerWebGl1 implements MeshManagerInternal
 {
     private readonly _gl: WebGLRenderingContext;
     private _boundVertexBuffer?: VertexBuffer;

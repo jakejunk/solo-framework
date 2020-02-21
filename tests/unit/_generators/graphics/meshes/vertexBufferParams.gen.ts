@@ -1,5 +1,5 @@
-import { VertexAttribute } from "../../../../../src/graphics/vertices/vertexAttribute";
-import { VertexBufferParams } from "../../../../../src/graphics/vertices/vertexBufferParams";
+import { VertexAttribute } from "../../../../../src/graphics/meshes/vertexAttribute";
+import { VertexBufferParams } from "../../../../../src/graphics/meshes/vertexBufferParams";
 import { Writeable } from "../../../_helpers/writeable";
 
 export function VertexBufferParamsAllDefault(): VertexBufferParams

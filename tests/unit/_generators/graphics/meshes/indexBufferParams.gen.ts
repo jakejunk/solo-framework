@@ -1,4 +1,4 @@
-import { IndexBufferParams } from "../../../../../src/graphics/vertices/indexBufferParams";
+import { IndexBufferParams } from "../../../../../src/graphics/meshes/indexBufferParams";
 import { Writeable } from "../../../_helpers/writeable";
 
 export function IndexBufferParamsAllDefault(): IndexBufferParams

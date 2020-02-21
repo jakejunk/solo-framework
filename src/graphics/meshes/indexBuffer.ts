@@ -1,19 +1,19 @@
-import { VertexManagerInternal } from "./vertexManager";
 import { IndexBufferParams } from "./indexBufferParams";
+import { MeshManagerInternal } from "./meshManager";
 
 export class IndexBuffer extends Uint16Array
 {
-    private readonly _vertexManager: VertexManagerInternal;
+    private readonly _meshManager: MeshManagerInternal;
     private _handle: WebGLBuffer;
 
     /**
      * @internal
      */
-    public constructor(bufferManager: VertexManagerInternal, params: IndexBufferParams)
+    public constructor(meshManager: MeshManagerInternal, params: IndexBufferParams)
     {
         super(params.indices);
 
-        this._vertexManager = bufferManager;
+        this._meshManager = meshManager;
         this._handle = params.handle;
     }
 
