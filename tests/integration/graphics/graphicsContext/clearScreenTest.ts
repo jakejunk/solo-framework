@@ -54,7 +54,7 @@ class ClearScreenTest implements Game
         }
     }
 
-    public onDraw(delta: number): void
+    public onDraw(): void
     {
         this.graphics.clear(ClearOptions.COLOR_BUFFER);
     }

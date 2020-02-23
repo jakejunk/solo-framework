@@ -24,7 +24,6 @@ class BufferSwapTest implements Game
 {
     public shouldExit = false;
 
-    private timeAccumulator: number;
     private currentClearColor: number;
     private readonly timer: GameTimer;
     private readonly graphics: GraphicsContext;
@@ -32,7 +31,6 @@ class BufferSwapTest implements Game
 
     public constructor(components: GameComponents)
     {
-        this.timeAccumulator = 0;
         this.currentClearColor = 0;
         this.clearColors = [
             Color.Clone(Color.BELIZE_HOLE),
@@ -49,19 +47,10 @@ class BufferSwapTest implements Game
         return Promise.resolve(undefined);
     }
 
-    public onUpdate(delta: number): void
+    public onUpdate(): void
     {
-        this.timeAccumulator += delta;
-
-        if (this.timeAccumulator >= 1)
-        {
-            this.timeAccumulator = 0;
-
-            
-        }
-
         this.currentClearColor = (this.currentClearColor + 1) % this.clearColors.length;
-            this.graphics.setClearColor(this.clearColors[this.currentClearColor]);
+        this.graphics.setClearColor(this.clearColors[this.currentClearColor]);
 
         if (clicked)
         {
@@ -69,7 +58,7 @@ class BufferSwapTest implements Game
         }
     }
 
-    public onDraw(delta: number): void
+    public onDraw(): void
     {
         this.graphics.clear(ClearOptions.COLOR_BUFFER);
     }

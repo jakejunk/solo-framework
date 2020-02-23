@@ -1,4 +1,4 @@
-import { UniformLocation } from "./shaderManager";
+import { UniformLocation } from "./shaderProgram";
 
 /**
  * @internal

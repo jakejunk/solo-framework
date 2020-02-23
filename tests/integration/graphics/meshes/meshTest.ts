@@ -5,16 +5,16 @@ import { ContentLoader } from "/solo/content/contentLoader";
 import { Game } from "/solo/core/game";
 import { GameComponents } from "/solo/core/gameComponents";
 import { GameManager } from "/solo/core/gameManager";
-import { Gl } from "/solo/graphics/constants/gl";
 import { GraphicsContext } from "/solo/graphics/graphicsContext";
+import { Mesh } from "/solo/graphics/meshes/mesh";
 import { ScalingAlgorithm } from "/solo/core/scalingAlgorithm";
 import { ShaderProgram } from "/solo/graphics/shaders/shaderProgram";
 import { Texture2D } from "/solo/graphics/textures/texture2d";
 import { VertexAttribute } from "/solo/graphics/meshes/vertexAttribute";
-import { VertexBuffer } from "/solo/graphics/meshes/vertexBuffer";
+import { VertexDefinition } from "/solo/graphics/meshes/vertexDefinition";
 
 document.addEventListener("DOMContentLoaded", () => {
-    const game = GameManager.Create(VertexBufferTest, {
+    const game = GameManager.Create(MeshTest, {
         bufferWidth: 200,
         bufferHeight: 200,
         scalingAlgorithm: ScalingAlgorithm.PIXELATED,
@@ -24,21 +24,21 @@ document.addEventListener("DOMContentLoaded", () => {
     game.start();
 });
 
-class VertexBufferTest implements Game
+class MeshTest implements Game
 {
     public shouldExit = false;
     
     private readonly loader: ContentLoader;
     private readonly graphics: GraphicsContext;
     private shaderProgram!: ShaderProgram;
-    private vertexBuffer!: VertexBuffer;
+    private mesh!: Mesh;
     private texture!: Texture2D;
 
     public constructor(components: GameComponents)
     {
         this.loader = components.loader;
         this.graphics = components.graphicsContext;
-        this.graphics.setClearColor(Color.AMETHYST);
+        this.graphics.setClearColor(Color.TURQUOISE);
     }
     
     public async onLoad(): Promise<void>
@@ -51,74 +51,69 @@ class VertexBufferTest implements Game
         const vertexShader = await this.loader.loadText("shaders/vertexShader.vert");
         const fragmentShader = await this.loader.loadText("shaders/invertedFragmentShader.frag");
 
-        this.shaderProgram = this.graphics.shaderManager.createShaderProgram(vertexShader, fragmentShader).unwrap();
+        this.shaderProgram = ShaderProgram.Create(this.graphics, vertexShader, fragmentShader).unwrap();
 
-        this.vertexBuffer = this.graphics.meshManager.createVertexBuffer(4,
-            new VertexAttribute("a_position", 2, AttributeType.FLOAT, false),
-            new VertexAttribute("a_color", 4, AttributeType.UNSIGNED_BYTE, true),
-            new VertexAttribute("a_texCoord", 2, AttributeType.FLOAT, false));
+        this.mesh = Mesh.Create(this.graphics, {
+            vertexDefinition: new VertexDefinition(
+                new VertexAttribute("a_position", 2, AttributeType.FLOAT, false),
+                new VertexAttribute("a_color", 4, AttributeType.UNSIGNED_BYTE, true),
+                new VertexAttribute("a_texCoord", 2, AttributeType.FLOAT, false)),
+            numVertices: 4,
+            indices: new Uint16Array([
+                0, 1, 2, 2, 3, 0
+            ]),
+            shaderProgram: this.shaderProgram
+        });
 
-        this.vertexBuffer.updateAttributeLocations(this.shaderProgram);
+        this._setBufferValues(this.mesh.vertices);
 
-        this._setBufferValues(this.vertexBuffer);
+        this.mesh.flushVertices();
 
         this.texture = await texturePromise;
     }
 
-    private _setBufferValues(b: VertexBuffer)
+    private _setBufferValues(b: Float32Array)
     {
         b[0] = -0.5;
         b[1] = -0.5;
-        b[2] = Color.ALIZARIN.toEncodedFloat();
+        b[2] = Color.ORANGE.toEncodedFloat();
         b[3] = 0.0;
         b[4] = 0.0;
 
         b[5] = -0.5;
         b[6] = +0.5;
-        b[7] = Color.ALIZARIN.toEncodedFloat();
+        b[7] = Color.ORANGE.toEncodedFloat();
         b[8] = 0.0;
         b[9] = 1.0;
 
         b[10] = +0.5;
         b[11] = +0.5;
-        b[12] = Color.PETER_RIVER.toEncodedFloat();
+        b[12] = Color.ORANGE.toEncodedFloat();
         b[13] = 1.0;
         b[14] = 1.0;
 
         b[15] = +0.5;
         b[16] = -0.5;
-        b[17] = Color.PETER_RIVER.toEncodedFloat();
+        b[17] = Color.ORANGE.toEncodedFloat();
         b[18] = 1.0;
         b[19] = 0.0;
     }
 
-    public onUpdate(delta: number): void
-    {
+    public onUpdate(): void { }
 
-    }
-
-    public onDraw(delta: number): void
+    public onDraw(): void
     {
         this.graphics.clear(ClearOptions.COLOR_BUFFER);
 
-        this._renderTexture(this.graphics.gl);
+        this._renderTexture();
     }
 
-    /**
-     * Naive texture rendering.
-     */
-    private _renderTexture(gl: WebGLRenderingContext)
+    private _renderTexture()
     {
-        this.graphics.shaderManager.bindShader(this.shaderProgram);
-        this.graphics.textureManager.bindTextureToLocation(this.texture, 0);
-        this.graphics.meshManager.flushVertexBuffer(this.vertexBuffer);
+        const g = this.graphics;
 
-        const indexBuffer = gl.createBuffer();
-        gl.bindBuffer(Gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
-        gl.bufferData(Gl.ELEMENT_ARRAY_BUFFER, new Int16Array([
-            0, 1, 2, 2, 3, 0
-        ]), Gl.STATIC_DRAW);
+        g.textureManager.bindTextureToLocation(this.texture, 0);
 
-        gl.drawElements(Gl.TRIANGLES, 6, Gl.UNSIGNED_SHORT, 0);
+        this.mesh.render();
     }
 }

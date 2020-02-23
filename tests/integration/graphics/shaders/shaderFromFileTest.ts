@@ -47,16 +47,13 @@ class ShaderTest implements Game
         const vertexShader = await this.loader.loadText("shaders/vertexShader.vert");
         const fragmentShader = await this.loader.loadText("shaders/fragmentShader.frag");
 
-        this.shaderProgram = this.graphics.shaderManager.createShaderProgram(vertexShader, fragmentShader).unwrap();
+        this.shaderProgram = ShaderProgram.Create(this.graphics, vertexShader, fragmentShader).unwrap();
         this.texture = await texturePromise;
     }
 
-    public onUpdate(delta: number): void
-    {
+    public onUpdate(): void { }
 
-    }
-
-    public onDraw(delta: number): void
+    public onDraw(): void
     {
         this.graphics.clear(ClearOptions.COLOR_BUFFER);
 
@@ -68,7 +65,7 @@ class ShaderTest implements Game
      */
     private _renderTexture(gl: WebGLRenderingContext)
     {
-        this.graphics.shaderManager.bindShader(this.shaderProgram);
+        this.shaderProgram.bind();
 
         const posLocation = this.shaderProgram.getAttribLocation("a_position");
         const colorLocation = this.shaderProgram.getAttribLocation("a_color");

@@ -2,9 +2,10 @@ import { Game } from "/solo/core/game";
 import { GameComponents } from "/solo/core/gameComponents";
 import { GameManager } from "/solo/core/gameManager";
 import { GameTimer } from "/solo/core/gameTimer";
+import { GraphicsContext } from "/solo/graphics/graphicsContext";
 import { Logger } from "/solo/util/logger";
 import { ScalingAlgorithm } from "/solo/core/scalingAlgorithm";
-import { ShaderManager } from "/solo/graphics/shaders/shaderManager";
+import { ShaderProgram } from "/solo/graphics/shaders/shaderProgram";
 
 const vertexShader = 
 `void main() {
@@ -35,19 +36,18 @@ class BadShaderTest implements Game
     public shouldExit = false;
     
     private readonly timer: GameTimer;
-    private readonly shaderManager: ShaderManager;
+    private readonly graphics: GraphicsContext;
 
     public constructor(components: GameComponents)
     {
         this.timer = components.timer;
-        this.shaderManager = components.graphicsContext.shaderManager;
+        this.graphics = components.graphicsContext;
     }
     
     public async onLoad(): Promise<void>
     {
-        const shaderManager = this.shaderManager;
         const badVertexShader = vertexShader.substring(0, 5);
-        const badProgramResult1 = shaderManager.createShaderProgram(badVertexShader, fragmentShader);
+        const badProgramResult1 = ShaderProgram.Create(this.graphics, badVertexShader, fragmentShader);
 
         if (badProgramResult1.isOk())
         {
@@ -59,7 +59,7 @@ class BadShaderTest implements Game
         }
 
         const badFragmentShader = fragmentShader.substring(0, 5);
-        const badProgramResult2 = shaderManager.createShaderProgram(vertexShader, badFragmentShader);
+        const badProgramResult2 = ShaderProgram.Create(this.graphics, vertexShader, badFragmentShader);
 
         if (badProgramResult2.isOk())
         {
@@ -70,18 +70,15 @@ class BadShaderTest implements Game
             BadShaderTest._Logger.log("Bad fragment shader failed, as expected");
         }
 
-        shaderManager.createShaderProgram(vertexShader, fragmentShader).unwrap();
+        ShaderProgram.Create(this.graphics, vertexShader, fragmentShader).unwrap();
         
         BadShaderTest._Logger.log("🤙");
     }
 
-    public onUpdate(delta: number): void
+    public onUpdate(): void
     {
         this.timer.suppressRender();
     }
 
-    public onDraw(delta: number): void
-    {
-        
-    }
+    public onDraw(delta: number): void { }
 }
