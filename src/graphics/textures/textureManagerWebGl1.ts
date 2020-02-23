@@ -33,7 +33,7 @@ export class TextureManagerWebGl1 implements TextureManagerInternal
         this._defaultMagFilter = defaultMagFilter;
     }
 
-    public createTextureFromImage(image: HTMLImageElement): Texture2D
+    public createTexture2D(image: HTMLImageElement): Texture2D
     {
         // WebGL1 constraints:
         // Non power-of-2 images must have filtering set to NEAREST or LINEAR, 
@@ -50,20 +50,17 @@ export class TextureManagerWebGl1 implements TextureManagerInternal
         // Null should only happen here in the case of context loss
         const glTexture = gl.createTexture()!;
 
-        this._bindingCache.markDirty(7);
-
         gl.activeTexture(Gl.TEXTURE0 + 7);
         gl.bindTexture(Gl.TEXTURE_2D, glTexture);
         gl.texImage2D(Gl.TEXTURE_2D, 0, Gl.RGBA, Gl.RGBA, Gl.UNSIGNED_BYTE, image);
-        this._setBoundTextureFilter(minFilter, magFilter);
-        this._setBoundTextureWrap(wrapS, wrapT);
 
         if (shouldMipMap)
         {
             gl.generateMipmap(Gl.TEXTURE_2D);
         }
 
-        const texture = new Texture2D(this, {
+        const texture = new Texture2D(gl, {
+            manager: this,
             handle: glTexture,
             uri: image.src,
             width: image.width,
@@ -74,66 +71,27 @@ export class TextureManagerWebGl1 implements TextureManagerInternal
             wrapT: wrapT 
         });
 
+        texture.setFilter(minFilter, magFilter);
+        texture.setWrap(wrapS, wrapT);
+
         this.addManagedTexture(texture);
 
         return texture;
     }
 
-    public bindTexture(texture: Texture2D): number
+    public getBindLocation(texture: Texture2D): number | undefined
     {
-        const bindLocation = this._bindingCache.getBindLocation(texture);
-
-        if (bindLocation != undefined)
-        {
-            return bindLocation;
-        }
-        
-        const location = this._bindingCache.bindAnywhere(texture);
-
-        this._gl.activeTexture(Gl.TEXTURE0 + location);
-        this._gl.bindTexture(Gl.TEXTURE_2D, texture.getHandle());
-
-        return location;
+        return this._bindingCache.getBindLocation(texture);
     }
 
-    public bindTextureToLocation(texture: Texture2D, location: number)
+    public bindAnywhere(texture: Texture2D): number
     {
-        if (this._bindingCache.bindAtLocation(texture, location))
-        {
-            return;
-        }
-
-        this._gl.activeTexture(Gl.TEXTURE0 + location);
-        this._gl.bindTexture(Gl.TEXTURE_2D, texture.getHandle());
+        return this._bindingCache.bindAnywhere(texture);
     }
 
-    public setTextureFilter(texture: Texture2D, minFilter: TextureMinFilter, magFilter: TextureMagFilter)
+    public bindAtLocation(texture: Texture2D, location: number): boolean
     {
-        this._bindTempTexture(texture);
-        this._setBoundTextureFilter(minFilter, magFilter);
-    }
-
-    private _setBoundTextureFilter(minFilter: TextureMinFilter, magFilter: TextureMagFilter)
-    {
-        this._gl.texParameteri(Gl.TEXTURE_2D, Gl.TEXTURE_MIN_FILTER, minFilter);
-        this._gl.texParameteri(Gl.TEXTURE_2D, Gl.TEXTURE_MAG_FILTER, magFilter);
-    }
-
-    public setTextureWrap(texture: Texture2D, wrapS: TextureWrap, wrapT: TextureWrap)
-    {
-        this._bindTempTexture(texture);
-        this._setBoundTextureWrap(wrapS, wrapT);
-    }
-
-    private _setBoundTextureWrap(wrapS: TextureWrap, wrapT: TextureWrap)
-    {
-        this._gl.texParameteri(Gl.TEXTURE_2D, Gl.TEXTURE_WRAP_S, wrapS);
-        this._gl.texParameteri(Gl.TEXTURE_2D, Gl.TEXTURE_WRAP_T, wrapT);
-    }
-
-    private _bindTempTexture(texture: Texture2D)
-    {
-        this.bindTextureToLocation(texture, 7);
+        return this._bindingCache.bindAtLocation(texture, location);
     }
 
     public addManagedTexture(texture: Texture2D): Result<undefined, Error>

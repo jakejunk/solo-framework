@@ -36,6 +36,7 @@ class ProjectionMatrixTest implements Game
     private shaderProgram!: ShaderProgram;
     private mesh!: Mesh;
     private matrixUniform!: UniformLocation;
+    private textureUniform!: UniformLocation;
     private texture!: Texture2D;
     private projectionMatrix!: Matrix4;
 
@@ -64,6 +65,7 @@ class ProjectionMatrixTest implements Game
 
         this.shaderProgram = ShaderProgram.Create(this.graphics, vertexShader, fragmentShader).unwrap();
         this.matrixUniform = this.shaderProgram.getUniformLocation("u_pMatrix")!;
+        this.textureUniform = this.shaderProgram.getUniformLocation("u_image")!;
 
         this.mesh = Mesh.Create(this.graphics, {
             vertexDefinition: new VertexDefinition(
@@ -152,16 +154,8 @@ class ProjectionMatrixTest implements Game
     {
         this.graphics.clear(ClearOptions.COLOR_BUFFER);
 
-        this._renderTexture(this.graphics.gl);
-    }
-
-    private _renderTexture(gl: WebGLRenderingContext)
-    {
-        const g = this.graphics;
-
-        g.textureManager.bindTextureToLocation(this.texture, 0);
-
-        this.shaderProgram.setUniformMatrix4(this.matrixUniform, this.projectionMatrix);
+        this.shaderProgram.setMatrix4(this.matrixUniform, this.projectionMatrix);
+        this.shaderProgram.setTexture2D(this.textureUniform, this.texture, 0);
 
         this.mesh.render();
     }

@@ -71,7 +71,7 @@ class ShaderTest implements Game
         const colorLocation = this.shaderProgram.getAttribLocation("a_color");
         const texCoordLocation = this.shaderProgram.getAttribLocation("a_texCoord");
 
-        this.graphics.textureManager.bindTextureToLocation(this.texture, 0);
+        this.texture.bindToLocation(0);
 
         const vertexBuffer = gl.createBuffer();
         gl.bindBuffer(Gl.ARRAY_BUFFER, vertexBuffer);

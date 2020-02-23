@@ -24,7 +24,7 @@ export interface Mesh
     getNumVertices(): number;
 
     /**
-     * Gets the current shade rprogram used when rendering this mesh.
+     * Gets the current shader program associated with this mesh.
      */
     getShader(): ShaderProgram;
 

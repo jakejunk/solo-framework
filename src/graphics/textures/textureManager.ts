@@ -1,28 +1,14 @@
 import { Texture2D } from "./texture2d";
-import { TextureMagFilter } from "../constants/textureMagFilter";
-import { TextureMinFilter } from "../constants/textureMinFilter";
-import { TextureWrap } from "../constants/textureWrap";
 
 /**
- * Provides an interface to all texture-related functions of the graphics context.
+ * Provides an interface for texture creation and management.
  */
 export interface TextureManager
 {
     /**
      * Creates a new texture from the provided image element.
      */
-    createTextureFromImage(image: HTMLImageElement): Texture2D;
-
-    /**
-     * Binds a texture for rendering.
-     * Returns the location of the internal texture unit it was bound to.
-     */
-    bindTexture(texture: Texture2D): number;
-
-    /**
-     * Binds a texture at a specific location for rendering.
-     */
-    bindTextureToLocation(texture: Texture2D, location: number): void;
+    createTexture2D(image: HTMLImageElement): Texture2D;
 
     /**
      * Gets a previously created texture based on its origin URI.
@@ -35,12 +21,11 @@ export interface TextureManager
  */
 export interface TextureManagerInternal extends TextureManager
 {
-    /**
-     * Sets the min and mag filter of the provided texture.
-     */
-    setTextureFilter(texture: Texture2D, minFilter: TextureMinFilter, magFilter: TextureMagFilter): void;
+    getBindLocation(texture: Texture2D): number | undefined;
 
-    setTextureWrap(texture: Texture2D, wrapS: TextureWrap, wrapT: TextureWrap): void;
+    bindAnywhere(texture: Texture2D): number;
+
+    bindAtLocation(texture: Texture2D, location: number): boolean;
 
     addManagedTexture(texture: Texture2D): void;
 }

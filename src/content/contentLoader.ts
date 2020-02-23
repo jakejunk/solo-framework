@@ -159,6 +159,6 @@ export class ContentLoader
             imageElement.src = fullPath;
         });
         
-        return this._textureManager.createTextureFromImage(image);
+        return this._textureManager.createTexture2D(image);
     }
 }

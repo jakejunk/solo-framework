@@ -105,12 +105,9 @@ class TextureTest implements Game
         return shader;
     }
 
-    public onUpdate(delta: number): void
-    {
+    public onUpdate(): void { }
 
-    }
-
-    public onDraw(delta: number): void
+    public onDraw(): void
     {
         this.graphics.clear(ClearOptions.COLOR_BUFFER);
 
@@ -124,7 +121,7 @@ class TextureTest implements Game
     {
         gl.useProgram(this.shaderProgram);
 
-        this.graphics.textureManager.bindTextureToLocation(this.texture, 0);
+        this.texture.bindToLocation(0);
 
         const posLocation = gl.getAttribLocation(this.shaderProgram, "a_position");
         const colorLocation = gl.getAttribLocation(this.shaderProgram, "a_color");

@@ -1,3 +1,4 @@
+import { Gl } from "../constants/gl";
 import { TextureMagFilter } from "../constants/textureMagFilter";
 import { TextureManagerInternal } from "./textureManager";
 import { TextureMinFilter } from "../constants/textureMinFilter";
@@ -6,11 +7,12 @@ import { TextureWrap } from "../constants/textureWrap";
 
 export class Texture2D
 {
+    private _gl: WebGLRenderingContext;
     private readonly _textureManager: TextureManagerInternal;
+    private readonly _uri?: string;
+    private readonly _width: number;
+    private readonly _height: number;
     private _handle: WebGLTexture;
-    private _uri?: string;
-    private _width: number;
-    private _height: number;
     private _minFilter: TextureMinFilter;
     private _magFilter: TextureMagFilter;
     private _wrapS: TextureWrap;
@@ -19,9 +21,10 @@ export class Texture2D
     /**
      * @internal
      */
-    public constructor(textureManager: TextureManagerInternal, params: TextureParams)
+    public constructor(gl: WebGLRenderingContext, params: TextureParams)
     {
-        this._textureManager = textureManager;
+        this._gl = gl;
+        this._textureManager = params.manager;
         this._handle = params.handle;
         this._uri = params.uri;
         this._width = params.width;
@@ -30,14 +33,6 @@ export class Texture2D
         this._magFilter = params.magFilter;
         this._wrapS = params.wrapS;
         this._wrapT = params.wrapT;
-    }
-
-    /**
-     * Gets the underlying WebGL handle for this texture.
-     */
-    public getHandle(): WebGLTexture
-    {
-        return this._handle;
     }
 
     /**
@@ -68,9 +63,15 @@ export class Texture2D
         return this._magFilter;
     }
 
+    /**
+     * Sets the min and mag filter of this texture.
+     */
     public setFilter(minFilter: TextureMinFilter, magFilter: TextureMagFilter)
     {
-        this._textureManager.setTextureFilter(this, minFilter, magFilter);
+        this.bindToLocation(7);
+
+        this._gl.texParameteri(Gl.TEXTURE_2D, Gl.TEXTURE_MIN_FILTER, minFilter);
+        this._gl.texParameteri(Gl.TEXTURE_2D, Gl.TEXTURE_MAG_FILTER, magFilter);
 
         this._minFilter = minFilter;
         this._magFilter = magFilter;
@@ -88,9 +89,49 @@ export class Texture2D
 
     public setWrap(wrapS: TextureWrap, wrapT: TextureWrap)
     {
-        this._textureManager.setTextureWrap(this, wrapS, wrapT);
+        this.bindToLocation(7);
+
+        this._gl.texParameteri(Gl.TEXTURE_2D, Gl.TEXTURE_WRAP_S, wrapS);
+        this._gl.texParameteri(Gl.TEXTURE_2D, Gl.TEXTURE_WRAP_T, wrapT);
 
         this._wrapS = wrapS;
         this._wrapT = wrapT;
+    }
+
+    /**
+     * @internal
+     * Binds this texture for rendering.
+     * Returns the location of the internal texture unit it was bound to.
+     */
+    public bind(): number
+    {
+        const bindLocation = this._textureManager.getBindLocation(this);
+
+        if (bindLocation != undefined)
+        {
+            return bindLocation;
+        }
+        
+        const location = this._textureManager.bindAnywhere(this);
+
+        this._gl.activeTexture(Gl.TEXTURE0 + location);
+        this._gl.bindTexture(Gl.TEXTURE_2D, this._handle);
+
+        return location;
+    }
+
+    /**
+     * @internal
+     * Binds a texture at a specific location for rendering.
+     */
+    public bindToLocation(location: number)
+    {
+        if (this._textureManager.bindAtLocation(this, location))
+        {
+            return;
+        }
+
+        this._gl.activeTexture(Gl.TEXTURE0 + location);
+        this._gl.bindTexture(Gl.TEXTURE_2D, this._handle);
     }
 }

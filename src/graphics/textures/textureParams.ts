@@ -1,4 +1,5 @@
 import { TextureMagFilter } from "../constants/textureMagFilter";
+import { TextureManagerInternal } from "./textureManager";
 import { TextureMinFilter } from "../constants/textureMinFilter";
 import { TextureWrap } from "../constants/textureWrap";
 
@@ -8,6 +9,8 @@ import { TextureWrap } from "../constants/textureWrap";
  */
 export interface TextureParams
 {
+    readonly manager: TextureManagerInternal;
+
     readonly handle: WebGLTexture;
 
     /**

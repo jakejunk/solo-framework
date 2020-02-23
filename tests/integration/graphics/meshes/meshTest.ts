@@ -105,15 +105,7 @@ class MeshTest implements Game
     {
         this.graphics.clear(ClearOptions.COLOR_BUFFER);
 
-        this._renderTexture();
-    }
-
-    private _renderTexture()
-    {
-        const g = this.graphics;
-
-        g.textureManager.bindTextureToLocation(this.texture, 0);
-
+        this.texture.bindToLocation(0);
         this.mesh.render();
     }
 }

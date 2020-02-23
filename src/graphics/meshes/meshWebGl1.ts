@@ -28,10 +28,6 @@ export class MeshWebGl1 implements Mesh
         const vertexDefinition = params.vertexDefinition;
         const numVertices = params.numVertices;
 
-        this.vertexDefinition = vertexDefinition;
-        this.vertices = new Float32Array(numVertices * vertexDefinition.getSizeInFloats());
-        this.indices = params.indices;
-
         const indexHandle = gl.createBuffer()!;
         gl.bindBuffer(Gl.ELEMENT_ARRAY_BUFFER, indexHandle);
         gl.bufferData(Gl.ELEMENT_ARRAY_BUFFER, params.indices, Gl.STATIC_DRAW);
@@ -40,6 +36,9 @@ export class MeshWebGl1 implements Mesh
         gl.bindBuffer(Gl.ARRAY_BUFFER, vertexHandle);
         gl.bufferData(Gl.ARRAY_BUFFER, numVertices * vertexDefinition.getTotalSize(), Gl.STREAM_DRAW);
 
+        this.vertexDefinition = vertexDefinition;
+        this.vertices = new Float32Array(numVertices * vertexDefinition.getSizeInFloats());
+        this.indices = params.indices;
         this._gl = gl;
         this._numVertices = numVertices;
         this._indexHandle = indexHandle;

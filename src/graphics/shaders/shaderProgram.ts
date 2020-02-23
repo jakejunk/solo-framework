@@ -5,6 +5,7 @@ import { Logger } from "../../util/logger";
 import { Matrix4 } from "../../math/matrix44";
 import { ShaderProgramParams } from "./shaderProgramParams";
 import { ShaderType } from "../constants/shaderType";
+import { Texture2D } from "../textures/texture2d";
 
 export type UniformLocation = WebGLUniformLocation;
 
@@ -58,11 +59,24 @@ export class ShaderProgram
     /**
      * Sets a uniform variable in this program to the provided matrix.
      */
-    public setUniformMatrix4(location: UniformLocation, matrix: Matrix4)
+    public setMatrix4(location: UniformLocation, matrix: Matrix4)
     {
         this.bind();
 
         this._gl.uniformMatrix4fv(location, false, matrix);
+    }
+
+    /**
+     * Sets a uniform variable in this program to the provided texture + location.
+     * The texture will be bound to specified bind location.
+     */
+    public setTexture2D(location: UniformLocation, texture: Texture2D, bindLocation: number)
+    {
+        this.bind();
+
+        this._gl.uniform1i(location, bindLocation);
+
+        texture.bindToLocation(bindLocation);
     }
 
     /**
