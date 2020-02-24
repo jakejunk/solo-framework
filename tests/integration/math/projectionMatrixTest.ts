@@ -66,6 +66,8 @@ class ProjectionMatrixTest implements Game
         this.shaderProgram = ShaderProgram.Create(this.graphics, vertexShader, fragmentShader).unwrap();
         this.matrixUniform = this.shaderProgram.getUniformLocation("u_pMatrix")!;
         this.textureUniform = this.shaderProgram.getUniformLocation("u_image")!;
+        
+        this.shaderProgram.setSampler2D(this.textureUniform, 0);
 
         this.mesh = Mesh.Create(this.graphics, {
             vertexDefinition: new VertexDefinition(
@@ -155,7 +157,8 @@ class ProjectionMatrixTest implements Game
         this.graphics.clear(ClearOptions.COLOR_BUFFER);
 
         this.shaderProgram.setMatrix4(this.matrixUniform, this.projectionMatrix);
-        this.shaderProgram.setTexture2D(this.textureUniform, this.texture, 0);
+
+        this.texture.bindToLocation(0);
 
         this.mesh.render();
     }

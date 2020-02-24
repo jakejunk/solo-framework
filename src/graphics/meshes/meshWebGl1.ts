@@ -76,12 +76,17 @@ export class MeshWebGl1 implements Mesh
     {
         if (this._indexHandle !== MeshWebGl1._BoundIndexBuffer)
         {
-            this._gl.bindBuffer(Gl.ELEMENT_ARRAY_BUFFER, this._indexHandle);
-
-            MeshWebGl1._BoundIndexBuffer = this._indexHandle;
+            this._bindIndexBuffer();
         }
 
         this._gl.bufferSubData(Gl.ELEMENT_ARRAY_BUFFER, 0, this.indices);
+    }
+
+    private _bindIndexBuffer()
+    {
+        this._gl.bindBuffer(Gl.ELEMENT_ARRAY_BUFFER, this._indexHandle);
+
+        MeshWebGl1._BoundIndexBuffer = this._indexHandle;
     }
 
     public flushVertices(offset = 0, count = this.vertices.length)
@@ -127,6 +132,16 @@ export class MeshWebGl1 implements Mesh
 
     public render(offset = 0, count = this.indices.length): void
     {
+        if (this._indexHandle !== MeshWebGl1._BoundIndexBuffer)
+        {
+            this._bindIndexBuffer();
+        }
+
+        if (this._vertexHandle !== MeshWebGl1._BoundVertexBuffer)
+        {
+            this._bindVertexBuffer();
+        }
+
         this._gl.drawElements(Gl.TRIANGLES, count, Gl.UNSIGNED_SHORT, offset);
     }
 }
